@@ -1,0 +1,122 @@
+.chip {
+    /* reset - in case the class is applied to a <button> or an <a> */
+    border: 0;
+    color: inherit;
+    line-height: 1;
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 50em;
+    @apply bg-contrast-higher/10;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* 👇 you can ovveride this padding by using the padding utility classes */
+  }
+  .chip:not([class^=padding-]):not([class*=" padding-"]) {
+    @apply p-1 lg:p-1.5;
+  }
+
+  .chip--outline {
+    background-color: transparent;
+    box-shadow: inset 0 0 0 1px hsla(var(--color-contrast-higher) / 0.25);
+  }
+
+  .chip--error {
+    @apply bg-error/20;
+    @apply text-contrast-higher;
+  }
+
+  .chip--success {
+    @apply bg-success/20;
+    @apply text-contrast-higher;
+  }
+
+  .chip--warning {
+    @apply bg-warning/20;
+    @apply text-contrast-higher;
+  }
+
+  .chip--interactive {
+    cursor: pointer;
+    transition: background, box-shadow, -webkit-transform;
+    transition: background, box-shadow, transform;
+    transition: background, box-shadow, transform, -webkit-transform;
+    transition-duration: 0.2s;
+  }
+  .chip--interactive:hover {
+    @apply bg-contrast-higher/20;
+  }
+  .chip--interactive:active {
+    -webkit-transform: translateY(1px);transform: translateY(1px);
+  }
+  .chip--interactive:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px hsla(var(--color-contrast-higher) / 0.3);
+  }
+  .chip--interactive:focus:not(:focus-visible) {
+    box-shadow: none;
+  }
+
+  .chip__label {
+    @apply py-0 px-1.5 lg:px-2;
+  }
+
+  .chip__img {
+    display: block;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+
+       object-fit: cover;
+  }
+
+  .chip__icon-wrapper {
+    display: flex;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    @apply bg-contrast-higher/95;
+    @apply text-floor;
+    /* icon color */
+  }
+  .chip__icon-wrapper .icon {
+    display: block;
+    margin: auto;
+  }
+
+  .chip__btn {
+    background-color: transparent;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    color: inherit;
+    line-height: inherit;
+    appearance: none;
+    display: flex;
+    width: 1.5em;
+    height: 1.5em;
+    @apply bg-contrast-higher/20;
+    border-radius: 50%;
+    will-change: transform;
+    transition: background, box-shadow, -webkit-transform;
+    transition: background, box-shadow, transform;
+    transition: background, box-shadow, transform, -webkit-transform;
+    transition-duration: 0.2s;
+  }
+  .chip__btn .icon {
+    display: block;
+    margin: auto;
+  }
+  .chip__btn:hover {
+    @apply bg-contrast-higher/30;
+  }
+  .chip__btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px hsla(var(--color-contrast-higher) / 0.5);
+  }
+  .chip__btn:focus:not(:focus-visible) {
+    box-shadow: none;
+  }
+  .chip__btn:active {
+    -webkit-transform: translateY(1px);transform: translateY(1px);
+  }
