@@ -33,6 +33,16 @@ export const state = () => ({
 
 export const mutations = {
     SET_NEXT_STEPS (state, payload) {
+        state.steps.forEach((step, index) => {
+            if (index === payload) {
+                step.current = true
+            } else {
+                step.current = false
+            }
+            if(index < payload) {
+                step.completed = true
+            }
+        })
         state.steps.filter(item => {
             if(item.step === payload) {
                 state.steps[payload].current = false

@@ -41,7 +41,7 @@
 
                 <div class="col-span-12 md:col-span-6">
                     <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-state">State (optional)</label>
-                    <input class="form-control w-full" v-model="city" type="text" placeholder="North land">
+                    <input class="form-control w-full" v-model="state" type="text" placeholder="North land">
                 </div>
 
                 <div class="col-span-12 md:col-span-6">
@@ -84,59 +84,33 @@
             <fieldset class="mb-8 lg:mb-12">
                 <legend class="form-legend font-bold mb-1.5 lg:mb-2">Delivery Options</legend>
 
-                <div class="choice-btns flex flex-col gap-1.5 lg:gap-2 js-choice-btns">
+                <div class="choice-btns flex flex-col gap-1.5 lg:gap-2">
 
-                <div class="choice-btn p-3 lg:p-5 js-choice-btn">
-                    <!-- fallback -->
-                    <div class="choice-btn__fallback">
-                        <input type="radio" v-model="delivery" value="Standard delivery" name="check-delivery-options" id="check-delivery-option-1" checked>
-                        <label for="check-delivery-option-1">Standard delivery, 4-5 days, $9.00</label>
-                    </div>
-
-                    <!-- custom input -->
-                    <div class="choice-btn__grid" aria-hidden="true">
-                        <div class="choice-btn__input choice-btn__input--radio">
-                            <svg class="icon" viewBox="0 0 16 16">
-                            <circle fill="currentColor" cx="8" cy="8" r="4" />
-                            </svg>
+                    <div v-for="(item, index) in deliveryGroup" :key="index" class="choice-btn p-3 lg:p-5" :class="{'choice-btn--checked' : isSelectedDevlivery.includes(item.id)}" @click="handleChangeDelivery(item.id)">
+                        <!-- fallback -->
+                        <div class="choice-btn__fallback">
+                            <input type="radio" v-model="item.id" :name="item.id" :id="item.id">
+                            <label :for="item.name">{{ item.name }}, {{ item.days }}, {{ item.euros }}</label>
                         </div>
 
-                    <div class="flex flex-wrap gap-2 lg:gap-3 justify-between">
-                        <div>
-                            <p class="text-contrast-higher">Standard delivery</p>
-                            <p class="text-contrast-medium text-sm lg:text-base">4-5 days</p>
-                        </div>
-
-                        <p class="text-contrast-higher">$9.00</p>
-                    </div>
-                    </div>
-                </div>
-
-                <div class="choice-btn p-3 lg:p-5 js-choice-btn">
-                    <!-- fallback -->
-                    <div class="choice-btn__fallback">
-                        <input type="radio" v-model="delivery" value="Express delivery" name="check-delivery-options" id="check-delivery-option-2">
-                        <label for="check-delivery-option-2">Express delivery, 1-2 days, $19.00</label>
-                    </div>
-
-                    <!-- custom input -->
-                    <div class="choice-btn__grid" aria-hidden="true">
-                        <div class="choice-btn__input choice-btn__input--radio">
-                            <svg class="icon" viewBox="0 0 16 16">
+                        <!-- custom input -->
+                        <div class="choice-btn__grid" aria-hidden="true">
+                            <div class="choice-btn__input choice-btn__input--radio">
+                                <svg class="icon" viewBox="0 0 16 16">
                                 <circle fill="currentColor" cx="8" cy="8" r="4" />
-                            </svg>
-                        </div>
+                                </svg>
+                            </div>
 
                         <div class="flex flex-wrap gap-2 lg:gap-3 justify-between">
                             <div>
-                            <p class="text-contrast-higher">Express delivery</p>
-                                <p class="text-contrast-medium text-sm lg:text-base">1-2 days</p>
+                                <p class="text-contrast-higher">{{ item.name }}</p>
+                                <p class="text-contrast-medium text-sm lg:text-base">{{ item.days }}</p>
                             </div>
 
-                            <p class="text-contrast-higher">$19.00</p>
+                            <p class="text-contrast-higher">{{ item.euros }}</p>
+                        </div>
                         </div>
                     </div>
-                </div>
 
                 </div>
             </fieldset>
@@ -162,9 +136,11 @@
                 />
             </fieldset>
         </ValidationObserver>
-        <div class="text-right border-t border-contrast-higher/10 pt-5 lg:pt-8">
-            <a @click="prevStep()" class="btn btn--primary w-full lg:w-auto pointer">Go back</a>
-            <a @click="validateForm()" class="btn btn--primary w-full lg:w-auto pointer">Continue to Delivery &rarr;</a>
+        <div class="fixed bottom-0 left-0 w-full py-6 bg-contrast-lower bg-opacity-20">
+            <div class="w-full flex gap-4 mx-auto max-w-xl">
+                <a @click="prevStep()" class="btn btn--subtle w-2/4 pointer">Go back</a>
+                <a @click="validateForm()" class="btn btn--primary w-2/4 pointer">Continue to Delivery &rarr;</a>
+            </div>
         </div>
     </div>
 </template>
@@ -176,6 +152,17 @@ export default {
         step: {
             type: Number,
             default: null
+        }
+    },
+    data () {
+        return {
+            deliveryGroup: [
+                { id: 'Standard', name: "Standard delivery", days: "4-5 days", euros: "$9.00" },
+                { id: 'Express', name: "Express delivery", days: "1-2 days", euros: "$19.00" }
+            ],
+            isSelectedDevlivery: [
+                this.$store.state.checkout.delivery
+            ]
         }
     },
     computed: {
@@ -235,14 +222,6 @@ export default {
                 this.$store.commit('checkout/SET_PHONE', value)
             }
         },
-        delivery: {
-            get() {
-                return this.$store.state.checkout.delivery
-            },
-            set(value) {
-                this.$store.commit('checkout/SET_DELIVERY', value)
-            }
-        },
         billAddressSame: {
             get() {
                 return this.$store.state.checkout.billAddressSame
@@ -278,10 +257,53 @@ export default {
                     this.$store.commit('checkout/SET_BILLING_STATE', '')
                     this.$store.commit('checkout/SET_BILLING_POSTCODE', '')
                     this.$store.commit('steps/SET_NEXT_STEPS', this.step )
+                    const userCheckoutData = [{
+                        email: this.$store.state.checkout.email,
+                        currentlaststep: this.step,
+                        name: this.fullName,
+                        company: this.company,
+                        address: this.address,
+                        city: this.city,
+                        state: this.state,
+                        postcode: this.postcode,
+                        phone: this.phone,
+                        delivery: this.$store.state.checkout.delivery
+                    }]
+                    localStorage.setItem('userCheckoutData', JSON.stringify(userCheckoutData))
+                    this.$store.commit('steps/SET_NEXT_STEPS', this.step )
                 } else if (valid && !this.billAddressSame) {
+                    const userCheckoutData = [{
+                        email: this.$store.state.checkout.email,
+                        currentlaststep: this.step,
+                        name: this.fullName,
+                        company: this.company,
+                        address: this.address,
+                        city: this.city,
+                        state: this.state,
+                        postcode: this.postcode,
+                        phone: this.phone,
+                        delivery: this.delivery,
+                        billAddressSame: this.billAddressSame,
+                        billName: this.billName,
+                        billCompany: this.billCompany,
+                        billAddress: this.billAddress,
+                        billCity: this.billCity,
+                        billState: this.billState,
+                        billPostcode: this.billPostcode
+                    }]
+                    localStorage.setItem('userCheckoutData', JSON.stringify(userCheckoutData))
                     this.$store.commit('steps/SET_NEXT_STEPS', this.step )
                 }
             })
+        },
+        getElementSelectedDelivery (value) {
+            this.isSelectedDevlivery = value
+        },
+        handleChangeDelivery(value) {
+            this.isSelectedDevlivery = []
+            this.isSelectedDevlivery.push(value)
+            this.slectDilivery = !this.slectDilivery
+            this.$store.commit('checkout/SET_DELIVERY', value)
         },
         prevStep() {
             this.$store.commit('steps/SET_PREV_STEPS', this.step )

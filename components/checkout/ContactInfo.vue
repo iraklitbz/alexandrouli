@@ -22,13 +22,15 @@
 
 
         </fieldset>
-        <div class="text-right border-t border-contrast-higher/10 pt-5 lg:pt-8">
-            <a
-                @click="validateEmail()"
-                class="btn btn--primary w-full lg:w-auto pointer"
-            >
-                Continue to Delivery &rarr;
-            </a>
+        <div class="fixed bottom-0 left-0 w-full py-6 bg-contrast-lower bg-opacity-20">
+            <div class="w-full flex gap-4 mx-auto max-w-xl">
+                <a
+                    @click="validateEmail()"
+                    class="btn btn--primary w-full pointer"
+                >
+                    Continue to Delivery &rarr;
+                </a>
+            </div>
         </div>
     </div>
 </template>
@@ -62,7 +64,7 @@ export default {
         validateEmail() {
             this.$refs.form.validate().then((valid) => {
                 if (valid) {
-                    const userCheckoutData = [ { email: this.email } ]
+                    const userCheckoutData = [ { email: this.email, currentlaststep: this.step } ]
                     localStorage.setItem('userCheckoutData', JSON.stringify(userCheckoutData))
                     this.$store.commit('steps/SET_NEXT_STEPS', this.step )
                 }

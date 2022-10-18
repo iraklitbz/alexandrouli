@@ -8,7 +8,7 @@ export const state = () => ({
     country: 'Spain',
     postcode: '',
     phone: '',
-    delivery: '',
+    delivery: 'Standard',
     billAddressSame: true,
     billingname: '',
     billingcompany: '',

@@ -8,8 +8,28 @@
             <li class="header__item"><a href="#0" class="header__link">Pricing</a></li>
             <li class="header__item"><a href="#0" class="header__link">Contact</a></li>
             <li class="header__item header__item--divider" aria-hidden="true"></li>
-            <li class="header__item"><nuxt-link to="/cart" class="header__nav-btn btn btn--primary">Cart</nuxt-link></li>
+            <li class="header__item"><button @click="handleToggleCart" class="btn btn--primary" aria-controls="drawer-1">Cart</button></li>
             </ul>
         </div>
     </nav>
 </template>
+
+<script>
+export default {
+    props: {
+        toggleCart: {
+            type: Boolean,
+            default: false
+        }
+    },
+    methods: {
+        handleToggleCart() {
+            let toggleCart = this.toggleCart
+            toggleCart = !toggleCart
+            this.$emit("update-toggle", toggleCart);
+        }
+    }
+}
+</script>
+
+

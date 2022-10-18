@@ -11,18 +11,39 @@
                 <i class="not-italic header__trigger-icon" aria-hidden="true"></i>
                 <span>Menu</span>
             </button>
-            <Navbar />
+            <Navbar
+              :toggleCart="toggleCart"
+              @update-toggle="handleToggleCart"
+            />
         </div>
+        <shop-cart
+          :toggleCart="toggleCart"
+          @update--close-toggle="handleToggleCart"
+        />
     </header>
 </template>
+<script>
 
+</script>
 <script>
 import header from "~/plugins/header.js";
+import ShopCart from './ShopCart.vue';
 export default {
+  components: { ShopCart },
   name: 'IndexPage',
+  data() {
+    return {
+      toggleCart: false,
+    }
+  },
   mounted() {
     header()
   },
+  methods: {
+    handleToggleCart(value) {
+        this.toggleCart = value;
+    }
+  }
 }
 </script>
 <style lang="scss">
