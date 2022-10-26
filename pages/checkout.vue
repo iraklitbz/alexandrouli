@@ -38,6 +38,7 @@ export default {
     },
     computed: {
         ...mapState({
+                'loggedInUser': state => state.auth.loggedInUser,
                 steps: state => state.steps.steps
         })
     },

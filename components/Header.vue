@@ -1,5 +1,5 @@
 <template>
-    <header class="header relative js-header ">
+    <header class="header js-header fixed top-0 left-0">
         <div class="header__container w-[calc(100%_-_2.5rem)] lg:w-[calc(100%_-_4rem)] mx-auto max-w-7xl">
             <div class="header__logo">
                 <nuxt-link to="/">
@@ -30,7 +30,6 @@ import header from "~/plugins/header.js";
 import ShopCart from './ShopCart.vue';
 export default {
   components: { ShopCart },
-  name: 'IndexPage',
   data() {
     return {
       toggleCart: false,

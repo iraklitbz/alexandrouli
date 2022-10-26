@@ -1,28 +1,30 @@
 <template>
     <div>
         <fieldset class="mb-5 lg:mb-8">
-            <legend class="form-legend font-bold mb-1.5 lg:mb-2">Contact Information</legend>
-
-            <div class="mb-5 lg:mb-8">
-            <p class="text-sm lg:text-base">Already have an account? <a href="#0">Login</a>.</p>
+            <div v-if="!loggedInUser">
+                <div class="text-component text-center mb-3 lg:mb-5">
+                    <h2>Contact Information</h2>
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. <br>
+                    Already have an account? <a href="#0">Login</a></p>
+                </div>
+                <p class="text-center margin-y-sm">or buy as a guest</p>
+                <div>
+                    <label class="form-label mb-1.5 lg:mb-2" for="checkout-email">Email</label>
+                    <ValidationObserver ref="form">
+                        <ValidationProvider rules="required|email" v-slot="{ errors }">
+                        <input class="form-control w-full" v-model="email" type="text" placeholder="email@email.com">
+                        <error-message
+                            :errors="errors[0]"
+                        />
+                        </ValidationProvider>
+                    </ValidationObserver>
+                </div>
             </div>
-
-            <div>
-                <label class="form-label mb-1.5 lg:mb-2" for="checkout-email">Email</label>
-                <ValidationObserver ref="form">
-                    <ValidationProvider rules="required|email" v-slot="{ errors }">
-                    <input class="form-control w-full" v-model="email" type="text" placeholder="email@email.com">
-                    <error-message
-                        :errors="errors[0]"
-                    />
-                    </ValidationProvider>
-                </ValidationObserver>
+            <div v-else>
+                Adress
             </div>
-
-
-
         </fieldset>
-        <div class="fixed bottom-0 left-0 w-full py-6 bg-contrast-lower bg-opacity-20">
+        <div class="fixed bottom-0 left-0 w-full py-6 bg-contrast-lower bg-opacity-20 z-50">
             <div class="w-full flex gap-4 mx-auto max-w-xl">
                 <a
                     @click="validateEmail()"
@@ -36,6 +38,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
     props: {
         step: {
@@ -44,6 +47,7 @@ export default {
         }
     },
     computed: {
+         ...mapGetters(['loggedInUser']),
         email: {
             get() {
                 return this.$store.state.checkout.email

@@ -136,10 +136,15 @@
                 />
             </fieldset>
         </ValidationObserver>
-        <div class="fixed bottom-0 left-0 w-full py-6 bg-contrast-lower bg-opacity-20">
+        <div class="fixed bottom-0 left-0 w-full py-6 bg-contrast-lower bg-opacity-20 z-50">
             <div class="w-full flex gap-4 mx-auto max-w-xl">
-                <a @click="prevStep()" class="btn btn--subtle w-2/4 pointer">Go back</a>
-                <a @click="validateForm()" class="btn btn--primary w-2/4 pointer">Continue to Delivery &rarr;</a>
+                <a v-if="!loggedInUser" @click="prevStep()" class="btn btn--subtle w-2/4 pointer">Go back</a>
+                <a
+                    @click="validateForm()"
+                    class="btn btn--primary pointer"
+                    :class="loggedInUser ? 'w-full' : 'w-2/4'"
+                >Continue to Payment &rarr;
+                </a>
             </div>
         </div>
     </div>
@@ -147,6 +152,7 @@
 <script>
 import select from "~/plugins/select.js";
 import choice from "~/plugins/choice-button.js";
+import { mapGetters } from 'vuex'
 export default {
   props: {
         step: {
@@ -166,6 +172,7 @@ export default {
         }
     },
     computed: {
+         ...mapGetters(['loggedInUser']),
         fullName: {
             get() {
                 return this.$store.state.checkout.name

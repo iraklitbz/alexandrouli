@@ -5,7 +5,7 @@
         >
         <div class="drawer__content bg-floor-light inner-glow shadow-lg flex flex-col" role="alertdialog" aria-labelledby="drawer-cart-title">
             <header class="flex items-center justify-between shrink-0 border-b border-contrast-lower px-3 lg:px-5 py-2 lg:py-3">
-            <h1 id="drawer-cart-title" class="text-base lg:text-xl truncate" >Your Cart (2)</h1>
+            <h1 id="drawer-cart-title" class="text-base lg:text-xl truncate" >Your Cart ({{ carritoNumber }})</h1>
 
             <button @click="handleCloseCart" class="drawer__close-btn js-drawer__close">
                 <svg class="icon w-[16px] h-[16px]" viewBox="0 0 16 16"><title>Close drawer panel</title><g stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><line x1="13.5" y1="2.5" x2="2.5" y2="13.5"></line><line x1="2.5" y1="2.5" x2="13.5" y2="13.5"></line></g></svg>
@@ -13,70 +13,53 @@
             </header>
 
             <div class="drawer__body px-3 lg:px-5 pb-3 lg:pb-5">
-            <ol>
-                <li class="dr-cart__product">
-                <a href="#0" class="dr-cart__img"><img src="https://codyhouse.co/app/assets/img/cart-drawer-img-1.jpg" alt="Image description"></a>
+              <ol>
+                  <li
+                    v-for="(product, index) in products"
+                    class="dr-cart__product"
+                    :key="index"
+                  >
+                    <a href="#0" class="dr-cart__img"><img :src="product.imagesFeature[0]" alt="Image description"></a>
 
-                <div>
-                    <h2 class="text-sm lg:text-base"><a href="#0" class="text-inherit">Product One</a></h2>
-                    <p class="text-sm lg:text-base text-contrast-medium mt-1 lg:mt-1.5">Color: Black, Size: M</p>
+                    <div>
+                        <h2 class="text-sm lg:text-base"><a href="#0" class="text-inherit">{{ product.name }}</a></h2>
+                        <p class="text-sm lg:text-base text-contrast-medium mt-1 lg:mt-1.5">{{product.cultivo}}</p>
 
-                    <div class="mt-1 lg:mt-1.5">
-                    <div class="select dr-cart__select">
-                        <select class="select__input btn btn--subtle appearance-none" name="select-product-qty-1" id="select-product-qty-1" data-label="Select product quantity">
-                        <option value="0">1</option>
-                        <option value="1">2</option>
-                        <option value="2">3</option>
-                        </select>
+                        <div class="mt-1 lg:mt-1.5">
+                          <div class="select dr-cart__select">
+                              <select class="select__input btn btn--subtle appearance-none" name="select-product-qty-1" id="select-product-qty-1" data-label="Select product quantity"  @change="handleUpdateCart">
+                                <option
+                                  v-for="number in product.disponible"
+                                  :key="number"
+                                  :value="number"
+                                  :selected="number === product.cantidad"
+                                >
+                                  {{ number }}
+                                </option>
+                              </select>
 
-                        <svg class="icon select__icon" aria-hidden="true" viewBox="0 0 16 16"><polyline points="1 5 8 12 15 5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+                              <svg class="icon select__icon" aria-hidden="true" viewBox="0 0 16 16"><polyline points="1 5 8 12 15 5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+                          </div>
+                        </div>
                     </div>
+
+                    <div class="text-right">
+                        <p class="text-sm lg:text-base text-contrast-higher">{{product.price}}</p>
+                        <button @click="handleRemoveProduct(product.id)" class="dr-cart__remove-btn mt-1 lg:mt-1.5">Remove</button>
                     </div>
-                </div>
-
-                <div class="text-right">
-                    <p class="text-sm lg:text-base text-contrast-higher">$49.00</p>
-                    <button class="dr-cart__remove-btn mt-1 lg:mt-1.5">Remove</button>
-                </div>
-                </li>
-
-                <li class="dr-cart__product">
-                <a href="#0" class="dr-cart__img"><img src="https://codyhouse.co/app/assets/img/cart-drawer-img-1.jpg" alt="Image description"></a>
-
-                <div>
-                    <h2 class="text-sm lg:text-base"><a href="#0" class="text-inherit">Product Two</a></h2>
-                    <p class="text-sm lg:text-base text-contrast-medium mt-1 lg:mt-1.5">Color: Black, Size: M</p>
-
-                    <div class="mt-1 lg:mt-1.5">
-                    <div class="select dr-cart__select">
-                        <select class="select__input btn btn--subtle appearance-none" name="select-product-qty-2" id="select-product-qty-2" data-label="Select product quantity">
-                        <option value="0">1</option>
-                        <option value="1">2</option>
-                        <option value="2">3</option>
-                        </select>
-
-                        <svg class="icon select__icon" aria-hidden="true" viewBox="0 0 16 16"><polyline points="1 5 8 12 15 5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
-                    </div>
-                    </div>
-                </div>
-
-                <div class="text-right">
-                    <p class="text-sm lg:text-base text-contrast-higher">$49.00</p>
-                    <button class="dr-cart__remove-btn mt-1 lg:mt-1.5">Remove</button>
-                </div>
-                </li>
-            </ol>
+                  </li>
+              </ol>
             </div>
 
             <footer class="px-3 lg:px-5 py-2 lg:py-3 border-t border-contrast-lower shrink-0">
-                <p class="text-sm lg:text-base flex justify-between"><span>Subtotal:</span> <span>$98.00</span></p>
+                <p class="text-sm lg:text-base flex justify-between"><span>Subtotal:</span> <span>{{sumaFinal}}</span></p>
                 <nuxt-link to="/checkout" class="btn btn--primary text-[1.2em] w-full mt-2 lg:mt-3">Checkout &rarr;</nuxt-link>
             </footer>
         </div>
         </div>
 </template>
 <script>
-
+import { mapState } from 'vuex'
 export default {
     props: {
         toggleCart: {
@@ -84,11 +67,24 @@ export default {
             default: false
         }
     },
+    computed: {
+      ...mapState({
+          products: state => state.cart.products,
+          carritoNumber: state => state.cart.products.reduce((sum, value) => (sum + value.cantidad ), 0),
+          sumaFinal: state => state.cart.products.reduce((sum, value) => (sum + value.totalPrice ), 0)
+      })
+    },
     methods: {
         handleCloseCart() {
             let toggleCart = this.toggleCart
             toggleCart = !toggleCart
             this.$emit("update--close-toggle", toggleCart);
+        },
+        handleRemoveProduct(id) {
+            this.$store.commit('cart/SET_REMOVE_PRODUCTS', id)
+        },
+        handleUpdateCart(value) {
+            console.log(value)
         }
     }
 }

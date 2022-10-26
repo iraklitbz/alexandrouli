@@ -1,0 +1,40 @@
+.parallax-img__assets {
+    position: relative;
+  }
+  .parallax-img__assets img {
+    display: block;
+    width: 100%;
+  }
+  .parallax-img__assets img:not(:first-of-type) {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .parallax-img {
+    overflow: hidden;
+    -webkit-perspective: 4000px;perspective: 4000px;
+    opacity: 0;
+  }
+  .parallax-img--loaded {
+    opacity: 1;
+  }
+  .parallax-img__assets {
+    transform-style: preserve-3d;
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  .feature-v15 {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .feature-v15__content {
+    @apply rounded;
+    -webkit-backdrop-filter: saturate(50%) blur(5px);backdrop-filter: saturate(50%) blur(5px);
+  }
+  @media (min-width: 64rem) {
+    .feature-v15__content {
+      border-radius: 0;
+    }
+  }

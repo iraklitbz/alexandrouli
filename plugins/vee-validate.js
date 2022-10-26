@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
-import { required, email, numeric, oneOf } from "vee-validate/dist/rules";
+import { required, email, numeric, oneOf, confirmed } from "vee-validate/dist/rules";
 
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
@@ -28,4 +28,9 @@ extend('phone', {
 extend('delivery', {
     ...oneOf,
     message: 'Chose one of the options'
+})
+
+extend('confirmed', {
+    ...confirmed,
+    message: 'The passwords do not match'
 })

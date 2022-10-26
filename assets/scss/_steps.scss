@@ -73,6 +73,11 @@
         align-items: start;
         grid-template-columns: repeat(var(--steps-number), 1fr);
       }
+      .steps__list-3 {
+        display: grid;
+        align-items: start;
+        grid-template-columns: repeat(3, 1fr);
+      }
     }
 
     .step {

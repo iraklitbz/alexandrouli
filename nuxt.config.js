@@ -26,15 +26,47 @@ export default {
       class: 'js'
     }
   },
-
+  pageTransition: {
+    name: 'fade-down',
+    mode: 'out-in'
+    },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     '@/assets/scss/app.scss',
     '@/assets/css/base.css',
-    '@/assets/css/main.css'
+    '@/assets/css/main.css',
+    '@/assets/css/transition.css'
+
   ],
   axios: {
-    baseUrl: process.env.BASE_URL || 'http://localhost:3000'
+    baseURL: process.env.STRAPI_URL || 'http://localhost:1337/api'
+  },
+  auth: {
+    // Options
+    strategies: {
+      google: {
+        clientId: '1073084734162-u0n2o0mg48s9caqiq9c81q8g2nukpb2b.apps.googleusercontent.com'
+      },
+      local: {
+        token: {
+          property: 'jwt',
+        },
+        user: {
+          property: false,
+        },
+        endpoints: {
+          login: {
+            url: 'auth/local',
+            method: 'post',
+          },
+          user: {
+            url: 'users/me',
+            method: 'get',
+          },
+          logout: false,
+        },
+      },
+    },
   },
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
@@ -56,6 +88,7 @@ export default {
   modules: [
     '~/modules/svg-module',
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
     ['nuxt-mail', {
         message: {
           to: 'iraklitbz@gmail.com',

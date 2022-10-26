@@ -39,7 +39,7 @@
           <p class="text-sm lg:text-base leading-normal text-contrast-medium">Gold Membership - $249/Year</p>
         </div>
       </div>
-        <div class="fixed bottom-0 left-0 w-full py-6 bg-contrast-lower bg-opacity-20">
+        <div class="fixed bottom-0 left-0 w-full py-6 bg-contrast-lower bg-opacity-20 z-50">
             <div class="w-full flex gap-4 mx-auto max-w-xl">
               <button @click="prevStep()" class="btn btn--subtle w-2/4">Go back</button>
               <button @click="handleSubmit()" class="btn btn--primary w-2/4">BUY</button>

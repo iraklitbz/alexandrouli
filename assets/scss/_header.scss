@@ -69,9 +69,6 @@
     @apply mt-3 lg:mt-5;
   }
 
-  .header__item {
-    @apply mt-3 lg:mt-5;
-  }
 
   .header__link {
     @apply text-xl lg:text-3xl;
@@ -183,4 +180,23 @@
     .header__trigger {
       display: none;
     }
+  }
+
+  .hide-nav {
+    --hide-nav-transition-duration: 0.3s;
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 0;
+    will-change: transform;
+    transition: background-color var(--hide-nav-transition-duration), -webkit-transform var(--hide-nav-transition-duration);
+    transition: transform var(--hide-nav-transition-duration), background-color var(--hide-nav-transition-duration);
+    transition: transform var(--hide-nav-transition-duration), background-color var(--hide-nav-transition-duration), -webkit-transform var(--hide-nav-transition-duration);
+  }
+
+  .hide-nav--fixed {
+    background-color: transparent;
+  }
+
+  .hide-nav--has-bg {
+    @apply bg-floor;
   }
