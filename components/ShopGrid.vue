@@ -1,5 +1,5 @@
 <template>
-    <section class="py-12 lg:py-20">
+    <section class="py-12">
         <div class="w-[calc(100%_-_2.5rem)] lg:w-[calc(100%_-_4rem)] mx-auto max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl">
             <div class="mb-5 lg:mb-8">
                 <h1 class="text-center">Our Products</h1>
