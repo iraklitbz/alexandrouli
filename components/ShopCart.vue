@@ -19,10 +19,12 @@
                     class="dr-cart__product"
                     :key="index"
                   >
-                    <a href="#0" class="dr-cart__img"><img :src="product.imagesFeature[0]" alt="Image description"></a>
+                    <nuxt-link to="products/id" class="dr-cart__img">
+                      <img :src="'http://15.188.27.140:1337' + product.feature.data.attributes.formats.thumbnail.url" :alt="product.name + ' image'">
+                    </nuxt-link>
 
                     <div>
-                        <h2 class="text-sm lg:text-base"><a href="#0" class="text-inherit">{{ product.name }}</a></h2>
+                        <h2 class="text-sm lg:text-base"><nuxt-link to="products/id" class="text-inherit">{{ product.name }}</nuxt-link></h2>
                         <p class="text-sm lg:text-base text-contrast-medium mt-1 lg:mt-1.5">{{product.cultivo}}</p>
 
                         <div class="mt-1 lg:mt-1.5">
@@ -70,9 +72,14 @@ export default {
     computed: {
       ...mapState({
           products: state => state.cart.products,
-          carritoNumber: state => state.cart.products.reduce((sum, value) => (sum + value.cantidad ), 0),
+          carritoNumber: state =>  state.cart.products.reduce((sum, value) => (sum + value.cantidad ), 0),
           sumaFinal: state => state.cart.products.reduce((sum, value) => (sum + value.totalPrice ), 0)
       })
+    },
+    mounted() {
+        if (localStorage.getItem('productsInCart')) {
+            this.$store.commit('cart/SET_PRODUCTS_LOCALSTORAGE', JSON.parse(localStorage.getItem('productsInCart')))
+        }
     },
     methods: {
         handleCloseCart() {

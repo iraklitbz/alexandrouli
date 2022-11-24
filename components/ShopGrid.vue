@@ -9,7 +9,8 @@
                 <Card
                     v-for="product in products"
                     :key="product.id"
-                    :product="product"
+                    :product="product.attributes"
+                    :id="product.id"
                 />
             </div>
         </div>
@@ -19,90 +20,20 @@
     </section>
 </template>
 <script>
+import axios from 'axios';
 export default {
     data(){
         return {
-            products: [
-                {
-                    id: 0,
-                    name: "Pheasant's Tears",
-                    price: 79,
-                    imagesFeature: [
-                        "https://codyhouse.co/app/assets/img/product-card-v2-img-1.jpg",
-                        "https://codyhouse.co/app/assets/img/product-card-v2-img-2.jpg",
-                    ],
-                    badge: "New",
-                    cultivo: "Saperavi",
-                    disponible: 10,
-                    cantidad: 0
-                },
-                {
-                    id: 1,
-                    name: "Pétrus",
-                    price: 20,
-                    imagesFeature: [
-                        "https://codyhouse.co/app/assets/img/product-card-v2-img-1.jpg",
-                        "https://codyhouse.co/app/assets/img/product-card-v2-img-2.jpg",
-                    ],
-                    badge: "New",
-                    cultivo: "Kinzmarauli",
-                    disponible: 5,
-                    cantidad: 0
-                },
-                {
-                    id: 2,
-                    name: "Pomerol ",
-                    price: 18,
-                    imagesFeature: [
-                        "https://codyhouse.co/app/assets/img/product-card-v2-img-1.jpg",
-                        "https://codyhouse.co/app/assets/img/product-card-v2-img-2.jpg",
-                    ],
-                    badge: "New",
-                    cultivo: "Alexandrouli",
-                    disponible: 15,
-                    cantidad: 0
-                },
-                {
-                    id: 3,
-                    name: "Pheasant's Tears",
-                    price: 79,
-                    imagesFeature: [
-                        "https://codyhouse.co/app/assets/img/product-card-v2-img-1.jpg",
-                        "https://codyhouse.co/app/assets/img/product-card-v2-img-2.jpg",
-                    ],
-                    badge: "New",
-                    cultivo: "Saperavi",
-                    disponible: 2,
-                    cantidad: 0
-                },
-                {
-                    id: 4,
-                    name: "Pheasant's Tears",
-                    price: 79,
-                    imagesFeature: [
-                        "https://codyhouse.co/app/assets/img/product-card-v2-img-1.jpg",
-                        "https://codyhouse.co/app/assets/img/product-card-v2-img-2.jpg",
-                    ],
-                    badge: "New",
-                    cultivo: "Kinzmaraouli",
-                    disponible: 7,
-                    cantidad: 0
-                },
-                {
-                    id: 5,
-                    name: "Pheasant's Tears",
-                    price: 79,
-                    imagesFeature: [
-                        "https://codyhouse.co/app/assets/img/product-card-v2-img-1.jpg",
-                        "https://codyhouse.co/app/assets/img/product-card-v2-img-2.jpg",
-                    ],
-                    badge: "New",
-                    cultivo: "Saperavi",
-                    disponible: 4,
-                    cantidad: 0
-                }
-            ]
+            products: []
         }
+    },
+    mounted () {
+        axios
+        .get('http://15.188.27.140:1337/api/products?populate=*')
+        .then(response => (
+                this.products = response.data.data
+            ))
+        .catch(error => (this.error = error))
     }
 }
 </script>

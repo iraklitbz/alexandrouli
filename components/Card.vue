@@ -4,10 +4,8 @@
         <nuxt-link to="/products/id" class="prod-card-v2__img-link rounded-lg shadow-md">
             <figure>
                 <img
-                    v-for="(image, index) in product.imagesFeature"
-                    :key="index"
-                    :src="image"
-                    alt="Product preview image"
+                    :src="'http://15.188.27.140:1337' + product.feature.data.attributes.formats.small.url"
+                    :alt="product.name + ' image'"
                 >
             </figure>
         </nuxt-link>
@@ -18,7 +16,7 @@
                 <span class="prod-card-v2__price">{{product.price}}€</span>
             </div>
             <error-message
-                v-if="product.disponible === product.cantidad"
+                v-if="product.disponible === cantidad"
                 :errors="'Producto agotado'"
             />
             <button v-else @click="handleCarrito(product)" class="btn btn--primary mt-2">Añadir al carrito</button>
@@ -27,17 +25,29 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
     props: {
         product: {
             type: Object,
             required: true
+        },
+        id: {
+            type: Number,
+            required: true
         }
+    },
+    computed: {
+      ...mapState({
+          cantidad: state => state.cart.products.cantidad ? state.cart.products.cantidad : 0,
+      })
     },
     methods: {
         handleCarrito(product) {
             //its add in the cart until the product is available
-            if(product.disponible !== product.cantidad) {
+            if(product.disponible !== this.cantidad) {
+                product.cantidad = this.cantidad
+                product.id = this.id
                 this.$store.commit('cart/SET_PRODUCTS', product)
             }
         }
