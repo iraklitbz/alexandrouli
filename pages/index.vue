@@ -2,18 +2,18 @@
   <div>
     <Header />
     <Hero class="mt-5" />
-    <section class="adv-gallery mt-10">
+    <section class="adv-gallery my-10">
       <div class="adv-gallery__grid w-[calc(100%_-_2.5rem)] lg:w-[calc(100%_-_4rem)] mx-auto max-w-7xl">
         <div>
-          <img class="adv-gallery__img" src="https://codyhouse.co/app/assets/img/adv-gallery-img-1.jpg" alt="Image description">
+          <img class="adv-gallery__img" :src="require(`~/assets/images/1.jpg`)" alt="Image description">
         </div>
 
         <div>
-          <img class="adv-gallery__img" src="https://codyhouse.co/app/assets/img/adv-gallery-img-2.jpg" alt="Image description">
+          <img class="adv-gallery__img" :src="require(`~/assets/images/2.jpg`)" alt="Image description">
         </div>
 
         <div>
-          <img class="adv-gallery__img" src="https://codyhouse.co/app/assets/img/adv-gallery-img-3.jpg" alt="Image description">
+          <img class="adv-gallery__img" :src="require(`~/assets/images/4.jpg`)" alt="Image description">
         </div>
 
         <div class="bg-contrast-higher/10 p-5 lg:p-8 xl:flex">

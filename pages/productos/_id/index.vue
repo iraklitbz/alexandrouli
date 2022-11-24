@@ -11,16 +11,14 @@
           <div class="col-span-12 lg:col-span-6 xl:col-span-7">
             <div class="flex flex-col gap-3 lg:gap-5">
               <figure>
-                <img class="block w-full" src="https://codyhouse.co/app/assets/img/product-v3-img-1.jpg" alt="Image description">
+                <img class="adv-gallery__img" :src="require(`~/assets/images/product.jpg`)" alt="Image description">
               </figure>
 
               <figure>
-                <img class="block w-full" src="https://codyhouse.co/app/assets/img/product-v3-img-2.jpg" alt="Image description">
+                <img class="block w-full" :src="require(`~/assets/images/product2.jpg`)" alt="Image description">
               </figure>
 
-              <figure>
-                <img class="block w-full" src="https://codyhouse.co/app/assets/img/product-v3-img-3.jpg" alt="Image description">
-              </figure>
+  
             </div>
           </div>
 

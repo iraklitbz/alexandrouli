@@ -17,8 +17,8 @@
 
                     <a class="prod-card-v2__img-link rounded-lg shadow-md" href="#0" aria-label="Description of the link">
                     <figure>
-                        <img src="https://codyhouse.co/app/assets/img/products-gallery-v2-img-1.jpg" alt="Product preview image">
-                        <img src="https://codyhouse.co/app/assets/img/products-gallery-v2-img-1-hover.jpg" alt="Product preview image" aria-hidden="true">
+                        <img :src="require(`~/assets/images/product.jpg`)" alt="Product preview image">
+                        <img :src="require(`~/assets/images/product2.jpg`)" alt="Product preview image" aria-hidden="true">
                     </figure>
                     </a>
 
@@ -38,8 +38,8 @@
 
                     <a class="prod-card-v2__img-link rounded-lg shadow-md" href="#0" aria-label="Description of the link">
                     <figure>
-                        <img src="https://codyhouse.co/app/assets/img/products-gallery-v2-img-2.jpg" alt="Product preview image">
-                        <img src="https://codyhouse.co/app/assets/img/products-gallery-v2-img-2-hover.jpg" alt="Product preview image" aria-hidden="true">
+                        <img :src="require(`~/assets/images/product.jpg`)" alt="Product preview image">
+                        <img :src="require(`~/assets/images/product2.jpg`)" alt="Product preview image" aria-hidden="true">
                     </figure>
                     </a>
 
@@ -59,8 +59,8 @@
 
                     <a class="prod-card-v2__img-link rounded-lg shadow-md" href="#0" aria-label="Description of the link">
                     <figure>
-                        <img src="https://codyhouse.co/app/assets/img/products-gallery-v2-img-3.jpg" alt="Product preview image">
-                        <img src="https://codyhouse.co/app/assets/img/products-gallery-v2-img-3-hover.jpg" alt="Product preview image" aria-hidden="true">
+                        <img :src="require(`~/assets/images/product.jpg`)" alt="Product preview image">
+                        <img :src="require(`~/assets/images/product2.jpg`)" alt="Product preview image" aria-hidden="true">
                     </figure>
                     </a>
 

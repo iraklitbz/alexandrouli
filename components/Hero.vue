@@ -20,7 +20,7 @@
 
         <div class="absolute z-1 top-0 left-0 h-full w-full overflow-hidden">
             <figure class="parallax-img__assets h-full w-full js-parallax-img__assets">
-            <img class="h-full w-full object-cover" src="https://codyhouse.co/app/assets/img/feature-v15-img-1.jpg" alt="Image Description" style="transform: translateZ(150px);">
+                <img class="h-full w-full object-cover" :src="require(`~/assets/images/3.jpg`)" alt="wine glass" style="transform: translateZ(150px);">
             </figure>
         </div>
     </section>
