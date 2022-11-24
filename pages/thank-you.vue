@@ -10,7 +10,7 @@
                     <p class="text-contrast-medium">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi aliquid qui et saepe omnis ipsum amet quasi accusamus.</p>
 
                     <p class="flex flex-wrap flex-col sm:flex-row gap-1.5 lg:gap-2 justify-center">
-                    <nuxt-link class="btn btn--subtle" to="/products">Continue Shopping</nuxt-link>
+                    <nuxt-link class="btn btn--subtle" to="/productos">Continue Shopping</nuxt-link>
                     <a class="btn btn--primary" href="#0">Manage Order</a>
                     </p>
                 </div>
