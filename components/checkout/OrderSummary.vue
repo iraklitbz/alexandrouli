@@ -11,14 +11,14 @@
                     :key="index"
                     class="order-summary__item"
                 >
-                    <nuxt-link to="/products/id" class="order-summary__img">
+                    <nuxt-link to="/productos/id" class="order-summary__img">
                         <img
                             :src="'http://15.188.27.140:1337' + product.feature.data.attributes.formats.thumbnail.url" :alt="product.name + ' image'"
                         >
                     </nuxt-link>
                     <div class="flex flex-wrap justify-between gap-xxxs">
                         <div>
-                            <p class="color-contrast-higher"><nuxt-link to="/products/id">{{ product.name }}</nuxt-link></p>
+                            <p class="color-contrast-higher"><nuxt-link to="/productos/id">{{ product.name }}</nuxt-link></p>
                             <p class="color-contrast-medium text-sm">{{ product.cultivo }}</p>
                         </div>
                         <p class="color-contrast-higher"><span class="sr-only">Price:</span> {{ product.price }}€</p>

@@ -3,10 +3,10 @@
         <div class="header__nav-inner">
             <ul class="header__list">
             <li class="header__item"><nuxt-link to="/" class="header__link">Home</nuxt-link></li>
-            <li class="header__item"><nuxt-link to="/products" class="header__link">Products</nuxt-link></li>
-            <li class="header__item"><nuxt-link to="/about-georgia" class="header__link">Georgia</nuxt-link></li>
-            <li class="header__item"><nuxt-link to="/about" class="header__link">About </nuxt-link></li>
-            <li class="header__item"><nuxt-link to="/contact" class="header__link">Contacto </nuxt-link></li>
+            <li class="header__item"><nuxt-link to="/productos" class="header__link">Productos</nuxt-link></li>
+            <li class="header__item"><nuxt-link to="/sobre-georgia" class="header__link">Georgia</nuxt-link></li>
+            <li class="header__item"><nuxt-link to="/sobre-nosotros" class="header__link">About </nuxt-link></li>
+            <li class="header__item"><nuxt-link to="/contacto" class="header__link">Contacto </nuxt-link></li>
              <li class="header__item"><button @click="userLogout" class="header__link">Logout </button></li>
             <li class="header__item header__item--divider" aria-hidden="true"></li>
             <li class="header__item">
