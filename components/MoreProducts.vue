@@ -12,73 +12,59 @@
 
             <div class="col-span-12 xl:col-span-8">
                 <div class="grid grid-cols-12 gap-5 lg:gap-8">
-                <div class="prod-card-v2 col-span-6 lg:col-span-4">
-                    <span class="prod-card-v2__badge" role="text">New <i class="sr-only">product</i></span>
+                    <div
+                        v-for="item in products"
+                        :key="item.id"
+                        class="prod-card-v2 col-span-6 lg:col-span-3"
+                    >  
+                        <span class="prod-card-v2__badge" role="text">{{item.attributes.cultivo}}</span>
 
-                    <a class="prod-card-v2__img-link rounded-lg shadow-md" href="#0" aria-label="Description of the link">
-                    <figure>
-                        <img :src="require(`~/assets/images/product.jpg`)" alt="Product preview image">
-                        <img :src="require(`~/assets/images/product2.jpg`)" alt="Product preview image" aria-hidden="true">
-                    </figure>
-                    </a>
+                        <nuxt-link :to="'/productos/' + item.id + '/' + item.attributes.slug" class="prod-card-v2__img-link rounded-lg shadow-md" aria-label="Description of the link">
+                            <figure>
+                                <img :src="'http://15.188.27.140:1337' + item.attributes.feature.data.attributes.formats.small.url" alt="Product preview image">
+                                <img :src="require(`~/assets/images/product2.jpg`)" alt="Product preview image" aria-hidden="true">
+                            </figure>
+                        </nuxt-link>
 
-                    <div class="p-3 lg:p-5 text-center">
-                        <h1 class="text-lg lg:text-2xl"><a href="#0" class="product-card-v2__title">Product One</a></h1>
+                        <div class="p-3 lg:p-5 text-center">
+                            <h1 class="text-lg"><nuxt-link :to="'/productos/' + item.id + '/' + item.attributes.slug" class="product-card-v2__title">{{item.attributes.name}}</nuxt-link></h1>
 
-                        <div class="my-1 lg:my-1.5">
-                            <span class="prod-card-v2__price">$79</span>
+                            <div class="my-1 lg:my-1.5">
+                                <span class="prod-card-v2__price">{{item.attributes.price}}€</span>
+                            </div>
+
+
                         </div>
-
-
                     </div>
-                </div>
-
-                <div class="prod-card-v2 col-span-6 lg:col-span-4">
-                    <span class="prod-card-v2__badge" role="text">New <i class="sr-only">product</i></span>
-
-                    <a class="prod-card-v2__img-link rounded-lg shadow-md" href="#0" aria-label="Description of the link">
-                    <figure>
-                        <img :src="require(`~/assets/images/product.jpg`)" alt="Product preview image">
-                        <img :src="require(`~/assets/images/product2.jpg`)" alt="Product preview image" aria-hidden="true">
-                    </figure>
-                    </a>
-
-                    <div class="p-3 lg:p-5 text-center">
-                        <h1 class="text-lg lg:text-2xl"><a href="#0" class="product-card-v2__title">Product Two</a></h1>
-
-                        <div class="my-1 lg:my-1.5">
-                            <span class="prod-card-v2__price">$79</span>
-                        </div>
-
-
-                    </div>
-                </div>
-
-                <div class="prod-card-v2 col-span-6 lg:col-span-4">
-                    <span class="prod-card-v2__badge" role="text">New <i class="sr-only">product</i></span>
-
-                    <a class="prod-card-v2__img-link rounded-lg shadow-md" href="#0" aria-label="Description of the link">
-                    <figure>
-                        <img :src="require(`~/assets/images/product.jpg`)" alt="Product preview image">
-                        <img :src="require(`~/assets/images/product2.jpg`)" alt="Product preview image" aria-hidden="true">
-                    </figure>
-                    </a>
-
-                    <div class="p-3 lg:p-5 text-center">
-                    <h1 class="text-lg lg:text-2xl"><a href="#0" class="product-card-v2__title">Product Three</a></h1>
-
-                    <div class="my-1 lg:my-1.5">
-                        <span class="prod-card-v2__price">$79</span>
-                    </div>
-
-                    </div>
-                </div>
                 </div>
             </div>
             </div>
         </div>
-        </section>
+    </section>
 </template>
+
+<script>
+import axios from 'axios';
+export default {
+    props: {
+        category: {
+            type: String,
+            default: true
+        }
+    },
+    data(){
+        return {
+            products: []
+        }
+    },
+    mounted () {
+        axios
+        .get('http://15.188.27.140:1337/api/products?populate=*')
+        .then(response => (this.products = response.data.data.filter(item => item.attributes.category === this.category)))
+        .catch(error => (this.error = error))
+    }
+}
+</script>
 
 <style lang="scss">
     .prod-card-v2 {

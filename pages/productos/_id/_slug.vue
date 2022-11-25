@@ -77,7 +77,9 @@
         </div>
       </div>
     </section>
-    <more-products />
+    <more-products 
+      :category="'outstanding'"
+    />
   </div>
 </template>
 
