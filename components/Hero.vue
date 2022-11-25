@@ -28,11 +28,11 @@
 <script>
 import parallax from "~/plugins/parallax.js";
 export default {
-  mounted() {
-    parallax()
-  }
+    mounted() {
+        parallax()
+    }
 }
 </script>
 <style lang="scss">
-  @import "~/assets/scss/parallax.scss";
+    @import "~/assets/scss/parallax.scss";
 </style>

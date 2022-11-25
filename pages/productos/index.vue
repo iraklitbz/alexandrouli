@@ -6,12 +6,8 @@
 </template>
 
 <script>
-import sticky from "~/plugins/stick-feature.js";
 export default {
-  name: 'IndexPage',
-  mounted() {
-    sticky()
-  },
+  name: 'ProductPage'
 }
 </script>
 <style scoped>

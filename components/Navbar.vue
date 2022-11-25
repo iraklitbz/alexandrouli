@@ -39,9 +39,6 @@ export default {
         }),
         ...mapGetters(['loggedInUser'])
     },
-    mounted() {
-        console.log(this.loggedInUser)
-    },
     methods: {
         async userLogout() {
           await this.$auth.logout()

@@ -12,7 +12,7 @@
 
             <div class="col-span-12 xl:col-span-8">
                 <div class="grid grid-cols-12 gap-5 lg:gap-8">
-                <div class="prod-card-v2 col-span-12 lg:col-span-4">
+                <div class="prod-card-v2 col-span-6 lg:col-span-4">
                     <span class="prod-card-v2__badge" role="text">New <i class="sr-only">product</i></span>
 
                     <a class="prod-card-v2__img-link rounded-lg shadow-md" href="#0" aria-label="Description of the link">
@@ -33,7 +33,7 @@
                     </div>
                 </div>
 
-                <div class="prod-card-v2 col-span-12 lg:col-span-4">
+                <div class="prod-card-v2 col-span-6 lg:col-span-4">
                     <span class="prod-card-v2__badge" role="text">New <i class="sr-only">product</i></span>
 
                     <a class="prod-card-v2__img-link rounded-lg shadow-md" href="#0" aria-label="Description of the link">
@@ -54,7 +54,7 @@
                     </div>
                 </div>
 
-                <div class="prod-card-v2 col-span-12 lg:col-span-4">
+                <div class="prod-card-v2 col-span-6 lg:col-span-4">
                     <span class="prod-card-v2__badge" role="text">New <i class="sr-only">product</i></span>
 
                     <a class="prod-card-v2__img-link rounded-lg shadow-md" href="#0" aria-label="Description of the link">

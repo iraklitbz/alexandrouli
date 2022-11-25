@@ -20,8 +20,8 @@ export default {
       }
     ],
     script: [
-      { src: 'https://unpkg.com/codyhouse-framework@3.0.8/main/assets/js/util.js', async: true, ssr: false },
-      { src: 'https://js.stripe.com/v3' }
+      { src: 'https://unpkg.com/codyhouse-framework@3.0.8/main/assets/js/util.js', async: true, ssr: false }
+      // { src: 'https://js.stripe.com/v3' }
     ],
     htmlAttrs: {
       class: 'js'
@@ -75,12 +75,12 @@ export default {
   },
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '~/plugins/vee-validate.js',
-    {
-      src: '~/plugins/stripe-elements.js',
-      mode: 'client',
-      ssr: false
-    }
+    '~/plugins/vee-validate.js'
+    // {
+    //   src: '~/plugins/stripe-elements.js',
+    //   mode: 'client',
+    //   ssr: false
+    // }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

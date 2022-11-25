@@ -27,22 +27,6 @@
                         <h2 class="text-sm lg:text-base"><nuxt-link to="products/id" class="text-inherit">{{ product.name }}</nuxt-link></h2>
                         <p class="text-sm lg:text-base text-contrast-medium mt-1 lg:mt-1.5">{{product.cultivo}}</p>
 
-                        <div class="mt-1 lg:mt-1.5">
-                          <div class="select dr-cart__select">
-                              <select class="select__input btn btn--subtle appearance-none" name="select-product-qty-1" id="select-product-qty-1" data-label="Select product quantity"  @change="handleUpdateCart">
-                                <option
-                                  v-for="number in product.disponible"
-                                  :key="number"
-                                  :value="number"
-                                  :selected="number === product.cantidad"
-                                >
-                                  {{ number }}
-                                </option>
-                              </select>
-
-                              <svg class="icon select__icon" aria-hidden="true" viewBox="0 0 16 16"><polyline points="1 5 8 12 15 5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
-                          </div>
-                        </div>
                     </div>
 
                     <div class="text-right">
@@ -78,7 +62,7 @@ export default {
     },
     mounted() {
         if (localStorage.getItem('productsInCart')) {
-            this.$store.commit('cart/SET_PRODUCTS_LOCALSTORAGE', JSON.parse(localStorage.getItem('productsInCart')))
+            this.$store.commit('cart/SET_PRODUCTS_LOCAL_STORAGE', JSON.parse(localStorage.getItem('productsInCart')))
         }
     },
     methods: {

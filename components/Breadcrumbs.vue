@@ -2,24 +2,30 @@
     <nav class="breadcrumbs text-sm lg:text-base" aria-label="Breadcrumbs">
         <ol class="flex flex-wrap gap-1.5 lg:gap-2">
             <li class="breadcrumbs__item">
-            <a href="#0" class="text-inherit">Home</a>
-            <span class="text-contrast-lower ml-1.5 lg:ml-2" aria-hidden="true">/</span>
+                <nuxt-link to="/" class="text-inherit">Inicio</nuxt-link>
+                <span class="text-contrast-lower ml-1.5 lg:ml-2" aria-hidden="true">/</span>
             </li>
 
             <li class="breadcrumbs__item">
-            <a href="#0" class="text-inherit">Gallery</a>
-            <span class="text-contrast-lower ml-1.5 lg:ml-2" aria-hidden="true">/</span>
+                <nuxt-link to="/productos" class="text-inherit">Prodcutos</nuxt-link>
+                <span class="text-contrast-lower ml-1.5 lg:ml-2" aria-hidden="true">/</span>
             </li>
 
-            <li class="breadcrumbs__item">
-            <a href="#0" class="text-inherit">Web</a>
-            <span class="text-contrast-lower ml-1.5 lg:ml-2" aria-hidden="true">/</span>
-            </li>
-
-            <li class="breadcrumbs__item" aria-current="page">Project</li>
+            <li class="breadcrumbs__item" aria-current="page">{{name}}</li>
         </ol>
     </nav>
 </template>
+
+<script>
+export default {
+    props: {
+        name: {
+            type: String,
+            default: ''
+        }
+    }
+}
+</script>
 
 <style lang="scss">
     .breadcrumbs__item {

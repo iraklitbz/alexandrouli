@@ -1,7 +1,7 @@
 <template>
     <div class="prod-card-v2 mb-5">
         <span class="prod-card-v2__badge" role="text">{{product.cultivo}} <i class="sr-only">product</i></span>
-        <nuxt-link to="/productos/id" class="prod-card-v2__img-link rounded-lg shadow-md">
+        <nuxt-link :to="'/productos/' + id + '/' + product.slug" class="prod-card-v2__img-link rounded-lg shadow-md">
             <figure>
                 <img
                     :src="'http://15.188.27.140:1337' + product.feature.data.attributes.formats.small.url"
@@ -10,7 +10,7 @@
             </figure>
         </nuxt-link>
         <div class="p-3 lg:p-5 text-center">
-            <h1 class="text-lg lg:text-2xl"><nuxt-link to="/productos/id" class="product-card-v2__title">{{ product.name }}</nuxt-link></h1>
+            <h1 class="text-lg lg:text-2xl"><nuxt-link :to="'/productos/' + id + '/' + product.slug" class="product-card-v2__title">{{ product.name }}</nuxt-link></h1>
 
             <div class="my-1 lg:my-1.5">
                 <span class="prod-card-v2__price">{{product.price}}€</span>
