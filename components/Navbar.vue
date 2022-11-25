@@ -35,7 +35,7 @@ export default {
     computed: {
         ...mapState({
                 products: state => state.cart.products.length,
-                carritoNumber: state => state.cart.products.reduce((sum, value) => (sum + value.cantidad ), 0)
+                carritoNumber: state => state.cart.products.reduce((sum, value) => (sum + value.amount ), 0)
         }),
         ...mapGetters(['loggedInUser'])
     },

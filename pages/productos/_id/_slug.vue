@@ -49,7 +49,7 @@
                   <label class="sr-only" for="product-qty-input">Quantity:</label>
 
                   <div class="number-input number-input--v2">
-                      <input class="form-control" type="number" name="product-qty-input"  min="0" max="100" :value="cantidadSelect">
+                      <input class="form-control" type="number" name="product-qty-input"  min="0" max="100" :value="amountSelect">
 
                     <button 
                         class="flex items-center justify-center number-input__btn number-input__btn--plus" aria-label="Increase Number"
@@ -99,7 +99,7 @@ export default {
       images: [],
       originalPrice: null,
       price: null,
-      cantidadSelect: 1,
+      amountSelect: 1,
       productInCart: {}
     };
   },
@@ -124,12 +124,12 @@ export default {
       this.feature = url
     },
     handleIncrase() {
-      this.cantidadSelect++
+      this.amountSelect++
       this.price = this.originalPrice + this.price
     },
     handleDecrase() {
-      if (this.cantidadSelect > 1) {
-        this.cantidadSelect--
+      if (this.amountSelect > 1) {
+        this.amountSelect--
         this.price = this.price - this.originalPrice
       }
     },
@@ -137,7 +137,7 @@ export default {
           this.product.id = this.id
           this.$store.commit('cart/SET_PRODUCTS', {
             product: this.product,
-            cantidad: this.cantidadSelect,
+            amount: this.amountSelect,
             id: this.id
           })
     }

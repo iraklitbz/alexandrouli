@@ -29,8 +29,8 @@
                             <p class="text-sm lg:text-base text-contrast-medium mt-1 lg:mt-1.5">{{product.cultivo}}</p>
                           </div>
                          <div class="text-right">
-                            <p class="text-sm lg:text-base text-contrast-higher">{{product.price * product.cantidad}}€</p>
-                            <p class="text-sm lg:text-base text-contrast-medium mt-1 lg:mt-1.5">{{'X' + product.cantidad}}</p>
+                            <p class="text-sm lg:text-base text-contrast-higher">{{product.price * product.amount}}€</p>
+                            <p class="text-sm lg:text-base text-contrast-medium mt-1 lg:mt-1.5">{{'X' + product.amount}}</p>
                          </div>
                       </div>
                       <div class="text-right">
@@ -60,7 +60,7 @@ export default {
     computed: {
       ...mapState({
           products: state => state.cart.products,
-          carritoNumber: state =>  state.cart.products.reduce((sum, value) => (sum + value.cantidad ), 0),
+          carritoNumber: state =>  state.cart.products.reduce((sum, value) => (sum + value.amount ), 0),
           sumaFinal: state => state.cart.products.reduce((sum, value) => (sum + value.totalPrice ), 0)
       })
     },

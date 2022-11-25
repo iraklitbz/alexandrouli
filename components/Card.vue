@@ -16,9 +16,10 @@
                 <span class="prod-card-v2__price">{{product.price}}€</span>
             </div>
             <error-message
-                v-if="product.disponible === cantidad"
+                v-if="amount === product.available || amount > product.available"
                 :errors="'Producto agotado'"
             />
+            
             <button v-else @click="handleCarrito(product)" class="btn btn--primary mt-2">Añadir al carrito</button>
         </div>
 
@@ -37,17 +38,24 @@ export default {
             required: true
         }
     },
-    data() {
-        return {
-            cantidad: 1
+    computed: {
+        ...mapState({
+            products: state => state.cart.products,
+        }),
+        amount() {
+            return this.products.find(element => element.id === this.id) ? this.products.find(element => element.id === this.id).amount : 0
         }
+    },
+    mounted() {
+  
     },
     methods: {
         handleCarrito(product) {
+
             product.id = this.id
             this.$store.commit('cart/SET_PRODUCTS', {
                 product: product,
-                cantidad: 1,
+                amount: 1,
                 id: this.id
             })
         }

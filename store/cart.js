@@ -1,19 +1,19 @@
 export const state = () => ({
-    products: [],
+    products: []
 })
 
 export const mutations = {
     SET_PRODUCTS (state, payload) {
             const thisProduct = state.products.filter(element => element.id === payload.id).shift()
-            if(thisProduct && thisProduct.cantidad) {
-                thisProduct.cantidad = payload.cantidad + thisProduct.cantidad
+            if(thisProduct && thisProduct.amount) {
+                thisProduct.amount = payload.amount + thisProduct.amount
             } else {
-                payload.product.cantidad = payload.cantidad
+                payload.product.amount = payload.amount
             }
             state.products.push(payload.product)
             const productDuplicate = state.products.filter(element => element.id === payload.id).shift()
             if(productDuplicate) {
-                const sumaPrecios = productDuplicate.cantidad * productDuplicate.price
+                const sumaPrecios = productDuplicate.amount * productDuplicate.price
                 productDuplicate.totalPrice = sumaPrecios
                 const arrayWithoutDuplicate = state.products.filter(element => element.id !== productDuplicate.id)
                 arrayWithoutDuplicate.push(productDuplicate)
@@ -29,7 +29,7 @@ export const mutations = {
     SET_REMOVE_PRODUCTS (state, payload) {
         const productForRemove = state.products.filter(element => element.id === payload).shift()
         if(productForRemove) {
-            productForRemove.cantidad = 0
+            productForRemove.amount = 0
             productForRemove.totalPrice = 0
         }
         const removeProductFromSArray = state.products.filter(element => element.id !== payload)
