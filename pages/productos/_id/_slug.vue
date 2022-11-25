@@ -103,12 +103,6 @@ export default {
       productInCart: {}
     };
   },
-  computed: {
-      ...mapState({
-          productsInCartArray: state => state.cart.products,
-          cantidadInCart: state => state.cart.products.cantidad ? state.cart.products.cantidad : 0,
-      })
-    },
   mounted() {
     productJS()
     axios
@@ -124,9 +118,6 @@ export default {
           this.images = response.data.data.attributes.images.data
         ))
       .catch(error => (this.error = error))
-      if(this.productsInCartArray) {
-          this.productInCart = this.productsInCartArray.filter((item) => item.id === Number(this.$route.params.id)).shift()
-      }
   },
   methods: {
     handleImageChange(url) {
@@ -143,16 +134,12 @@ export default {
       }
     },
     handleAddToCart() {
-      console.log(this.productInCart)
-      if(this.product.disponible !== this.cantidad) {
-          if(this.product.cantidad) {
-              this.product.cantidad = this.product.cantidad + this.cantidadSelect
-          } else {
-              this.product.cantidad = this.cantidadSelect
-          }
           this.product.id = this.id
-          this.$store.commit('cart/SET_PRODUCTS', this.product)
-        }
+          this.$store.commit('cart/SET_PRODUCTS', {
+            product: this.product,
+            cantidad: this.cantidadSelect,
+            id: this.id
+          })
     }
   }
 }

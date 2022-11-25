@@ -37,19 +37,19 @@ export default {
             required: true
         }
     },
-    computed: {
-      ...mapState({
-          cantidad: state => state.cart.products.cantidad ? state.cart.products.cantidad : 0,
-      })
+    data() {
+        return {
+            cantidad: 1
+        }
     },
     methods: {
         handleCarrito(product) {
-            //its add in the cart until the product is available
-            if(product.disponible !== this.cantidad) {
-                product.cantidad = this.cantidad
-                product.id = this.id
-                this.$store.commit('cart/SET_PRODUCTS', product)
-            }
+            product.id = this.id
+            this.$store.commit('cart/SET_PRODUCTS', {
+                product: product,
+                cantidad: 1,
+                id: this.id
+            })
         }
     }
 }

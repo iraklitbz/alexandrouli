@@ -3,7 +3,7 @@
         class="drawer dr-cart"
         :class="toggleCart ? 'drawer--is-visible' : ''"
         >
-        <div class="drawer__content bg-floor-light inner-glow shadow-lg flex flex-col" role="alertdialog" aria-labelledby="drawer-cart-title">
+        <div class="drawer__content bg-floor-dark inner-glow shadow-lg flex flex-col" role="alertdialog" aria-labelledby="drawer-cart-title">
             <header class="flex items-center justify-between shrink-0 border-b border-contrast-lower px-3 lg:px-5 py-2 lg:py-3">
             <h1 id="drawer-cart-title" class="text-base lg:text-xl truncate" >Your Cart ({{ carritoNumber }})</h1>
 
@@ -13,32 +13,36 @@
             </header>
 
             <div class="drawer__body px-3 lg:px-5 pb-3 lg:pb-5">
-              <ol>
+              <ol class="mt-5">
                   <li
                     v-for="(product, index) in products"
-                    class="dr-cart__product"
+                    class="dr-cart__product bg-white rounded-md mb-2"
                     :key="index"
                   >
-                    <nuxt-link to="products/id" class="dr-cart__img">
+                    <nuxt-link :to="'/productos/' + product.id + '/' + product.slug" class="dr-cart__img">
                       <img :src="'http://15.188.27.140:1337' + product.feature.data.attributes.formats.thumbnail.url" :alt="product.name + ' image'">
                     </nuxt-link>
-
-                    <div>
-                        <h2 class="text-sm lg:text-base"><nuxt-link to="products/id" class="text-inherit">{{ product.name }}</nuxt-link></h2>
-                        <p class="text-sm lg:text-base text-contrast-medium mt-1 lg:mt-1.5">{{product.cultivo}}</p>
-
-                    </div>
-
-                    <div class="text-right">
-                        <p class="text-sm lg:text-base text-contrast-higher">{{product.price}}</p>
-                        <button @click="handleRemoveProduct(product.id)" class="dr-cart__remove-btn mt-1 lg:mt-1.5">Remove</button>
+                    <div class="">
+                        <div class="flex justify-between items-center">
+                          <div>
+                            <h2 class="text-sm lg:text-base"><nuxt-link :to="'/productos/' + product.id + '/' + product.slug" class="text-inherit">{{ product.name }}</nuxt-link></h2>
+                            <p class="text-sm lg:text-base text-contrast-medium mt-1 lg:mt-1.5">{{product.cultivo}}</p>
+                          </div>
+                         <div class="text-right">
+                            <p class="text-sm lg:text-base text-contrast-higher">{{product.price * product.cantidad}}€</p>
+                            <p class="text-sm lg:text-base text-contrast-medium mt-1 lg:mt-1.5">{{'X' + product.cantidad}}</p>
+                         </div>
+                      </div>
+                      <div class="text-right">
+                        <button @click="handleRemoveProduct(product.id)" class="text-error ml-auto text-sm dr-cart__remove-btn mt-1 lg:mt-1.5">Remove</button>
+                      </div>
                     </div>
                   </li>
               </ol>
             </div>
 
             <footer class="px-3 lg:px-5 py-2 lg:py-3 border-t border-contrast-lower shrink-0">
-                <p class="text-sm lg:text-base flex justify-between"><span>Subtotal:</span> <span>{{sumaFinal}}</span></p>
+                <p class="text-sm lg:text-base flex justify-between"><span>Subtotal:</span> <span>{{sumaFinal}}€</span></p>
                 <nuxt-link to="/checkout" class="btn btn--primary text-[1.2em] w-full mt-2 lg:mt-3">Checkout &rarr;</nuxt-link>
             </footer>
         </div>
@@ -88,7 +92,7 @@ export default {
   grid-template-columns: 80px 1fr auto;
   @apply gap-2 lg:gap-3;
   align-items: start;
-  @apply py-3 lg:py-5 px-0;
+  @apply py-2 px-2;
 }
 .dr-cart__product:not(:last-child) {
   @apply border-b border-contrast-lower;
@@ -127,11 +131,8 @@ export default {
   padding: 0;
   border: 0;
   border-radius: 0;
-  color: inherit;
   line-height: inherit;
   appearance: none;
-  @apply text-sm lg:text-base;
-  @apply text-primary;
   cursor: pointer;
 }
 .dr-cart__remove-btn:hover {

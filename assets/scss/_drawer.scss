@@ -49,8 +49,7 @@
 .drawer__body {
   height: 100%;
   overflow: auto;
-
-      overscroll-behavior: contain;
+  overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
 }
 

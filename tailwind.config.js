@@ -62,7 +62,7 @@ module.exports = {
             medium: 'hsl(var(--color-contrast-medium) / <alpha-value>)',
             high: 'hsl(var(--color-contrast-high) / <alpha-value>)',
             higher: 'hsl(var(--color-contrast-higher) / <alpha-value>)',
-          },
+          }
         },
         extend: {
           zIndex: {

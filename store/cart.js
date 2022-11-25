@@ -4,10 +4,15 @@ export const state = () => ({
 
 export const mutations = {
     SET_PRODUCTS (state, payload) {
-            state.products.push(payload)
+            const thisProduct = state.products.filter(element => element.id === payload.id).shift()
+            if(thisProduct && thisProduct.cantidad) {
+                thisProduct.cantidad = payload.cantidad + thisProduct.cantidad
+            } else {
+                payload.product.cantidad = payload.cantidad
+            }
+            state.products.push(payload.product)
             const productDuplicate = state.products.filter(element => element.id === payload.id).shift()
             if(productDuplicate) {
-                productDuplicate.cantidad++
                 const sumaPrecios = productDuplicate.cantidad * productDuplicate.price
                 productDuplicate.totalPrice = sumaPrecios
                 const arrayWithoutDuplicate = state.products.filter(element => element.id !== productDuplicate.id)
@@ -15,12 +20,10 @@ export const mutations = {
                 localStorage.setItem('productsInCart', JSON.stringify(arrayWithoutDuplicate))
                 state.products = arrayWithoutDuplicate
             } else {
-                localStorage.setItem('productsInCart', JSON.stringify(payload))
-                state.products.push(payload)
+                state.products.push(payload.product)
             }
-
     },
-    SET_PRODUCTS_LOCALSTORAGE (state, payload) {
+    SET_PRODUCTS_LOCAL_STORAGE (state, payload) {
         state.products = payload
     },
     SET_REMOVE_PRODUCTS (state, payload) {

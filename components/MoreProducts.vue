@@ -6,7 +6,7 @@
                 <div class="text-component text-center xl:text-left">
                 <h1>Our Shop</h1>
                 <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit unde iure velit.</p>
-                <p><a href="#0" class="btn btn--subtle" role="text">View all <i class="sr-only">products</i></a></p>
+                <p><nuxt-link to="/productos" class="btn btn--subtle" role="text">View all <i class="sr-only">products</i></nuxt-link></p>
                 </div>
             </div>
 
