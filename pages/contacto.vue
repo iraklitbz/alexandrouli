@@ -3,7 +3,8 @@
         <Header />
         <section class="thank-you py-20 lg:py-32">
             <div class="col-6@md">
-                <form name="contact" method="POST" netlify>
+                <form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+                    <input class="hidden" type="hidden" name="bot-field" />
                     <div class="margin-bottom-sm">
                         <label class="form-label margin-bottom-xxs" for="contactName">Name</label>
                         <input class="form-control width-100%" type="text" name="contactName" id="contactName" required>
