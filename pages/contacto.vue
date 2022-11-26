@@ -41,7 +41,7 @@
       handleMail(e) {
         e.preventDefault();
         /*ENVIAR FORMULARIO*/
-        fetch('https://v5wxvhyj1i.execute-api.eu-west-3.amazonaws.com/contactoapi', {
+        fetch('https://a3f8g1o1r1.execute-api.us-east-1.amazonaws.com/default/handleSendFormContact', {
           method: 'POST',
           headers: {
             'Accept': 'application/json, text/plain, */*',
