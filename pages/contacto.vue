@@ -7,23 +7,36 @@
                     <input class="hidden" type="hidden" name="bot-field" />
                     <div class="margin-bottom-sm">
                         <label class="form-label margin-bottom-xxs" for="contactName">Name</label>
-                        <input class="form-control width-100%" type="text" name="name" id="contactName" :value="name" required>
+                        <input class="form-control width-100%" type="text" name="name" id="contactName" v-model="name" required>
                     </div>
                 
                     <div class="margin-bottom-sm">
                         <label class="form-label margin-bottom-xxs" for="contactEmail">Email</label>
-                        <input class="form-control width-100%" type="email" name="email" :value="email" id="contactEmail">
+                        <input class="form-control width-100%" type="email" name="email" v-model="email" id="contactEmail">
                     </div>
                 
                     <div class="margin-bottom-sm">
                         <label class="form-label margin-bottom-xxs" for="contactMessage">Message</label>
-                        <textarea class="form-control width-100%" rows="9" name="message" :value="message" id="contactMessage"></textarea>
+                        <textarea class="form-control width-100%" rows="9" name="message" v-model="message" id="contactMessage"></textarea>
                     </div>
                     
                     <div class="text-right">
                         <button class="btn btn--primary" type="submit" @click="handleMail">Submit</button>
                     </div>
                 </form>
+                <Alert
+                  v-if="mailSended"
+                  class="mt-5" 
+                  :headline="'Enviado'"
+                  :type="'success'"
+                  :message="'El formulario ha sido enviado correctamente, pronto nos pondremos en contacto contigo. Muchas gracias'"
+                />
+                <div
+                  v-if="loading" 
+                  class="text-center mt-5"
+                  >
+                    <Loader />
+                </div>
             </div>
         </section>
     </div>
@@ -35,26 +48,44 @@
         name: '',
         email: '',
         message: '',
+        mailSended: false,
+        loading: false      
       }
     },
     methods: {
-      handleMail(e) {
+      handleInputChange(e) {
+        this.name = this.name
+      },
+      async handleMail(e) {
         e.preventDefault();
+        this.loading = true
+        const endpoint = 'https://1ghgpiaizd.execute-api.us-east-1.amazonaws.com/default/testSend'
+        const body = JSON.stringify({
+            senderName: this.name,
+            senderEmail: this.email,
+            message: this.message
+        });
+        const requestOptions = {
+          method: "POST",
+          body
+        };
         /*ENVIAR FORMULARIO*/
-        fetch('https://a3f8g1o1r1.execute-api.us-east-1.amazonaws.com/default/handleSendFormContact', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(this.message)
-        }).then(async (res) => {
-          if (res.status === 200) {
-            await setTimeout(() =>{
-              console.log(res);
-            },2000)
-          }
-        })
+        try {
+          await fetch(endpoint, requestOptions);
+          this.mailSended = true
+          this.name = ''
+          this.email = ''
+          this.message = ''
+          this.loading = false
+          this.handleMailIsSended()
+        } catch (e) {
+          console.log('ikaaaaaaa',e);
+        }   
+      },
+      handleMailIsSended() {
+        setTimeout(() => {
+          this.mailSended = false
+        }, 5000);
       }
     }
   }
