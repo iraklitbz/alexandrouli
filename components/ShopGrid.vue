@@ -24,12 +24,13 @@ import axios from 'axios';
 export default {
     data(){
         return {
-            products: []
+            products: [],
+            strapiUrl: process.env.strapiUrl
         }
     },
     mounted () {
         axios
-        .get('http://15.188.27.140:1337/api/products?populate=*')
+        .get(process.env.strapiUrl + '/api/products?populate=*')
         .then(response => (
                 this.products = response.data.data
             ))

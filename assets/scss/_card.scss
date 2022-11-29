@@ -76,3 +76,81 @@ Usage: codyhouse.co/license
     clip: rect(1px, 1px, 1px, 1px);
     clip-path: inset(50%);
   }
+
+  .card-v9 {
+    display: block;
+    position: relative;
+    z-index: 1;
+    text-decoration: none;
+    color: inherit;
+    @apply bg-contrast-lower;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    overflow: hidden;
+    @apply shadow;
+    transition: 0.3s;
+  }
+  .card-v9:hover {
+    @apply shadow-md;
+  }
+  
+  .card-v9__content {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .card-v9__btn {
+    position: relative;
+    display: inline-block;
+    @apply py-2 lg:py-3 px-3 lg:px-5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .card-v9__btn i {
+    position: relative;
+    z-index: 2;
+    @apply text-floor;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .card-v9__btn::after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    @apply rounded;
+    @apply bg-primary/80;
+    opacity: 0;
+    -webkit-transform: translateY(25%);transform: translateY(25%);
+    transition: opacity 0.3s, transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  
+  .card-v9:hover .card-v9__btn i {
+    opacity: 1;
+  }
+  .card-v9:hover .card-v9__btn::after {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .card-v9--overlay-bg::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    @apply bg-floor/50;
+    transition: background-color 0.3s;
+  }
+  .card-v9--overlay-bg:hover::before {
+    @apply bg-floor/80;
+  }

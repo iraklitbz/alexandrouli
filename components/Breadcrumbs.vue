@@ -7,7 +7,7 @@
             </li>
 
             <li class="breadcrumbs__item">
-                <nuxt-link to="/productos" class="text-inherit">Prodcutos</nuxt-link>
+                <nuxt-link :to="page.link" class="text-inherit">{{page.title}}</nuxt-link>
                 <span class="text-contrast-lower ml-1.5 lg:ml-2" aria-hidden="true">/</span>
             </li>
 
@@ -19,6 +19,10 @@
 <script>
 export default {
     props: {
+        page: {
+            type: Object,
+            default: () => {}
+        },
         name: {
             type: String,
             default: ''

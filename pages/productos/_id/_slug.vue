@@ -6,6 +6,7 @@
         <div class="mb-3 lg:mb-5">
           <breadcrumbs 
             :name="name"
+            :page="{ title: 'Productos', link: '/productos' }"
           />
         </div>
 
@@ -13,7 +14,7 @@
           <div class="col-span-12 lg:col-span-6 xl:col-span-7">
             <div class="flex flex-col gap-3 lg:gap-5">
               <figure>
-                <img class="adv-gallery__img w-full" :src="'http://15.188.27.140:1337' + feature" :alt="name + 'image'">
+                <img class="adv-gallery__img w-full" :src="strapiUrl + feature" :alt="name + 'image'">
               </figure>
 
               <ul 
@@ -25,7 +26,7 @@
                     class="cursor-pointer"
                     @click="handleImageChange(item.attributes.url)"
                   >
-                  <img class="block w-full" :src="'http://15.188.27.140:1337' + item.attributes.formats.thumbnail.url">
+                  <img class="block w-full" :src="strapiUrl + item.attributes.formats.thumbnail.url">
                 </li>
               </ul>
 
@@ -102,13 +103,14 @@ export default {
       originalPrice: null,
       price: null,
       amountSelect: 1,
-      productInCart: {}
+      productInCart: {},
+      strapiUrl: process.env.strapiUrl
     };
   },
   mounted() {
     productJS()
     axios
-      .get('http://15.188.27.140:1337/api/products/' + this.$route.params.id + '?populate=*')
+      .get(process.env.strapiUrl + '/api/products/' + this.$route.params.id + '?populate=*')
       .then(response => (
           this.product = response.data.data.attributes,
           this.id = response.data.data.id,

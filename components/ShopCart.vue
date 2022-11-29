@@ -20,7 +20,7 @@
                     :key="index"
                   >
                     <nuxt-link :to="'/productos/' + product.id + '/' + product.slug" class="dr-cart__img">
-                      <img :src="'http://15.188.27.140:1337' + product.feature.data.attributes.formats.thumbnail.url" :alt="product.name + ' image'">
+                      <img :src="strapiUrl + product.feature.data.attributes.formats.thumbnail.url" :alt="product.name + ' image'">
                     </nuxt-link>
                     <div class="">
                         <div class="flex justify-between items-center">
@@ -55,6 +55,11 @@ export default {
         toggleCart: {
             type: Boolean,
             default: false
+        }
+    },
+    data() {
+        return {
+            strapiUrl: process.env.strapiUrl
         }
     },
     computed: {

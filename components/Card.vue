@@ -4,7 +4,7 @@
         <nuxt-link :to="'/productos/' + id + '/' + product.slug" class="prod-card-v2__img-link rounded-lg shadow-md">
             <figure>
                 <img
-                    :src="'http://15.188.27.140:1337' + product.feature.data.attributes.formats.small.url"
+                    :src="strapiUrl + product.feature.data.attributes.formats.small.url"
                     :alt="product.name + ' image'"
                 >
             </figure>
@@ -38,6 +38,11 @@ export default {
             required: true
         }
     },
+    data(){
+        return {
+            strapiUrl: process.env.strapiUrl
+        }
+    },
     computed: {
         ...mapState({
             products: state => state.cart.products,
@@ -45,9 +50,6 @@ export default {
         amount() {
             return this.products.find(element => element.id === this.id) ? this.products.find(element => element.id === this.id).amount : 0
         }
-    },
-    mounted() {
-  
     },
     methods: {
         handleCarrito(product) {

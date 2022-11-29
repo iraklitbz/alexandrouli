@@ -30,6 +30,7 @@
 <script>
   import { mapGetters } from 'vuex'
   export default {
+    name: 'HomePage',
     // middleware: 'auth',
     computed: {
       ...mapGetters(['loggedInUser']),

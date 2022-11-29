@@ -13,7 +13,7 @@
                 >
                     <nuxt-link to="/productos/id" class="order-summary__img">
                         <img
-                            :src="'http://15.188.27.140:1337' + product.feature.data.attributes.formats.thumbnail.url" :alt="product.name + ' image'"
+                            :src="strapiUrl + product.feature.data.attributes.formats.thumbnail.url" :alt="product.name + ' image'"
                         >
                     </nuxt-link>
                     <div class="flex flex-wrap justify-between gap-xxxs">
@@ -50,7 +50,7 @@ import { mapState } from 'vuex'
 export default {
     data () {
             return {
-
+                strapiUrl: process.env.strapiUrl
             }
         },
     computed: {

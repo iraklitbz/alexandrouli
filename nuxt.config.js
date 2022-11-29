@@ -42,9 +42,12 @@ export default {
   axios: {
     baseURL: process.env.STRAPI_URL || 'http://localhost:1337/api'
   },
+  env: {
+    strapiUrl: process.env.STRAPI_URL
+  },
   strapi: {
     entities: ['products'],
-    url: 'http://15.188.27.140:1337'
+    url: process.env.STRAPI_URL
   },
   auth: {
     // Options
@@ -132,5 +135,5 @@ export default {
         autoprefixer: {},
       }
     }
-  }
+  },
 }

@@ -21,7 +21,7 @@
 
                         <nuxt-link :to="'/productos/' + item.id + '/' + item.attributes.slug" class="prod-card-v2__img-link rounded-lg shadow-md" aria-label="Description of the link">
                             <figure>
-                                <img :src="'http://15.188.27.140:1337' + item.attributes.feature.data.attributes.formats.small.url" alt="Product preview image">
+                                <img :src="strapiUrl + item.attributes.feature.data.attributes.formats.small.url" alt="Product preview image">
                                 <img :src="require(`~/assets/images/product2.jpg`)" alt="Product preview image" aria-hidden="true">
                             </figure>
                         </nuxt-link>
@@ -54,12 +54,13 @@ export default {
     },
     data(){
         return {
-            products: []
+            products: [],
+            strapiUrl: process.env.strapiUrl
         }
     },
     mounted () {
         axios
-        .get('http://15.188.27.140:1337/api/products?populate=*')
+        .get(process.env.strapiUrl + '/api/products?populate=*')
         .then(response => (this.products = response.data.data.filter(item => item.attributes.category === this.category)))
         .catch(error => (this.error = error))
     }
