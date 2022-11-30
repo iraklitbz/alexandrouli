@@ -20,7 +20,7 @@
                     :key="index"
                   >
                     <nuxt-link :to="'/productos/' + product.id + '/' + product.slug" class="dr-cart__img">
-                      <img :src="strapiUrl + product.feature.data.attributes.formats.thumbnail.url" :alt="product.name + ' image'">
+                      <img :src="product.feature.data.attributes.formats.thumbnail.url" :alt="product.name + ' image'">
                     </nuxt-link>
                     <div class="">
                         <div class="flex justify-between items-center">

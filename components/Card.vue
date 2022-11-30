@@ -4,7 +4,7 @@
         <nuxt-link :to="'/productos/' + id + '/' + product.slug" class="prod-card-v2__img-link rounded-lg shadow-md">
             <figure>
                 <img
-                    :src="strapiUrl + product.feature.data.attributes.formats.small.url"
+                    :src="product.feature.data.attributes.formats.small.url"
                     :alt="product.name + ' image'"
                 >
             </figure>
@@ -50,6 +50,9 @@ export default {
         amount() {
             return this.products.find(element => element.id === this.id) ? this.products.find(element => element.id === this.id).amount : 0
         }
+    },
+    mounted () {
+        console.log(this.product)
     },
     methods: {
         handleCarrito(product) {

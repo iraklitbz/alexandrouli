@@ -14,7 +14,7 @@
           <div class="col-span-12 lg:col-span-6 xl:col-span-7">
             <div class="flex flex-col gap-3 lg:gap-5">
               <figure>
-                <img class="adv-gallery__img w-full" :src="strapiUrl + feature" :alt="name + 'image'">
+                <img class="adv-gallery__img w-full" :src="feature" :alt="name + 'image'">
               </figure>
 
               <ul 
@@ -26,7 +26,7 @@
                     class="cursor-pointer"
                     @click="handleImageChange(item.attributes.url)"
                   >
-                  <img class="block w-full" :src="strapiUrl + item.attributes.formats.thumbnail.url">
+                  <img class="block w-full" :src="item.attributes.formats.thumbnail.url">
                 </li>
               </ul>
 

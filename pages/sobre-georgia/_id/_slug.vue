@@ -35,7 +35,7 @@
                 </div>
 
                 <figure class="w-full">
-                    <img class="w-full" :src="strapiUrl + feature">
+                    <img class="w-full" :src="feature">
                 </figure>
                 <div class="main-content-body mt-10 md:max-w-3xl mx-auto">
                     <div v-html="content"></div>
@@ -81,7 +81,7 @@
           images.forEach(image => {
             const regex = /<img[^>]+src="([^">]+)"/g;
             const src = image.match(regex)[0].split('"')[1];
-            const newImage = `<img src="${this.strapiUrl + src}" />`;
+            const newImage = `<img src="${src}" />`;
             this.content = this.content.replace(image, newImage);
           });
         }

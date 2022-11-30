@@ -21,7 +21,7 @@
 
                         <nuxt-link :to="'/productos/' + item.id + '/' + item.attributes.slug" class="prod-card-v2__img-link rounded-lg shadow-md" aria-label="Description of the link">
                             <figure>
-                                <img :src="strapiUrl + item.attributes.feature.data.attributes.formats.small.url" alt="Product preview image">
+                                <img :src="item.attributes.feature.data.attributes.formats.small.url" alt="Product preview image">
                                 <img :src="require(`~/assets/images/product2.jpg`)" alt="Product preview image" aria-hidden="true">
                             </figure>
                         </nuxt-link>
