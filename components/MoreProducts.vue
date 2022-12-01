@@ -6,7 +6,7 @@
                 <div class="text-component text-center xl:text-left">
                 <h1>Our Shop</h1>
                 <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit unde iure velit.</p>
-                <p><nuxt-link to="/productos" class="btn btn--subtle" role="text">View all <i class="sr-only">products</i></nuxt-link></p>
+                <p><nuxt-link to="/vinos" class="btn btn--subtle" role="text">View all <i class="sr-only">products</i></nuxt-link></p>
                 </div>
             </div>
 
@@ -19,15 +19,15 @@
                     >  
                         <span class="prod-card-v2__badge" role="text">{{item.attributes.cultivo}}</span>
 
-                        <nuxt-link :to="'/productos/' + item.id + '/' + item.attributes.slug" class="prod-card-v2__img-link rounded-lg shadow-md" aria-label="Description of the link">
-                            <figure>
-                                <img :src="item.attributes.feature.data.attributes.formats.small.url" alt="Product preview image">
-                                <img :src="require(`~/assets/images/product2.jpg`)" alt="Product preview image" aria-hidden="true">
+                        <nuxt-link :to="'/vinos/' + item.id + '/' + item.attributes.slug" class="prod-card-v2__img-link rounded-lg shadow-md" aria-label="Description of the link">
+                            <figure class="h-80 lg:h-44">
+                                <img class="object-contain h-full" :src="item.attributes.feature.data.attributes.formats.small.url" alt="Product preview image">
+                                <img class="object-contain h-full" :src="require(`~/assets/images/product2.jpg`)" alt="Product preview image" aria-hidden="true">
                             </figure>
                         </nuxt-link>
 
                         <div class="p-3 lg:p-5 text-center">
-                            <h1 class="text-lg"><nuxt-link :to="'/productos/' + item.id + '/' + item.attributes.slug" class="product-card-v2__title">{{item.attributes.name}}</nuxt-link></h1>
+                            <h1 class="text-lg"><nuxt-link :to="'/vinos/' + item.id + '/' + item.attributes.slug" class="product-card-v2__title">{{item.attributes.name}}</nuxt-link></h1>
 
                             <div class="my-1 lg:my-1.5">
                                 <span class="prod-card-v2__price">{{item.attributes.price}}€</span>
@@ -47,8 +47,8 @@
 import axios from 'axios';
 export default {
     props: {
-        category: {
-            type: String,
+        outstanding: {
+            type: Boolean,
             default: true
         }
     },
@@ -61,7 +61,7 @@ export default {
     mounted () {
         axios
         .get(process.env.strapiUrl + '/api/products?populate=*')
-        .then(response => (this.products = response.data.data.filter(item => item.attributes.category === this.category)))
+        .then(response => (this.products = response.data.data.filter(item => item.attributes.outstanding === this.outstanding)))
         .catch(error => (this.error = error))
     }
 }

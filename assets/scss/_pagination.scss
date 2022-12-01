@@ -29,14 +29,14 @@
       padding: 0.75rem 1.016rem;
     }
   }
-  .pagination__item:hover:not(.pagination__item--selected):not(.pagination__item--ellipsis) {
+  .pagination__item:hover:not(.nuxt-link-exact-active):not(.pagination__item--ellipsis) {
     @apply bg-contrast-higher/10;
   }
   .pagination__item:active {
     transform: translateY(2px);
   }
 
-  .pagination__item--selected {
+  .pagination__item.nuxt-link-exact-active {
     @apply bg-contrast-higher;
     @apply text-floor;
     @apply shadow;

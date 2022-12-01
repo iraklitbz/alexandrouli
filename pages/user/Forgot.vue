@@ -1,7 +1,5 @@
 
 <template>
-  <div class="pt-28">
-    <Header />
     <div class="max-w-md w-full mx-auto">
       <h1 class="text-3xl font-extrabold mb-4">New password</h1>
       <ValidationObserver ref="form">
@@ -38,7 +36,6 @@
         </form>
       </ValidationObserver>
     </div>
-  </div>
 </template>
 <script>
     export default {

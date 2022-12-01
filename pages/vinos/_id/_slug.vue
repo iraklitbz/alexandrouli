@@ -1,20 +1,19 @@
 <template>
-  <div class="pt-28">
-    <Header />
+  <div>
     <section class="product-v3 py-8 lg:py-12 js-product-v3">
       <div class="w-[calc(100%_-_2.5rem)] lg:w-[calc(100%_-_4rem)] mx-auto max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl">
         <div class="mb-3 lg:mb-5">
           <breadcrumbs 
             :name="name"
-            :page="{ title: 'Productos', link: '/productos' }"
+            :page="{ title: 'Vinos', link: '/vinos' }"
           />
         </div>
 
         <div class="grid grid-cols-12 gap-5 lg:gap-8">
           <div class="col-span-12 lg:col-span-6 xl:col-span-7">
             <div class="flex flex-col gap-3 lg:gap-5">
-              <figure>
-                <img class="adv-gallery__img w-full" :src="feature" :alt="name + 'image'">
+              <figure class="h-big pt-14">
+                <img class="object-contain h-full adv-gallery__img w-full" :src="feature" :alt="name + 'image'">
               </figure>
 
               <ul 
@@ -79,7 +78,7 @@
       </div>
     </section>
     <more-products 
-      :category="'outstanding'"
+      :outstanding="true"
     />
   </div>
 </template>
@@ -88,7 +87,6 @@
 import productJS from "~/plugins/productJS.js";
 import Breadcrumbs from '../../../components/Breadcrumbs.vue';
 import MoreProducts from '../../../components/MoreProducts.vue';
-import { mapState } from 'vuex'
 import axios from 'axios';
 export default {
   components: { Breadcrumbs, MoreProducts },
@@ -150,6 +148,9 @@ export default {
 </script>
 <style scoped>
   @import "~/assets/scss/_forms.scss";
+  .h-big {
+    height: 600px;
+  }
   .product-v3__panel {
     position: -webkit-sticky;
     position: sticky;

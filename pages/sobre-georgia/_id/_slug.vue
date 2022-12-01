@@ -1,6 +1,4 @@
 <template>
-    <div class="pt-28">
-      <Header />
       <section class="product-v3 py-8 lg:py-12 js-product-v3">
         <div class="w-[calc(100%_-_2.5rem)] lg:w-[calc(100%_-_4rem)] mx-auto max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl">
           <div class="mb-3 lg:mb-5">
@@ -43,7 +41,6 @@
             </article>
         </div>
       </section>
-    </div>
   </template>
   
   <script>
@@ -62,7 +59,7 @@
     },
     mounted() {
       axios
-        .get(process.env.strapiUrl + '/api/entradas/' + this.$route.params.id + '?populate=*')
+        .get(process.env.strapiUrl + '/api/posts/' + this.$route.params.id + '?populate=*')
         .then(response => (
             this.id = response.data.data.id,
             this.title = response.data.data.attributes.title,

@@ -1,0 +1,269 @@
+:root {
+    --toc-border-width: 1px;
+    /* static version only */
+  }
+  
+  /* #region (style affecting collapsed + static versions) 👇 */
+  .toc__list {
+    position: relative;
+  }
+  .toc__list .toc__list .toc__link {
+    padding-left: 1.5rem;
+    /* offset sub nav */
+  }
+  
+  .toc__link,
+  .toc__label {
+    @apply py-1 lg:py-1.5 px-3 lg:px-5;
+  }
+  
+  .toc__link {
+    position: relative;
+    @apply text-contrast-medium;
+    text-decoration: none;
+  }
+  .toc__link::before {
+    /* left mark */
+    content: "";
+    width: var(--toc-border-width);
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .toc__link:hover {
+    @apply text-contrast-high;
+  }
+  
+  .toc__link--selected {
+    @apply text-primary;
+  }
+  .toc__link--selected:hover {
+    @apply text-primary;
+  }
+  
+  .toc__label {
+    /* label style */
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    @apply text-sm lg:text-base;
+  }
+  
+  .toc__control {
+    /* control button */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .toc__control-text {
+    /* text inside control button */
+    position: relative;
+  }
+  .toc__control-text > * {
+    display: inline-block;
+    transition: opacity 0.4s, -webkit-transform 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition: opacity 0.4s, transform 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition: opacity 0.4s, transform 0.4s cubic-bezier(0.215, 0.61, 0.355, 1), -webkit-transform 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  .toc__control-text > *:last-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    pointer-events: none;
+    -webkit-transform: translateY(-10px);transform: translateY(-10px);
+  }
+  
+  .toc__icon-arrow {
+    /* arrow icon  */
+  }
+  .toc__icon-arrow .icon__group {
+    will-change: transform;
+    -webkit-transform-origin: 8px 8px;transform-origin: 8px 8px;
+    transition: -webkit-transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition: transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition: transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1), -webkit-transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  .toc__icon-arrow .icon__group > * {
+    -webkit-transform-origin: 8px 8px;transform-origin: 8px 8px;
+    stroke-dasharray: 17;
+    -webkit-transform: translateY(3px);transform: translateY(3px);
+    transition: stroke-dashoffset 0.3s, -webkit-transform 0.3s;
+    transition: transform 0.3s, stroke-dashoffset 0.3s;
+    transition: transform 0.3s, stroke-dashoffset 0.3s, -webkit-transform 0.3s;
+    transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  .toc__icon-arrow .icon__group > *:first-child {
+    stroke-dashoffset: 10;
+  }
+  .toc__icon-arrow .icon__group > *:last-child {
+    stroke-dashoffset: 10;
+  }
+  
+  .toc-content__target {
+    scroll-margin-top: 0.125rem;
+  }
+  @media (min-width: 64rem) {
+    .toc-content__target {
+      scroll-margin-top: 0.1875rem;
+    }
+  }
+  
+  /* #endregion */
+  /* #region (collapsed version only - mobile 👇) */
+  .toc:not(.toc--static) {
+    @apply rounded;
+    @apply bg-floor-light;
+    @apply shadow-inner-sm;
+    transition: 0.3s;
+  }
+  .toc:not(.toc--static):hover {
+    @apply shadow-inner-md;
+  }
+  .toc:not(.toc--static) .toc__nav {
+    /* navigation */
+    display: none;
+    @apply my-1.5 lg:my-2 mx-0;
+  }
+  .toc:not(.toc--static) .toc__list {
+    @apply pb-2 lg:pb-3;
+  }
+  .toc:not(.toc--static) .toc__label {
+    display: none;
+  }
+  .toc:not(.toc--static) .toc__link {
+    display: flex;
+  }
+  .toc:not(.toc--static).toc--expanded .toc__control-text > *:first-child {
+    -webkit-transform: translateY(10px);transform: translateY(10px);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .toc:not(.toc--static).toc--expanded .toc__control-text > *:last-child {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  .toc:not(.toc--static).toc--expanded .toc__nav {
+    display: block;
+    -webkit-animation: toc-entry-animation 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);animation: toc-entry-animation 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  .toc:not(.toc--static).toc--expanded .toc__icon-arrow .icon__group {
+    /* animate arrow icon */
+    transform: rotate(-90deg);
+  }
+  .toc:not(.toc--static).toc--expanded .toc__icon-arrow .icon__group > *:first-child, .toc:not(.toc--static).toc--expanded .toc__icon-arrow .icon__group *:last-child {
+    stroke-dashoffset: 0;
+    transform: translateY(0px);
+  }
+  
+  /* #endregion */
+  /* #region (static version only - desktop 👇) */
+  .toc--static {
+    box-shadow: inset var(--toc-border-width) 0 0 hsl(var(--color-contrast-lower));
+    /* left border */
+  }
+  .toc--static[class*=sticky] {
+    @apply top-5 lg:top-8;
+    /* used if position = sticky */
+    max-height: calc(100vh - 2.5rem);
+    /* set max height */
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  @media (min-width: 64rem) {
+    .toc--static[class*=sticky] {
+      max-height: calc(100vh - 4rem);
+    }
+  }
+  .toc--static .toc__label {
+    @apply text-xs;
+  }
+  .toc--static .toc__link {
+    display: inline-flex;
+    @apply text-sm lg:text-base;
+  }
+  .toc--static .toc__link--selected::before {
+    @apply bg-primary;
+  }
+  .toc--static .toc__control {
+    /* control - static version only */
+    display: none;
+  }
+  
+  .toc-content--toc-static *:target {
+    -webkit-animation: toc-target 2s;animation: toc-target 2s;
+    /* highlight section on target */
+  }
+  
+  /* #endregion */
+  @-webkit-keyframes toc-target {
+    0%, 50% {
+      outline: 2px solid hsla(var(--color-primary) / 0.5);
+    }
+    100% {
+      outline: 2px solid hsla(var(--color-primary) / 0);
+    }
+  }
+  @keyframes toc-target {
+    0%, 50% {
+      outline: 2px solid hsla(var(--color-primary) / 0.5);
+    }
+    100% {
+      outline: 2px solid hsla(var(--color-primary) / 0);
+    }
+  }
+  @-webkit-keyframes toc-entry-animation {
+    from {
+      opacity: 0;
+      -webkit-transform: translateY(-10px);  transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+        transform: translateY(0px);
+    }
+  }
+  @keyframes toc-entry-animation {
+    from {
+      opacity: 0;
+      -webkit-transform: translateY(-10px);  transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+        transform: translateY(0px);
+    }
+  }
+  
+  /* used in JS - detect when the TOC needs to switch from a collapsed to a static version */
+  [class*=toc--static]::before {
+    display: none;
+    content: "collapsed";
+  }
+  
+  @media (min-width: 32rem) {
+    .toc--static\@xs::before {
+      content: "static";
+    }
+  }
+  @media (min-width: 48rem) {
+    .toc--static\@sm::before {
+      content: "static";
+    }
+  }
+  @media (min-width: 64rem) {
+    .toc--static\@md::before {
+      content: "static";
+    }
+  }
+  @media (min-width: 80rem) {
+    .toc--static\@lg::before {
+      content: "static";
+    }
+  }
+  @media (min-width: 90rem) {
+    .toc--static\@xl::before {
+      content: "static";
+    }
+  }

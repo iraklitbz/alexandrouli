@@ -27,6 +27,10 @@ export default {
       class: 'js'
     }
   },
+  layoutTransition: {
+    name: 'fade-down',
+    mode: 'out-in'
+  },
   pageTransition: {
     name: 'fade-down',
     mode: 'out-in'

@@ -1,13 +1,11 @@
 <template>
   <div>
-    <Header />
     <Hero class="mt-5" />
     <section class="adv-gallery my-10">
       <div class="adv-gallery__grid w-[calc(100%_-_2.5rem)] lg:w-[calc(100%_-_4rem)] mx-auto max-w-7xl">
         <div>
           <img class="adv-gallery__img" :src="require(`~/assets/images/1.jpg`)" alt="Image description">
         </div>
-
         <div>
           <img class="adv-gallery__img" :src="require(`~/assets/images/2.jpg`)" alt="Image description">
         </div>

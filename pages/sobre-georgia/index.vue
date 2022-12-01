@@ -1,12 +1,7 @@
 <template>
-    <div>
-        <Header />
-        <div class="py-28">
-            <CardGrid 
-                :posts="posts"
-            />
-        </div>
-    </div>
+    <CardGrid 
+        :posts="posts"
+    />
 </template>
 <script>
 import axios from 'axios';
@@ -20,7 +15,7 @@ export default {
     },
     mounted () {
         axios
-        .get(process.env.strapiUrl + '/api/entradas?populate=*')
+        .get(process.env.strapiUrl + '/api/posts?populate=*')
         .then(response => (
                 this.posts = response.data.data
             ))

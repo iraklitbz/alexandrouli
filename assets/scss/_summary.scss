@@ -21,16 +21,12 @@
   }
 
   .order-summary__item {
-    display: grid;
-    grid-template-columns: var(--order-summary-img-size) 1fr;
-    grid-gap: var(--order-summary-img-margin-right);
+    display: flex;
     align-items: center;
   }
 
   .order-summary__img {
     display: block;
-    width: var(--order-summary-img-size);
-    height: var(--order-summary-img-size);
     @apply rounded;
     overflow: hidden;
     @apply shadow;
@@ -39,8 +35,6 @@
   .order-summary__img img {
     display: block;
     width: 100%;
-
-       object-fit: cover;
   }
   .order-summary__img:hover {
     -webkit-transform: translateY(-1px);transform: translateY(-1px);

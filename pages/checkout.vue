@@ -1,60 +1,57 @@
 <template>
-    <div class="pt-28">
-        <Header />
-        <section class="checkout mx-auto max-w-7xl">
-            <div class="container max-width-adaptive-lg">
-                <div class="text-component margin-bottom-lg">
-                <h1>Checkout</h1>
-                <p class="text-base">Already have an account? <a href="#0">Login</a></p>
-                </div>
-                    <form>
-                        <div class="grid grid-cols-12 gap-5 lg:gap-8">
-                            <div class="col-span-12 xl:col-span-7">
-                            <!-- contact info -->
-                            <contact-info
-                                :method="handleValidator"
-                            />
+    <section class="checkout mx-auto max-w-7xl">
+        <div class="container max-width-adaptive-lg">
+            <div class="text-component margin-bottom-lg">
+            <h1>Checkout</h1>
+            <p class="text-base">Already have an account? <a href="#0">Login</a></p>
+            </div>
+                <form>
+                    <div class="grid grid-cols-12 gap-5 lg:gap-8">
+                        <div class="col-span-12 xl:col-span-7">
+                        <!-- contact info -->
+                        <contact-info
+                            :method="handleValidator"
+                        />
 
-                            <!-- delivery address -->
-                            <delivery />
+                        <!-- delivery address -->
+                        <delivery />
 
-                            <!-- delivery options -->
+                        <!-- delivery options -->
 
 
-                            <div class="checkout__billing-checkbox">
-                                <div>
-                                    <input
-                                        class="checkbox js-billing-checkbox"
-                                        type="checkbox"
-                                        id="autofill-billing-info"
-                                        :checked="billAddressSame"
-                                        @change="$store.commit('checkout/SET_BILLING_ADDRESS_SAME')"
-                                    >
-                                    <label for="autofill-billing-info">Same as delivery address</label>
-                                </div>
-                            </div>
-                            <!-- billing address -->
-                            <bill-address
-                                v-if="!billAddressSame"
-                                class="mt-10"
-                            />
-                            <!-- payment method -->
-                            <payment class="mt-10" />
-
-                            <button class="btn btn--primary btn--md width-100% display@lg">Place Order</button>
-                            </div>
-
-                        <div class="col-span-12 xl:col-span-5">
-                            <!-- order summary -->
-                                <order-summary />
+                        <div class="checkout__billing-checkbox">
+                            <div>
+                                <input
+                                    class="checkbox js-billing-checkbox"
+                                    type="checkbox"
+                                    id="autofill-billing-info"
+                                    :checked="billAddressSame"
+                                    @change="$store.commit('checkout/SET_BILLING_ADDRESS_SAME')"
+                                >
+                                <label for="autofill-billing-info">Same as delivery address</label>
                             </div>
                         </div>
+                        <!-- billing address -->
+                        <bill-address
+                            v-if="!billAddressSame"
+                            class="mt-10"
+                        />
+                        <!-- payment method -->
+                        <payment class="mt-10" />
 
-                        <button @click="handleValidator" class="btn btn--primary btn--lg width-100% hide@lg margin-top-md ">Place Order</button>
-                    </form>
-            </div>
-        </section>
-    </div>
+                        <button class="btn btn--primary btn--md width-100% display@lg">Place Order</button>
+                        </div>
+
+                    <div class="col-span-12 xl:col-span-5">
+                        <!-- order summary -->
+                            <order-summary />
+                        </div>
+                    </div>
+
+                    <button @click="handleValidator" class="btn btn--primary btn--lg width-100% hide@lg margin-top-md ">Place Order</button>
+                </form>
+        </div>
+    </section>
 </template>
 <script>
 import { mapState } from 'vuex'

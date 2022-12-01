@@ -1,16 +1,17 @@
 <template>
     <div class="prod-card-v2 mb-5">
         <span class="prod-card-v2__badge" role="text">{{product.cultivo}} <i class="sr-only">product</i></span>
-        <nuxt-link :to="'/productos/' + id + '/' + product.slug" class="prod-card-v2__img-link rounded-lg shadow-md">
-            <figure>
+        <nuxt-link :to="'/vinos/' + id + '/' + product.slug" class="prod-card-v2__img-link rounded-lg shadow-md">
+            <figure class="h-80">
                 <img
+                    class="object-contain h-full"
                     :src="product.feature.data.attributes.formats.small.url"
                     :alt="product.name + ' image'"
                 >
             </figure>
         </nuxt-link>
         <div class="p-3 lg:p-5 text-center">
-            <h1 class="text-lg lg:text-2xl"><nuxt-link :to="'/productos/' + id + '/' + product.slug" class="product-card-v2__title">{{ product.name }}</nuxt-link></h1>
+            <h1 class="text-lg lg:text-2xl"><nuxt-link :to="'/vinos/' + id + '/' + product.slug" class="product-card-v2__title">{{ product.name }}</nuxt-link></h1>
 
             <div class="my-1 lg:my-1.5">
                 <span class="prod-card-v2__price">{{product.price}}€</span>
@@ -50,9 +51,6 @@ export default {
         amount() {
             return this.products.find(element => element.id === this.id) ? this.products.find(element => element.id === this.id).amount : 0
         }
-    },
-    mounted () {
-        console.log(this.product)
     },
     methods: {
         handleCarrito(product) {

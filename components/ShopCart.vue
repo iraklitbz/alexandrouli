@@ -19,13 +19,13 @@
                     class="dr-cart__product bg-white rounded-md mb-2"
                     :key="index"
                   >
-                    <nuxt-link :to="'/productos/' + product.id + '/' + product.slug" class="dr-cart__img">
-                      <img :src="product.feature.data.attributes.formats.thumbnail.url" :alt="product.name + ' image'">
+                    <nuxt-link :to="'/vinos/' + product.id + '/' + product.slug" class="rounded-lg shadow-md h-20 flex justify-center dr-cart__img">
+                      <img class="object-contain h-full" :src="product.feature.data.attributes.formats.thumbnail.url" :alt="product.name + ' image'">
                     </nuxt-link>
                     <div class="">
                         <div class="flex justify-between items-center">
                           <div>
-                            <h2 class="text-sm lg:text-base"><nuxt-link :to="'/productos/' + product.id + '/' + product.slug" class="text-inherit">{{ product.name }}</nuxt-link></h2>
+                            <h2 class="text-sm lg:text-base"><nuxt-link :to="'/vinos/' + product.id + '/' + product.slug" class="text-inherit">{{ product.name }}</nuxt-link></h2>
                             <p class="text-sm lg:text-base text-contrast-medium mt-1 lg:mt-1.5">{{product.cultivo}}</p>
                           </div>
                          <div class="text-right">
@@ -96,7 +96,7 @@ export default {
   display: grid;
   grid-template-columns: 80px 1fr auto;
   @apply gap-2 lg:gap-3;
-  align-items: start;
+  align-items: center;
   @apply py-2 px-2;
 }
 .dr-cart__product:not(:last-child) {
@@ -104,7 +104,6 @@ export default {
 }
 
 .dr-cart__img {
-  display: block;
   overflow: hidden;
   @apply rounded;
   transition: 0.2s;

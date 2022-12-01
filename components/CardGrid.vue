@@ -7,7 +7,7 @@
                 :to="'/sobre-georgia/' + item.id + '/' + item.attributes.slug" 
                 class="card-v9 rounded col-span-12 lg:col-span-8"
                 :class="index === 0 || index === 3 ? 'lg:col-span-8' : 'lg:col-span-4'" 
-                :style="{ backgroundImage: `url(${strapiUrl}${item.attributes.feature.data.attributes.url})` }"
+                :style="{ backgroundImage: `url(${item.attributes.feature.data.attributes.url})` }"
             >
                 <div class="card-v9__content p-5 lg:p-8">
                 <div class="pb-32 lg:pb-52 max-w-lg">
