@@ -35,7 +35,7 @@
               joinCategoryFilterData: []
           }
       },
-      mounted () {
+        mounted () {
             this.currentPage = this.$route.params.id
             if(this.$route.query && this.$route.query.filter) {
                 const splitFilterParams = this.$route.query.filter.split('&')
@@ -48,10 +48,9 @@
             }
         },
         methods: {
-            handleGetData(dataToFilter) {
+            async handleGetData(dataToFilter) {
                 dataToFilter && dataToFilter !== 'Todos' ? this.filter = `${dataToFilter.join('&')}` : this.filter = ''
-                axios
-                .get(
+                await axios.get(
                     dataToFilter === 'Todos' 
                     ? process.env.strapiUrl + `/api/products?pagination[page]=${this.currentPage}&pagination[pageSize]=4&populate=*` 
                     : process.env.strapiUrl + `/api/products?${this.filter}&pagination[page]=${this.currentPage}&pagination[pageSize]=4&populate=*` 
@@ -61,11 +60,10 @@
                         this.pagination = response.data.meta.pagination
                     ))
                 .catch(error => (this.error = error))
+                if(this.pagination && Number(this.$route.params.id ) > this.pagination.pageCount) {
+                    this.$router.push('/404')
+                }
             }
         }
   }
   </script>
-  <style scoped>
-  
-  </style>
-  

@@ -34,7 +34,8 @@
       ...mapGetters(['loggedInUser']),
     },
     mounted() {
-      console.log(this.loggedInUser)
+      // TODO console.log(this.$cookies)
+      console.log(this.$stripe)
     }
   }
 </script>
