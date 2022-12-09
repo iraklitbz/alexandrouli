@@ -1,40 +1,11 @@
 
 <template>
     <div class="max-w-md w-full mx-auto">
-      <h1 class="text-3xl font-extrabold mb-4">Sign up</h1>
+      <h1 class="text-3xl font-extrabold mb-4">Login</h1>
       <ValidationObserver ref="form">
-        <form @submit.prevent="validateForm">
-          <div
-            v-if="err"
-            class="
-              p-4
-              mb-4
-              text-sm text-red-700
-              bg-red-100
-              rounded-lg
-              dark:bg-red-200 dark:text-red-800
-            "
-            role="alert"
-          >
-            {{ err }}
-          </div>
-          <div
-            v-if="success"
-            class="
-              p-4
-              mb-4
-              text-sm text-green-700
-              bg-green-100
-              rounded-lg
-              dark:bg-green-200 dark:text-green-800
-            "
-            role="alert"
-          >
-            Your account has been created successfully you can now
-            <nuxt-link class="font-medium" to="/user/login">Login</nuxt-link>
-          </div>
+        <form class="relative" @submit.prevent="validateForm">
           <div>
-            <label class="form-label mb-1.5 lg:mb-2" for="username">Username</label>
+            <label class="form-label mb-1.5 lg:mb-2" for="username">Nombre</label>
             <ValidationProvider rules="required" v-slot="{ errors }">
               <input class="form-control w-full" v-model="username" type="text" placeholder="Jon Snow">
               <error-message
@@ -44,7 +15,7 @@
           </div>
           <div class="mt-4">
             <label class="form-label mb-1.5 lg:mb-2" for="checkout-email">Email</label>
-            <ValidationProvider rules="required|email" v-slot="{ errors }">
+            <ValidationProvider rules="required" v-slot="{ errors }">
               <input class="form-control w-full" v-model="email" type="email" placeholder="email@email.com">
               <error-message
                   :errors="errors[0]"
@@ -52,22 +23,23 @@
             </ValidationProvider>
           </div>
           <div class="mt-4">
-            <label class="form-label mb-1.5 lg:mb-2" for="password">Password</label>
+            <label class="form-label mb-1.5 lg:mb-2" for="password">Contraseña</label>
             <ValidationProvider rules="required" v-slot="{ errors }">
-              <input class="form-control w-full" name="password" v-model="password" ref="password" type="password">
+              <input @keyup="handleCheckMoreThen6characters" class="form-control w-full" name="password" v-model="password" ref="password" type="password">
               <error-message
                   :errors="errors[0]"
               />
             </ValidationProvider>
           </div>
           <div class="mt-4">
-            <label class="form-label mb-1.5 lg:mb-2" for="passwordtwo">Repeat password</label>
+            <label class="form-label mb-1.5 lg:mb-2" for="passwordtwo">Repite contraseña</label>
             <ValidationProvider rules="required" v-slot="{ errors }">
               <input @keyup="handlePasswordMatch" class="form-control w-full" name="password_confirmation" v-model="passwordtwo" type="password" data-vv-as="password">
               <error-message
                   :errors="errors[0]"
               />
               <span
+              v-if="!sendFormError"
                 class="chip text-sm justify-center w-full lg:text-base mt-4"
                 :class="{ 'chip--success': passwordMatch === true,'chip--error': passwordMatch === false }"
               >
@@ -79,6 +51,17 @@
                 </em>
                 <i class="not-italic chip__label">{{ passwordMatchMsg }}</i>
             </span>
+            <div v-else>
+              <span
+                class="chip text-sm justify-center w-full lg:text-base mt-4 chip--error"
+                >
+                  <em class="not-italic chip__icon-wrapper flex justify-center">
+                      <load-svg name="exclamacion" class="w-4" />
+                  </em>
+                  <i class="not-italic chip__label">{{ passwordMatchMsg }}</i>
+              </span>
+          
+            </div>
             </ValidationProvider>
           </div>
           <button
@@ -88,6 +71,14 @@
             >
               Register
           </button>
+          <div
+            v-if="loading" 
+            class="absolute left-0 top-0 w-full h-full flex items-center justify-center"
+          >
+            <div class="bg-white bg-opacity-60 z-1 w-full h-full absolute left-0 top-0"></div>
+            <Loader class="relative z-2" />
+          </div>
+         
         </form>
       </ValidationObserver>
     </div>
@@ -97,17 +88,28 @@
       auth: 'guest',
       data() {
         return {
-          success: false,
           err: null,
           username: '',
           email: '',
           password: '',
           passwordtwo: '',
           passwordMatch: null,
-          passwordMatchMsg: 'At least 6 characters, please',
+          charcaterCounter: 0,
+          sendFormError: false,
+          passwordMatchMsg: `Al menos 6 caracteres`,
+          loading: false
         }
       },
       methods: {
+        handleCheckMoreThen6characters() {
+          if (this.password.length < 6) {
+            this.passwordMatchMsg = 'Al menos 6 caracteres'
+            this.passwordMatch = false
+          } else {
+            this.passwordMatchMsg = ''
+            this.handlePasswordMatch()
+          }
+        },
         handlePasswordMatch() {
           if (this.password === this.passwordtwo) {
             this.passwordMatchMsg = 'Passwords matchs!'
@@ -125,18 +127,36 @@
             })
         },
         async userRegister() {
+            this.loading = true
               try {
                 this.$axios.setToken(false)
-                await this.$axios.post('auth/local/register', {
+                await this.$axios.post('api/auth/local/register', {
                   username: this.username,
                   email: this.email,
                   password: this.password,
+                }).then((response) => {
+                  if(response) {
+                    this.loading = false
+                    this.$router.push('/confirmar-email')
+                  }
                 })
-                this.success = true
               } catch (e) {
-                if (e.response) this.passwordMatchMsg = e.response.data.error.message
+                if (e.response) {
+                    if(e.response.data.error) {
+                      this.sendFormError = true
+                    }
+                    if(e.response.data.error.message === 'Email or Username are already taken') {
+                      this.passwordMatchMsg = 'El correo electrónico ya esta en uso'
+                    } else if(e.response.data.error.message === 'username must be at least 3 characters') {
+                      this.passwordMatchMsg = 'El nombre de usuario debe tener al menos 3 caracteres'
+                    } else {
+                      this.passwordMatchMsg = e.response.data.error.message
+                    }
+                    this.loading = false
+                }
               }
         }
+
       }
     }
 </script>

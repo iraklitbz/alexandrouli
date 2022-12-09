@@ -35,7 +35,7 @@
     },
     mounted() {
       // TODO console.log(this.$cookies)
-      console.log(this.$stripe)
+      console.log(this.loggedInUser)
     }
   }
 </script>

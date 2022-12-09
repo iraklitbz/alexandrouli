@@ -3,23 +3,46 @@
         <div class="container max-width-adaptive-lg">
             <div class="text-component margin-bottom-lg">
             <h1>Checkout</h1>
-            <p class="text-base">Already have an account? <a href="#0">Login</a></p>
+            <p v-if="!isAuthenticated" class="text-base">Already have an account? <nuxt-link to="/usuario/login">Login</nuxt-link></p>
             </div>
                 <form>
                     <div class="grid grid-cols-12 gap-5 lg:gap-8">
                         <div class="col-span-12 xl:col-span-7">
                         <!-- contact info -->
                         <contact-info
+                            v-if="!isAuthenticated"
                             :method="handleValidator"
                         />
 
                         <!-- delivery address -->
-                        <delivery />
+                        <delivery 
+                            v-if="Object.keys(addressData).length === 0 || isEditiong"
+                            :addressData="addressData"
+                        />
+                        <div v-if="Object.keys(addressData).length !== 0 && !isEditiong" class="address-module mb-5">
+                            <div class="bg-floor rounded-md p-6 border-l-[3px] border-solid border-primary shadow-[0_0_0_1px_hsla(var(--color-contrast-higher)/0.05),0_0_0_1px_hsla(var(--color-contrast-higher)/0.02),0_1px_3px_-1px_hsla(var(--color-contrast-higher)/0.2)]">
+                                    <div class="flex items-center justify-between mb-3">                                   
+                                        <h5 class="font-semibold text-contrast-higher">Dirección de entrega</h5>
+                                        <button @click="handleEditar" class="btn  text-sm bg-warning bg-opacity-75 hover:bg-opacity-100">Editar</button>
+                                    </div>
+                                    <div class="text-[0.9375rem] leading-snug text-contrast-medium">
+                                        <ul>
+                                            <li>{{loggedInUser.username}}</li>
+                                            <li>{{addressData.direccion}}</li>
+                                            <li>{{addressData.ciudad}}</li>
+                                            <li>{{addressData.provincia}}</li>
+                                            <li>{{addressData.postal}}</li>
+                                            <li>{{addressData.pais}}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                    
 
                         <!-- delivery options -->
 
 
-                        <div class="checkout__billing-checkbox">
+                        <div class="checkout__billing-checkbox mb-10">
                             <div>
                                 <input
                                     class="checkbox js-billing-checkbox"
@@ -36,8 +59,7 @@
                             v-if="!billAddressSame"
                             class="mt-10"
                         />
-                        <!-- payment method -->
-                        <payment class="mt-10" />
+                
 
                         <button class="btn btn--primary btn--md width-100% display@lg">Place Order</button>
                         </div>
@@ -48,13 +70,13 @@
                         </div>
                     </div>
 
-                    <button @click="handleValidator" class="btn btn--primary btn--lg width-100% hide@lg margin-top-md ">Place Order</button>
+                    <button @click="handleValidator" class="mt-10 btn btn--primary btn--lg width-100% hide@lg margin-top-md ">Place Order</button>
                 </form>
         </div>
     </section>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import BillAddress from '../components/checkout/BillAddress.vue';
 import OrderSummary from '../components/checkout/OrderSummary.vue';
 export default {
@@ -62,20 +84,24 @@ export default {
     name: 'CheckoutPage',
     data() {
         return {
+            addressData: {},
+            addressID: null,
+            isEditiong: false,
         }
     },
     computed: {
         ...mapState({
-                'loggedInUser': state => state.auth.loggedInUser,
                 steps: state => state.steps.steps
         }),
+        ...mapGetters(["isAuthenticated", "loggedInUser"]),
         billAddressSame: {
             get() {
                 return this.$store.state.checkout.billAddressSame
             }
         }
     },
-    mounted () {
+    async mounted () {
+        this.handleGetAdress()
         var billingCheckBox = document.getElementsByClassName('js-billing-checkbox');
         if(billingCheckBox.length > 0) {
             var billingInfo = document.getElementsByClassName('js-billing-info');
@@ -100,6 +126,21 @@ export default {
                     this.$store.commit('steps/SET_NEXT_STEPS', this.step )
                 }
             })
+        },
+        async handleGetAdress() {
+            await this.$axios.get("/api/addresses?filters[userID][$eq]=" + String(this.loggedInUser.id)).then((response) => {
+             if(response) {
+               if(response.data.data && response.data.data[0].attributes) {
+                this.addressID = response.data.data[0].id
+                this.addressData = response.data.data[0].attributes
+               }
+              }
+            }).catch((error) => {
+              console.log(error)
+            })
+        },
+        handleEditar() {
+            this.isEditiong = true
         }
     }
 }

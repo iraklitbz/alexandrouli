@@ -20,8 +20,8 @@ export default {
       }
     ],
     script: [
-      { src: 'https://unpkg.com/codyhouse-framework@3.0.8/main/assets/js/util.js', async: true, ssr: false },
-      { src: 'https://js.stripe.com/v3' }
+      { src: 'https://unpkg.com/codyhouse-framework@3.0.8/main/assets/js/util.js', async: true, ssr: false }
+      // { src: 'https://js.stripe.com/v3' }
     ],
     htmlAttrs: {
       class: 'js'
@@ -54,11 +54,7 @@ export default {
     url: process.env.STRAPI_URL
   },
   auth: {
-    // Options
     strategies: {
-      google: {
-        clientId: '1073084734162-u0n2o0mg48s9caqiq9c81q8g2nukpb2b.apps.googleusercontent.com'
-      },
       local: {
         token: {
           property: 'jwt',
@@ -68,26 +64,31 @@ export default {
         },
         endpoints: {
           login: {
-            url: 'auth/local',
+            url: 'api/auth/local',
             method: 'post',
+            propertyName: 'jwt'
           },
           user: {
-            url: 'users/me',
+            url: 'api/users/me',
             method: 'get',
+            propertyName: false
           },
-          logout: false,
-        },
+          logout: false
+        }
       },
-    },
+      google: {
+        clientId: '952963772678-nil6qs9leqmnu90024vbumb3che23lcg.apps.googleusercontent.com'
+      }
+    }
   },
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '~/plugins/vee-validate.js',
-    {
-      src: '~/plugins/stripe-elements.js',
-      mode: 'client',
-      ssr: false
-    }
+    '~/plugins/vee-validate.js'
+    // {
+    //   src: '~/plugins/stripe-elements.js',
+    //   mode: 'client',
+    //   ssr: false
+    // }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -107,19 +108,7 @@ export default {
     '~/modules/svg-module',
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
-    ['nuxt-mail', {
-        message: {
-          to: 'iraklitbz@gmail.com',
-        },
-        smtp: {
-          host: 'smtp.mailtrap.io',
-          port: 2525,
-          auth: {
-            user: 'username',
-            pass: 'password'
-          },
-        }
-      }]
+    'vue-sweetalert2/nuxt'
   ],
   /*
    ** Style Resources

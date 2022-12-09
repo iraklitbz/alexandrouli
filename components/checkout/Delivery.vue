@@ -83,93 +83,37 @@
 </template>
 <script>
 import select from "~/plugins/select.js";
-import { mapGetters } from 'vuex'
-import Payment from './Payment.vue';
 export default {
-  components: { Payment },
   props: {
-        step: {
-            type: Number,
-            default: null
+    props: {
+        addressData: {
+            type: Object,
+            default: () => {}
         }
+    },
     },
     data () {
         return {
-            deliveryGroup: [
-                { id: 'Standard', name: "Standard delivery", days: "4-5 days", euros: "$9.00" },
-                { id: 'Express', name: "Express delivery", days: "1-2 days", euros: "$19.00" }
-            ],
-            isSelectedDevlivery: [
-                this.$store.state.checkout.delivery
-            ]
+            fullName: '',
+            company: '',
+            address: '',
+            city: '',
+            state: '',
+            postcode: '',
+            phone: ''
         }
     },
-    computed: {
-         ...mapGetters(['loggedInUser']),
-        fullName: {
-            get() {
-                return this.$store.state.checkout.name
-            },
-            set(value) {
-                this.$store.commit('checkout/SET_NAME', value)
-            }
-        },
-        company: {
-            get() {
-                return this.$store.state.checkout.company
-            },
-            set(value) {
-                this.$store.commit('checkout/SET_COMPANY', value)
-            }
-        },
-        address: {
-            get() {
-                return this.$store.state.checkout.address
-            },
-            set(value) {
-                this.$store.commit('checkout/SET_ADDRESS', value)
-            }
-        },
-        city: {
-            get() {
-                return this.$store.state.checkout.city
-            },
-            set(value) {
-                this.$store.commit('checkout/SET_CITY', value)
-            }
-        },
-        state: {
-            get() {
-                return this.$store.state.checkout.state
-            },
-            set(value) {
-                this.$store.commit('checkout/SET_STATE', value)
-            }
-        },
-        postcode: {
-            get() {
-                return this.$store.state.checkout.postcode
-            },
-            set(value) {
-                this.$store.commit('checkout/SET_POSTCODE', value)
-            }
-        },
-        phone: {
-            get() {
-                return this.$store.state.checkout.phone
-            },
-            set(value) {
-                this.$store.commit('checkout/SET_PHONE', value)
-            }
-        },
-        billAddressSame: {
-            get() {
-                return this.$store.state.checkout.billAddressSame
-            }
-        },
-    },
     mounted() {
-        select()
+        console.log(this.addressData)
+        select();
+        if(this.addressData){
+            this.fullName = this.addressData.fullName
+            this.company = this.addressData.company
+            this.address = this.addressData.address
+            this.city = this.addressData.city
+            this.state = this.addressData.state
+            this.postcode = this.addressData.postcode
+        }
     },
     methods: {
         handleChangeDelivery(value) {
