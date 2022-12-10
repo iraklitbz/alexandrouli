@@ -8,16 +8,18 @@
                 <li class="header__item ml-5 lg:ml-8"><nuxt-link to="/sobre-nosotros" class="header__link">About </nuxt-link></li>
                 <li class="header__item ml-5 lg:ml-8"><nuxt-link to="/contacto" class="header__link">Contacto </nuxt-link></li>
                 <li class="header__item header__item--divider ml-5 lg:ml-8" aria-hidden="true"></li>
-                <li v-if="!loggedInUser" class="header__item inline-flex items-center ml-5 lg:ml-8">
-                    <nuxt-link to="/usuario/login" class="header__link inline-flex items-center"> 
-                        <load-svg name="user" class="w-8 opacity-80 hover:opacity-100 text-primary" /> 
-                    </nuxt-link>
-                </li>
-                <li v-else class="header__item inline-flex items-center ml-5 lg:ml-8">
-                    <DropdownMenu 
-                        :user="loggedInUser" 
-                    />
-                </li>
+                <client-only>
+                    <li v-if="!loggedInUser" class="header__item inline-flex items-center ml-5 lg:ml-8">
+                        <nuxt-link to="/usuario/login" class="header__link inline-flex items-center"> 
+                            <load-svg name="user" class="w-8 opacity-80 hover:opacity-100 text-primary" /> 
+                        </nuxt-link>
+                    </li>
+                    <li v-else class="header__item inline-flex items-center ml-5 lg:ml-8">
+                        <DropdownMenu 
+                            :user="loggedInUser" 
+                        />
+                    </li>
+                </client-only>
                 <li class="header__item ml-2 lg:ml-5">
                     <button class="relative opacity-80 hover:opacity-100" @click="handleToggleCart" aria-controls="drawer-1">
                         <load-svg name="shopBag" class="w-8 text-primary" />

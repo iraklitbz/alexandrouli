@@ -1,13 +1,13 @@
 <template>
 <div>
     <fieldset class="mb-4">
-        <legend class="form-legend font-bold">Delivery Address</legend>
+        <legend class="form-legend font-bold">Dirección de entrega</legend>
 
         <div class="grid grid-cols-12 gap-3 lg:gap-5">
             <div class="col-span-12 md:col-span-6">
                 <ValidationProvider rules="required" v-slot="{ errors }">
-                    <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-name">Full Name</label>
-                    <input class="form-control w-full" v-model="fullName" type="text" placeholder="Jon Snow">
+                    <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-name">Nombre</label>
+                    <input class="form-control w-full" @change="handleSendAddressData" v-model="fullName" type="text" placeholder="Jon Snow">
                     <error-message
                         :errors="errors[0]"
                     />
@@ -15,14 +15,14 @@
             </div>
 
          <div class="col-span-12 md:col-span-6">
-            <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-company">Company (optional)</label>
-            <input class="form-control w-full" v-model="company" type="text" placeholder="The Night's Watch">
+            <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-company">Empresa (opcional)</label>
+            <input class="form-control w-full" @change="handleSendAddressData" v-model="company" type="text" placeholder="The Night's Watch">
         </div>
 
         <div class="col-span-12">
             <ValidationProvider rules="required" v-slot="{ errors }">
-                <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-address">Address</label>
-                <input class="form-control w-full" v-model="address" type="text" placeholder="calle Winterfell 38, 3b">
+                <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-address">Dirección</label>
+                <input class="form-control w-full" @change="handleSendAddressData" v-model="address" type="text" placeholder="calle Winterfell 38, 3b">
                 <error-message
                     :errors="errors[0]"
                 />
@@ -31,8 +31,8 @@
 
         <div class="col-span-12 md:col-span-6">
             <ValidationProvider rules="required" v-slot="{ errors }">
-                <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-city">City</label>
-                <input class="form-control w-full" v-model="city" type="text" placeholder="Winterfell">
+                <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-city">Ciudad</label>
+                <input class="form-control w-full" @change="handleSendAddressData" v-model="city" type="text" placeholder="Winterfell">
                 <error-message
                     :errors="errors[0]"
                 />
@@ -40,16 +40,21 @@
         </div>
 
         <div class="col-span-12 md:col-span-6">
-            <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-state">State (optional)</label>
-            <input class="form-control w-full" v-model="state" type="text" placeholder="North land">
+            <ValidationProvider rules="required" v-slot="{ errors }">
+                <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-state">Provincia</label>
+                <input class="form-control w-full" @change="handleSendAddressData" v-model="state" type="text" placeholder="North land">
+                <error-message
+                    :errors="errors[0]"
+                />
+            </ValidationProvider>
         </div>
 
         <div class="col-span-12 md:col-span-6">
-            <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-country">Country</label>
+            <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-country">Pais</label>
 
             <div class="select">
             <select class="select__input btn btn--subtle appearance-none" name="checkout-delivery-country" id="checkout-delivery-country" disabled>
-                <option value="0">Spain</option>
+                <option value="0">España</option>
             </select>
 
             <svg class="icon select__icon" aria-hidden="true" viewBox="0 0 16 16">
@@ -60,8 +65,8 @@
 
         <div class="col-span-12 md:col-span-6">
             <ValidationProvider rules="required|postcode" v-slot="{ errors }">
-                <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-postcode">Postcode</label>
-                <input class="form-control w-full" v-model="postcode" type="text" placeholder="19240">
+                <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-postcode">Código postal</label>
+                <input class="form-control w-full" @change="handleSendAddressData" v-model="postcode" type="text" placeholder="19240">
                 <error-message
                     :errors="errors[0]"
                 />
@@ -70,8 +75,8 @@
 
        <div class="col-span-12">
             <ValidationProvider rules="phone" v-slot="{ errors }">
-                <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-tel">Phone number (optional)</label>
-                <input class="form-control w-full" v-model="phone" type="tel" placeholder="000 000 000">
+                <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-tel">Teléfono (opcional)</label>
+                <input class="form-control w-full" @change="handleSendAddressData" v-model="phone" type="tel" placeholder="000 000 000">
                 <error-message
                     :errors="errors[0]"
                 />
@@ -85,12 +90,14 @@
 import select from "~/plugins/select.js";
 export default {
   props: {
-    props: {
         addressData: {
             type: Object,
             default: () => {}
+        },
+        loggedInUser: {
+            type: Object,
+            default: () => {}
         }
-    },
     },
     data () {
         return {
@@ -104,23 +111,28 @@ export default {
         }
     },
     mounted() {
-        console.log(this.addressData)
         select();
-        if(this.addressData){
-            this.fullName = this.addressData.fullName
+        if(this.addressData && this.loggedInUser.username){
+            this.fullName = this.loggedInUser.username
             this.company = this.addressData.company
-            this.address = this.addressData.address
-            this.city = this.addressData.city
-            this.state = this.addressData.state
-            this.postcode = this.addressData.postcode
+            this.address = this.addressData.direccion
+            this.city = this.addressData.ciudad
+            this.state = this.addressData.provincia
+            this.postcode = this.addressData.postal
         }
     },
     methods: {
-        handleChangeDelivery(value) {
-            this.isSelectedDevlivery = []
-            this.isSelectedDevlivery.push(value)
-            this.slectDilivery = !this.slectDilivery
-            this.$store.commit('checkout/SET_DELIVERY', value)
+        handleSendAddressData() {
+            const sendData = {
+                fullName: this.fullName,
+                company: this.company,
+                address: this.address,
+                city: this.city,
+                state: this.state,
+                postcode: this.postcode,
+                phone: this.phone
+            }
+            this.$emit('update-send-data', sendData)
         }
     }
 }

@@ -1,78 +1,75 @@
 <template>
     <section class="checkout mx-auto max-w-7xl">
-        <div class="container max-width-adaptive-lg">
-            <div class="text-component margin-bottom-lg">
+        <div class="text-component margin-bottom-lg">
             <h1>Checkout</h1>
-            <p v-if="!isAuthenticated" class="text-base">Already have an account? <nuxt-link to="/usuario/login">Login</nuxt-link></p>
-            </div>
-                <form>
-                    <div class="grid grid-cols-12 gap-5 lg:gap-8">
-                        <div class="col-span-12 xl:col-span-7">
-                        <!-- contact info -->
+            <client-only>
+                <p v-if="!isAuthenticated" class="text-base">Already have an account? <nuxt-link to="/usuario/login">Login</nuxt-link></p>
+            </client-only>
+        </div>
+        <form>
+            <div class="grid grid-cols-12 gap-5 lg:gap-8">
+                <div class="col-span-12 xl:col-span-7">
+                    <!-- contact info -->
+                    <client-only>
                         <contact-info
                             v-if="!isAuthenticated"
                             :method="handleValidator"
                         />
+                    </client-only>
 
-                        <!-- delivery address -->
-                        <delivery 
-                            v-if="Object.keys(addressData).length === 0 || isEditiong"
-                            :addressData="addressData"
-                        />
-                        <div v-if="Object.keys(addressData).length !== 0 && !isEditiong" class="address-module mb-5">
-                            <div class="bg-floor rounded-md p-6 border-l-[3px] border-solid border-primary shadow-[0_0_0_1px_hsla(var(--color-contrast-higher)/0.05),0_0_0_1px_hsla(var(--color-contrast-higher)/0.02),0_1px_3px_-1px_hsla(var(--color-contrast-higher)/0.2)]">
-                                    <div class="flex items-center justify-between mb-3">                                   
-                                        <h5 class="font-semibold text-contrast-higher">Dirección de entrega</h5>
-                                        <button @click="handleEditar" class="btn  text-sm bg-warning bg-opacity-75 hover:bg-opacity-100">Editar</button>
-                                    </div>
-                                    <div class="text-[0.9375rem] leading-snug text-contrast-medium">
-                                        <ul>
-                                            <li>{{loggedInUser.username}}</li>
-                                            <li>{{addressData.direccion}}</li>
-                                            <li>{{addressData.ciudad}}</li>
-                                            <li>{{addressData.provincia}}</li>
-                                            <li>{{addressData.postal}}</li>
-                                            <li>{{addressData.pais}}</li>
-                                        </ul>
-                                    </div>
-                                </div>
+                    <!-- delivery address -->
+                    <delivery 
+                        v-if="Object.keys(addressData).length === 0 || Object.keys(addressData).length !== 0 && isEditiong"
+                        :addressData="addressData"
+                        :loggedInUser="loggedInUser"
+                        @update-send-data="handleUpdateSendData"
+                    />
+                    <div v-if="Object.keys(addressData).length !== 0 && !isEditiong" class="address-module mb-5">
+                        <div class="bg-floor rounded-md p-6 border-l-[3px] border-solid border-primary shadow-[0_0_0_1px_hsla(var(--color-contrast-higher)/0.05),0_0_0_1px_hsla(var(--color-contrast-higher)/0.02),0_1px_3px_-1px_hsla(var(--color-contrast-higher)/0.2)]">
+                            <div class="flex items-center justify-between mb-3">                                   
+                                <h5 class="font-semibold text-contrast-higher">Dirección de entrega</h5>
+                                <button @click="handleEditar" class="btn  text-sm bg-warning bg-opacity-75 hover:bg-opacity-100">Editar</button>
                             </div>
-                    
-
-                        <!-- delivery options -->
-
-
-                        <div class="checkout__billing-checkbox mb-10">
-                            <div>
-                                <input
-                                    class="checkbox js-billing-checkbox"
-                                    type="checkbox"
-                                    id="autofill-billing-info"
-                                    :checked="billAddressSame"
-                                    @change="$store.commit('checkout/SET_BILLING_ADDRESS_SAME')"
-                                >
-                                <label for="autofill-billing-info">Same as delivery address</label>
+                            <div class="text-[0.9375rem] leading-snug text-contrast-medium">
+                                <ul>
+                                    <li>{{loggedInUser.username}}</li>
+                                    <li>{{addressData.direccion}}</li>
+                                    <li>{{addressData.ciudad}}</li>
+                                    <li>{{addressData.provincia}}</li>
+                                    <li>{{addressData.postal}}</li>
+                                    <li>{{addressData.pais}}</li>
+                                </ul>
                             </div>
-                        </div>
-                        <!-- billing address -->
-                        <bill-address
-                            v-if="!billAddressSame"
-                            class="mt-10"
-                        />
-                
-
-                        <button class="btn btn--primary btn--md width-100% display@lg">Place Order</button>
-                        </div>
-
-                    <div class="col-span-12 xl:col-span-5">
-                        <!-- order summary -->
-                            <order-summary />
                         </div>
                     </div>
+                    <!-- delivery options -->
+                    <div class="checkout__billing-checkbox mb-10">
+                        <div>
+                            <input
+                                class="checkbox js-billing-checkbox"
+                                type="checkbox"
+                                id="autofill-billing-info"
+                                :checked="billingAddressIsSame"
+                                @change="handleBillingAddress"
+                            >
+                            <label for="autofill-billing-info">Factura en la misma direccion</label>
+                        </div>
+                    </div>
+                    <!-- billing address -->
+                    <bill-address
+                        v-if="!billingAddressIsSame"
+                        class="mt-10"
+                    />
+                </div>
 
-                    <button @click="handleValidator" class="mt-10 btn btn--primary btn--lg width-100% hide@lg margin-top-md ">Place Order</button>
-                </form>
-        </div>
+                <div class="col-span-12 xl:col-span-5">
+                    <!-- order summary -->
+                        <order-summary />
+                        <button @click="handleBuy" class="mt-5 btn btn--primary btn--md width-100% display@lg">Comprar</button>
+                </div>
+            </div>
+            
+        </form>
     </section>
 </template>
 <script>
@@ -87,37 +84,22 @@ export default {
             addressData: {},
             addressID: null,
             isEditiong: false,
+            billingAddressIsSame: true
         }
     },
     computed: {
         ...mapState({
                 steps: state => state.steps.steps
         }),
-        ...mapGetters(["isAuthenticated", "loggedInUser"]),
-        billAddressSame: {
-            get() {
-                return this.$store.state.checkout.billAddressSame
-            }
-        }
+        ...mapGetters(["isAuthenticated", "loggedInUser"])
     },
-    async mounted () {
+    mounted () {
         this.handleGetAdress()
-        var billingCheckBox = document.getElementsByClassName('js-billing-checkbox');
-        if(billingCheckBox.length > 0) {
-            var billingInfo = document.getElementsByClassName('js-billing-info');
-            if(billingInfo.length == 0) return;
-            resetBillingInfo(billingCheckBox[0], billingInfo[0]);
-
-            billingCheckBox[0].addEventListener('change', function(){
-            resetBillingInfo(billingCheckBox[0], billingInfo[0]);
-            });
-        }
-
-        function resetBillingInfo(input, content) {
-            Util.toggleClass(content, 'hidden', input.checked);
-        };
     },
     methods: {
+        handleBillingAddress() {
+            this.billingAddressIsSame = !this.billingAddressIsSame
+        },
         handleValidator() {
             this.$refs.form.validate().then((valid) => {
                 if (valid) {
@@ -141,6 +123,13 @@ export default {
         },
         handleEditar() {
             this.isEditiong = true
+        },
+        handleUpdateSendData(data) {
+            this.addressData = data
+        },
+        handleBuy(e) {
+            e.preventDefault();
+            console.log(this.addressData)
         }
     }
 }
