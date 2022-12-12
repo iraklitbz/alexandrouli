@@ -6,7 +6,7 @@
              <div class="col-span-12 md:col-span-6">
                 <ValidationProvider rules="required" v-slot="{ errors }">
                     <label class="form-label mb-1.5 lg:mb-2" for="checkout-billing-name">Nombre</label>
-                    <input class="form-control w-full" v-model="fullNamer" type="text" placeholder="Jon Snow">
+                    <input class="form-control w-full" @change="handleBillAddress" v-model="username" type="text" placeholder="Jon Snow">
                     <error-message
                         :errors="errors[0]"
                     />
@@ -15,13 +15,13 @@
 
              <div class="col-span-12 md:col-span-6">
                     <label class="form-label mb-1.5 lg:mb-2" for="checkout-billing-company">Empresa (opcional)</label>
-                    <input class="form-control w-full" v-model="company" type="text" placeholder="The Night's Watch">
+                    <input class="form-control w-full" @change="handleBillAddress" v-model="empresa" type="text" placeholder="The Night's Watch">
             </div>
 
             <div class="col-span-12">
                 <ValidationProvider rules="required" v-slot="{ errors }">
                     <label class="form-label mb-1.5 lg:mb-2" for="checkout-billing-address">Dirreción</label>
-                    <input class="form-control w-full" v-model="address" type="text" placeholder="calle Winterfell 38, 3b">
+                    <input class="form-control w-full" @change="handleBillAddress" v-model="direccion" type="text" placeholder="calle Winterfell 38, 3b">
                     <error-message
                             :errors="errors[0]"
                     />
@@ -31,7 +31,7 @@
              <div class="col-span-12 md:col-span-6">
                 <ValidationProvider rules="required" v-slot="{ errors }">
                     <label class="form-label mb-1.5 lg:mb-2" for="checkout-billing-city">Ciudad</label>
-                    <input class="form-control w-full" v-model="city" type="text" placeholder="Winterfell">
+                    <input class="form-control w-full" @change="handleBillAddress" v-model="ciudad" type="text" placeholder="Winterfell">
                     <error-message
                         :errors="errors[0]"
                     />
@@ -41,7 +41,7 @@
              <div class="col-span-12 md:col-span-6">
                 <ValidationProvider rules="required" v-slot="{ errors }">
                     <label class="form-label mb-1.5 lg:mb-2" for="checkout-billing-state">Provincia</label>
-                    <input class="form-control w-full" v-model="state" type="text" placeholder="North land">
+                    <input class="form-control w-full" @change="handleBillAddress" v-model="provincia" type="text" placeholder="North land">
                     <error-message
                             :errors="errors[0]"
                         />
@@ -65,7 +65,7 @@
              <div class="col-span-12 md:col-span-6">
                 <ValidationProvider rules="required|postcode" v-slot="{ errors }">
                     <label class="form-label mb-1.5 lg:mb-2" for="checkout-billing-postcode">Código postal</label>
-                    <input class="form-control w-full" v-model="postcode" type="text" placeholder="19240">
+                    <input class="form-control w-full" @change="handleBillAddress" v-model="postal" type="text" placeholder="19240">
                     <error-message
                         :errors="errors[0]"
                     />
@@ -80,29 +80,25 @@ export default {
     name: 'BillAddress',
     data() {
         return {
-            fullNamer: '',
-            company: '',
-            address: '',
-            city: '',
-            state: '',
-            postcode: '',
+            username: '',
+            empresa: '',
+            direccion: '',
+            ciudad: '',
+            provincia: '',
+            postal: '',
         }
     },
     methods: {
-        validate() {
-            this.$validator.validateAll().then((result) => {
-                if (result) {
-                    this.$emit('nextStep', {
-                        fullNamer: this.fullNamer,
-                        company: this.company,
-                        address: this.address,
-                        city: this.city,
-                        provincia: this.provincia,
-                        postcode: this.postcode,
-                    });
-                }
+        handleBillAddress() {
+            this.$emit('update-billaddress', {
+                username: this.username,
+                empresa: this.empresa,
+                direccion: this.direccion,
+                ciudad: this.ciudad,
+                provincia: this.provincia,
+                postal: this.postal,
             });
-        },
+        }
     },
 }
 </script>

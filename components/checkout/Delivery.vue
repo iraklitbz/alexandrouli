@@ -7,7 +7,7 @@
             <div class="col-span-12 md:col-span-6">
                 <ValidationProvider rules="required" v-slot="{ errors }">
                     <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-name">Nombre</label>
-                    <input class="form-control w-full" @change="handleSendAddressData" v-model="fullName" type="text" placeholder="Jon Snow">
+                    <input class="form-control w-full" @change="handleSendAddressData" v-model="username" type="text" placeholder="Jon Snow">
                     <error-message
                         :errors="errors[0]"
                     />
@@ -16,13 +16,13 @@
 
          <div class="col-span-12 md:col-span-6">
             <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-company">Empresa (opcional)</label>
-            <input class="form-control w-full" @change="handleSendAddressData" v-model="company" type="text" placeholder="The Night's Watch">
+            <input class="form-control w-full" @change="handleSendAddressData" v-model="empresa" type="text" placeholder="The Night's Watch">
         </div>
 
         <div class="col-span-12">
             <ValidationProvider rules="required" v-slot="{ errors }">
                 <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-address">Dirección</label>
-                <input class="form-control w-full" @change="handleSendAddressData" v-model="address" type="text" placeholder="calle Winterfell 38, 3b">
+                <input class="form-control w-full" @change="handleSendAddressData" v-model="direccion" type="text" placeholder="calle Winterfell 38, 3b">
                 <error-message
                     :errors="errors[0]"
                 />
@@ -32,7 +32,7 @@
         <div class="col-span-12 md:col-span-6">
             <ValidationProvider rules="required" v-slot="{ errors }">
                 <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-city">Ciudad</label>
-                <input class="form-control w-full" @change="handleSendAddressData" v-model="city" type="text" placeholder="Winterfell">
+                <input class="form-control w-full" @change="handleSendAddressData" v-model="ciudad" type="text" placeholder="Winterfell">
                 <error-message
                     :errors="errors[0]"
                 />
@@ -42,7 +42,7 @@
         <div class="col-span-12 md:col-span-6">
             <ValidationProvider rules="required" v-slot="{ errors }">
                 <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-state">Provincia</label>
-                <input class="form-control w-full" @change="handleSendAddressData" v-model="state" type="text" placeholder="North land">
+                <input class="form-control w-full" @change="handleSendAddressData" v-model="provincia" type="text" placeholder="North land">
                 <error-message
                     :errors="errors[0]"
                 />
@@ -66,7 +66,7 @@
         <div class="col-span-12 md:col-span-6">
             <ValidationProvider rules="required|postcode" v-slot="{ errors }">
                 <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-postcode">Código postal</label>
-                <input class="form-control w-full" @change="handleSendAddressData" v-model="postcode" type="text" placeholder="19240">
+                <input class="form-control w-full" @change="handleSendAddressData" v-model="postal" type="text" placeholder="19240">
                 <error-message
                     :errors="errors[0]"
                 />
@@ -76,7 +76,7 @@
        <div class="col-span-12">
             <ValidationProvider rules="phone" v-slot="{ errors }">
                 <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-tel">Teléfono (opcional)</label>
-                <input class="form-control w-full" @change="handleSendAddressData" v-model="phone" type="tel" placeholder="000 000 000">
+                <input class="form-control w-full" @change="handleSendAddressData" v-model="telefono" type="tel" placeholder="000 000 000">
                 <error-message
                     :errors="errors[0]"
                 />
@@ -101,36 +101,36 @@ export default {
     },
     data () {
         return {
-            fullName: '',
-            company: '',
-            address: '',
-            city: '',
-            state: '',
-            postcode: '',
-            phone: ''
+            username: '',
+            empresa: '',
+            direccion: '',
+            ciudad: '',
+            provincia: '',
+            postal: '',
+            telefono: ''
         }
     },
     mounted() {
         select();
-        if(this.addressData && this.loggedInUser.username){
-            this.fullName = this.loggedInUser.username
-            this.company = this.addressData.company
-            this.address = this.addressData.direccion
-            this.city = this.addressData.ciudad
-            this.state = this.addressData.provincia
-            this.postcode = this.addressData.postal
+        if(Object.keys(this.addressData).length && this.loggedInUser){
+            this.username = this.loggedInUser.username
+            this.empresa = this.addressData.company
+            this.direccion = this.addressData.direccion
+            this.ciudad = this.addressData.ciudad
+            this.provincia = this.addressData.provincia
+            this.postal = this.addressData.postal
         }
     },
     methods: {
         handleSendAddressData() {
             const sendData = {
-                fullName: this.fullName,
-                company: this.company,
-                address: this.address,
-                city: this.city,
-                state: this.state,
-                postcode: this.postcode,
-                phone: this.phone
+                username: this.username,
+                empresa: this.empresa,
+                direccion: this.direccion,
+                ciudad: this.ciudad,
+                provincia: this.provincia,
+                postal: this.postal,
+                telefono: this.telefono
             }
             this.$emit('update-send-data', sendData)
         }

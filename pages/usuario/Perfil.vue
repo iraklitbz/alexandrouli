@@ -107,6 +107,7 @@
           
           <div v-if="Object.keys(addressData).length !== 0 && !isAddingAdress" class="text-[0.9375rem] leading-snug text-contrast-medium">
             <ul>
+              <li>{{addressData.username}}</li>
               <li>{{addressData.direccion}}</li>
               <li>{{addressData.ciudad}}</li>
               <li>{{addressData.provincia}}</li>
@@ -135,7 +136,9 @@ import { loadavg } from 'os'
     data() {
         return {
             isAddingAdress: false,
+            username: '',
             address: '',
+            email: '',
             city: '',
             provincia: '',
             postcode: '',
@@ -150,7 +153,9 @@ import { loadavg } from 'os'
     },
     methods: {
         handleAdressData (data) {
+          this.username = data.username,
           this.address = data.address,
+          this.email = this.loggedInUser.email,
           this.city = data.city,
           this.provincia = data.provincia,
           this.postcode = data.postcode
@@ -161,12 +166,15 @@ import { loadavg } from 'os'
                 await this.$axios.post("/api/addresses", {
                   data: {
                     userID: this.loggedInUser.id,
+                    username: this.username,
+                    email: this.email,
                     direccion: this.address,
                     ciudad: this.city,
                     provincia: this.provincia,
                     postal: this.postcode,
                     pais: this.country,
                     billingData: {
+                      username: this.username,
                       direccion: this.address,
                       ciudad: this.city,
                       provincia: this.provincia,
@@ -189,11 +197,14 @@ import { loadavg } from 'os'
             try {
               await this.$axios.put("/api/addresses/" + String(this.addressID), {
                 data: {
+                  username: this.username,
                   direccion: this.address,
+                  email: this.email,
                   ciudad: this.city,
                   provincia: this.provincia,
                   postal: this.postcode,
                   billingData: {
+                    username: this.username,
                     direccion: this.address,
                     ciudad: this.city,
                     provincia: this.provincia,

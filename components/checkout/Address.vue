@@ -2,6 +2,15 @@
     <div>
         <div class="col-span-12">
             <ValidationProvider rules="required" v-slot="{ errors }">
+                <label class="form-label mb-1.5 lg:mb-2" for="checkout-billing-address">Nombre</label>
+                <input class="form-control w-full" @change="handleAdressData" v-model="username" type="text" placeholder="Jon Snow">
+                <error-message
+                        :errors="errors[0]"
+                />
+            </ValidationProvider>
+        </div>
+        <div class="col-span-12 mt-3">
+            <ValidationProvider rules="required" v-slot="{ errors }">
                 <label class="form-label mb-1.5 lg:mb-2" for="checkout-billing-address">Calle</label>
                 <input class="form-control w-full" @change="handleAdressData" v-model="address" type="text" placeholder="calle Winterfell 38, 3b">
                 <error-message
@@ -65,6 +74,7 @@ export default {
     },
     data() {
         return {
+            username: "",
             address: "",
             city: "",
             provincia: "",
@@ -78,6 +88,7 @@ export default {
     methods: {
         handleAdressData() {
             this.$emit('update-address', {
+                username: this.username,
                 address: this.address,
                 city: this.city,
                 provincia: this.provincia,
@@ -89,6 +100,7 @@ export default {
             await this.$axios.get("/api/addresses?filters[userID][$eq]=" + String(this.ID)).then((response) => {
              if(response) {
                if(response.data.data && response.data.data[0].attributes) {
+                this.username = response.data.data[0].attributes.username,
                 this.address = response.data.data[0].attributes.direccion,
                 this.city = response.data.data[0].attributes.ciudad,
                 this.provincia = response.data.data[0].attributes.provincia,

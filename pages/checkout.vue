@@ -13,18 +13,18 @@
                     <client-only>
                         <contact-info
                             v-if="!isAuthenticated"
-                            :method="handleValidator"
+                            @update-email="handleUpdateEmail"
                         />
                     </client-only>
 
                     <!-- delivery address -->
                     <delivery 
-                        v-if="Object.keys(addressData).length === 0 || Object.keys(addressData).length !== 0 && isEditiong"
+                        v-if="noDataAddress || !noDataAddress && isEditiong"
                         :addressData="addressData"
                         :loggedInUser="loggedInUser"
                         @update-send-data="handleUpdateSendData"
                     />
-                    <div v-if="Object.keys(addressData).length !== 0 && !isEditiong" class="address-module mb-5">
+                    <div v-if="!noDataAddress && !isEditiong" class="address-module mb-5">
                         <div class="bg-floor rounded-md p-6 border-l-[3px] border-solid border-primary shadow-[0_0_0_1px_hsla(var(--color-contrast-higher)/0.05),0_0_0_1px_hsla(var(--color-contrast-higher)/0.02),0_1px_3px_-1px_hsla(var(--color-contrast-higher)/0.2)]">
                             <div class="flex items-center justify-between mb-3">                                   
                                 <h5 class="font-semibold text-contrast-higher">Dirección de entrega</h5>
@@ -32,7 +32,7 @@
                             </div>
                             <div class="text-[0.9375rem] leading-snug text-contrast-medium">
                                 <ul>
-                                    <li>{{loggedInUser.username}}</li>
+                                    <li>{{addressData.username}}</li>
                                     <li>{{addressData.direccion}}</li>
                                     <li>{{addressData.ciudad}}</li>
                                     <li>{{addressData.provincia}}</li>
@@ -58,6 +58,7 @@
                     <!-- billing address -->
                     <bill-address
                         v-if="!billingAddressIsSame"
+                        @update-billaddress="handleUpdateBillAddress"
                         class="mt-10"
                     />
                 </div>
@@ -83,8 +84,10 @@ export default {
         return {
             addressData: {},
             addressID: null,
+            email: '',
             isEditiong: false,
-            billingAddressIsSame: true
+            billingAddressIsSame: true,
+            noDataAddress: false
         }
     },
     computed: {
@@ -100,26 +103,26 @@ export default {
         handleBillingAddress() {
             this.billingAddressIsSame = !this.billingAddressIsSame
         },
-        handleValidator() {
-            this.$refs.form.validate().then((valid) => {
-                if (valid) {
-                    const userCheckoutData = [ { email: this.email, currentlaststep: this.step } ]
-                    localStorage.setItem('userCheckoutData', JSON.stringify(userCheckoutData))
-                    this.$store.commit('steps/SET_NEXT_STEPS', this.step )
-                }
-            })
-        },
         async handleGetAdress() {
-            await this.$axios.get("/api/addresses?filters[userID][$eq]=" + String(this.loggedInUser.id)).then((response) => {
-             if(response) {
-               if(response.data.data && response.data.data[0].attributes) {
-                this.addressID = response.data.data[0].id
-                this.addressData = response.data.data[0].attributes
-               }
-              }
-            }).catch((error) => {
-              console.log(error)
-            })
+            if(this.isAuthenticated) {
+                await this.$axios.get("/api/addresses?filters[userID][$eq]=" + String(this.loggedInUser.id)).then((response) => {
+                if(response) {
+                if(response.data.data && response.data.data[0].attributes) {
+                    this.email = this.loggedInUser.email
+                    this.addressID = response.data.data[0].id
+                    this.addressData = response.data.data[0].attributes
+                }
+                }
+                }).catch((error) => {
+                    console.log(error)
+                })
+            } else {
+                this.noDataAddress = true
+            }
+          
+        },
+        handleUpdateEmail(data) {
+            this.email = data
         },
         handleEditar() {
             this.isEditiong = true
@@ -127,9 +130,24 @@ export default {
         handleUpdateSendData(data) {
             this.addressData = data
         },
+        handleUpdateBillAddress(data) {
+            this.addressData.billingData = data
+        },
         handleBuy(e) {
             e.preventDefault();
-            console.log(this.addressData)
+            this.addressData.email = this.email
+            if(this.billingAddressIsSame) {
+                this.addressData.billingData = {}
+                this.addressData.billingData.username = this.addressData.username
+                this.addressData.billingData.ciudad = this.addressData.ciudad
+                this.addressData.billingData.provincia = this.addressData.provincia
+                this.addressData.billingData.postal = this.addressData.postal
+                this.addressData.billingData.direccion = this.addressData.direccion
+                
+                console.log(this.addressData)
+            } else {
+                console.log(this.addressData)
+            }
         }
     }
 }
