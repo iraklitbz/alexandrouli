@@ -42,6 +42,7 @@
                 <li class="flex justify-between"><i>Delivery</i> <i>Free</i></li>
                 <li class="flex justify-between font-bold"><i>Total</i> <i>{{sumaFinal}}</i></li>
             </ul>
+            <div class="mt-10" ref="paypal"></div>
         </footer>
     </aside>
 </template>
@@ -51,7 +52,13 @@ import { mapState } from 'vuex'
 export default {
     data () {
             return {
-                strapiUrl: process.env.strapiUrl
+                strapiUrl: process.env.strapiUrl,
+                loaded: false,
+                product: {
+                    price: 777.77,
+                    description: "leg lamp from that one movie",
+                    img: "./assets/lamp.jpg"
+                }
             }
         },
     computed: {
@@ -62,8 +69,42 @@ export default {
         })
     },
     mounted() {
+        const script = document.createElement("script");
+        script.src = `https://www.paypal.com/sdk/js?client-id=${process.env.paypalClientID}`;
+        script.addEventListener("load", this.setLoaded);
+        document.body.appendChild(script);
         if (localStorage.getItem('productsInCart')) {
             this.$store.commit('cart/SET_PRODUCTS_LOCAL_STORAGE', JSON.parse(localStorage.getItem('productsInCart')))
+        }
+    },
+    methods: {
+        setLoaded() {
+            this.loaded = true;
+            window.paypal
+                .Buttons({
+                createOrder: (data, actions) => {
+                    return actions.order.create({
+                    purchase_units: [
+                        {
+                        description: this.product.description,
+                        amount: {
+                            currency_code: "USD",
+                            value: this.sumaFinal
+                        }
+                        }
+                    ]
+                    });
+                },
+                onApprove: async (data, actions) => {
+                    const order = await actions.order.capture();
+                    this.paidFor = true;
+                    console.log(order);
+                },
+                onError: err => {
+                    console.log(err);
+                }
+                })
+                .render(this.$refs.paypal);
         }
     }
 }

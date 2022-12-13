@@ -66,8 +66,8 @@
                 <div class="col-span-12 xl:col-span-5">
                     <!-- order summary -->
                         <order-summary />
-                        <button @click="handleBuy" class="mt-5 btn btn--primary btn--md width-100% display@lg">Comprar</button>
-                </div>
+                        <!-- <button @click="handleBuy" class="mt-5 btn btn--primary btn--md width-100% display@lg">Comprar</button> -->
+                    </div>
             </div>
             
         </form>

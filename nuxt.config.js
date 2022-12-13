@@ -47,7 +47,8 @@ export default {
     baseURL: process.env.STRAPI_URL || 'http://localhost:1337/api'
   },
   env: {
-    strapiUrl: process.env.STRAPI_URL
+    strapiUrl: process.env.STRAPI_URL,
+    paypalClientID: process.env.PAYPAL_CLIENT_ID
   },
   strapi: {
     entities: ['products'],
