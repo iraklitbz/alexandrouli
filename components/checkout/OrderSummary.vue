@@ -70,7 +70,7 @@ export default {
     },
     mounted() {
         const script = document.createElement("script");
-        script.src = `https://www.paypal.com/sdk/js?client-id=${process.env.paypalClientID}`;
+        script.src = `https://www.paypal.com/sdk/js?client-id=${process.env.paypalClientID}&currency=EUR&components=buttons,funding-eligibility`;
         script.addEventListener("load", this.setLoaded);
         document.body.appendChild(script);
         if (localStorage.getItem('productsInCart')) {
@@ -82,23 +82,61 @@ export default {
             this.loaded = true;
             window.paypal
                 .Buttons({
+                fundingSource: paypal.FUNDING.PAYPAL,
                 createOrder: (data, actions) => {
                     return actions.order.create({
-                    purchase_units: [
-                        {
-                        description: this.product.description,
+                        pplication_context: {
+                            brand_name: 'myBrand',
+                            locale: 'es-ES',
+                            shipping_preference: 'SET_PROVIDED_ADDRESS',
+                        },
+                        purchase_units: [{
                         amount: {
-                            currency_code: "USD",
                             value: this.sumaFinal
+                        },
+                        shipping: {
+                            name: {
+                                full_name: 'Hans Muller'
+                            },
+                            address: {
+                                address_line_1: 'MyStreet 12',
+                                admin_area_2: 'New York',
+                                postal_code: '10001',
+                                country_code: 'ES',
+                            }
                         }
-                        }
-                    ]
+                        }]
                     });
                 },
                 onApprove: async (data, actions) => {
                     const order = await actions.order.capture();
                     this.paidFor = true;
                     console.log(order);
+                    await this.$axios.post("/api/orders", {
+                        data: {
+                            orderID: order.id,
+                            name: order.purchase_units[0].shipping.name.full_name,
+                            email: order.payer.email_address,
+                            direccion: order.purchase_units[0].shipping.address,
+                            date: order.create_time,
+                            status: order.status,
+                            totalPagado: order.purchase_units[0].amount.value,
+                            articulos: [
+                                {
+                                    producto: 'irakli',
+                                    cantidad: 5,
+                                },
+                                {
+                                    producto: 'Herbert',
+                                    cantidad: 2,
+                                }
+                            ]
+                        }
+                        }).then((response) => {
+                        if(response) {
+                            this.$swal("Guardada!", "Tu dirección ha sido guardada.", "success");
+                        }
+                        });
                 },
                 onError: err => {
                     console.log(err);
