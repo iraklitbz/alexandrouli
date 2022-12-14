@@ -5,7 +5,7 @@ export const state = () => ({
     address: '',
     city: '',
     state: '',
-    country: 'Spain',
+    country: 'ES',
     postcode: '',
     phone: '',
     delivery: 'Standard',

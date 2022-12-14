@@ -4,7 +4,7 @@
         <legend class="form-legend font-bold">Dirección de entrega</legend>
 
         <div class="grid grid-cols-12 gap-3 lg:gap-5">
-            <div class="col-span-12 md:col-span-6">
+            <div class="col-span-12 md:col-span-12">
                 <ValidationProvider rules="required" v-slot="{ errors }">
                     <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-name">Nombre</label>
                     <input class="form-control w-full" @change="handleSendAddressData" v-model="username" type="text" placeholder="Jon Snow">
@@ -13,11 +13,6 @@
                     />
                 </ValidationProvider>
             </div>
-
-         <div class="col-span-12 md:col-span-6">
-            <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-company">Empresa (opcional)</label>
-            <input class="form-control w-full" @change="handleSendAddressData" v-model="empresa" type="text" placeholder="The Night's Watch">
-        </div>
 
         <div class="col-span-12">
             <ValidationProvider rules="required" v-slot="{ errors }">
@@ -72,29 +67,16 @@
                 />
             </ValidationProvider>
         </div>
-
-       <div class="col-span-12">
-            <ValidationProvider rules="phone" v-slot="{ errors }">
-                <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-tel">Teléfono (opcional)</label>
-                <input class="form-control w-full" @change="handleSendAddressData" v-model="telefono" type="tel" placeholder="000 000 000">
-                <error-message
-                    :errors="errors[0]"
-                />
-            </ValidationProvider>
-        </div>
         </div>
     </fieldset>
 </div>
 </template>
 <script>
 import select from "~/plugins/select.js";
+import { mapGetters } from 'vuex'
 export default {
   props: {
         addressData: {
-            type: Object,
-            default: () => {}
-        },
-        loggedInUser: {
             type: Object,
             default: () => {}
         }
@@ -102,19 +84,19 @@ export default {
     data () {
         return {
             username: '',
-            empresa: '',
             direccion: '',
             ciudad: '',
             provincia: '',
-            postal: '',
-            telefono: ''
+            postal: ''
         }
+    },
+    computed: {
+        ...mapGetters(["loggedInUser"])
     },
     mounted() {
         select();
-        if(Object.keys(this.addressData).length && this.loggedInUser){
+        if(Object.keys(this.addressData).length && this.loggedInUser !== null){
             this.username = this.loggedInUser.username
-            this.empresa = this.addressData.company
             this.direccion = this.addressData.direccion
             this.ciudad = this.addressData.ciudad
             this.provincia = this.addressData.provincia
@@ -125,12 +107,11 @@ export default {
         handleSendAddressData() {
             const sendData = {
                 username: this.username,
-                empresa: this.empresa,
                 direccion: this.direccion,
                 ciudad: this.ciudad,
                 provincia: this.provincia,
                 postal: this.postal,
-                telefono: this.telefono
+                pais: 'ES'
             }
             this.$emit('update-send-data', sendData)
         }

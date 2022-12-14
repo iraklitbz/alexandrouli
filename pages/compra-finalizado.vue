@@ -5,19 +5,31 @@
                 <svg class="inline-block thank-you__icon mb-3 lg:mb-5" viewBox="0 0 80 80" aria-hidden="true"><g class="thank-you__icon-group"><circle class="fill-success" cx="40" cy="40" r="40"/><polyline points="21 41 33 53 59 27" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="2"/></g></svg>
 
                 <div class="text-component">
-                <h1 class="text-4xl lg:text-6xl">Order Confirmed</h1>
-                    <p class="text-contrast-medium">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi aliquid qui et saepe omnis ipsum amet quasi accusamus.</p>
+                <h1 class="text-4xl lg:text-6xl">Pedido confirmado</h1>
+                    <p class="text-contrast-medium">El pedido ha sido registrado correctamente y está siendo preparado</p>
 
                     <p class="flex flex-wrap flex-col sm:flex-row gap-1.5 lg:gap-2 justify-center">
-                    <nuxt-link class="btn btn--subtle" to="/vinos">Continue Shopping</nuxt-link>
-                    <a class="btn btn--primary" href="#0">Manage Order</a>
+                        <nuxt-link class="btn btn--primary" to="/vinos/1">Continuar comprando</nuxt-link>
+                        <nuxt-link v-if="loggedInUser" class="btn btn--subtle" to="/usuario/perfil">Ver el pedido</nuxt-link>
+                        <nuxt-link v-else class="btn btn--subtle" to="/usuario/login">Ver el pedido</nuxt-link>
                     </p>
                 </div>
             </div>
         </section>
-        <MoreProducts />
+        <MoreProducts 
+            :outstanding="true"
+        />
     </div>
 </template>
+<script>
+import { mapGetters } from 'vuex'
+export default {
+    name: 'ConfirmadoPage',
+    computed: {
+        ...mapGetters(["isAuthenticated", "loggedInUser"])
+    }
+}
+</script>
 <style scoped>
     .thank-you {
     position: relative;

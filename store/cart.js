@@ -36,4 +36,8 @@ export const mutations = {
         localStorage.setItem('productsInCart', JSON.stringify(removeProductFromSArray))
         state.products = removeProductFromSArray
     },
+    SET_REMOVE_ALL_PRODUCTS (state) {
+        localStorage.removeItem('productsInCart')
+        state.products = []
+    },
 }

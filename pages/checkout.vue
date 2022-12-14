@@ -21,7 +21,6 @@
                     <delivery 
                         v-if="noDataAddress || !noDataAddress && isEditiong"
                         :addressData="addressData"
-                        :loggedInUser="loggedInUser"
                         @update-send-data="handleUpdateSendData"
                     />
                     <div v-if="!noDataAddress && !isEditiong" class="address-module mb-5">
@@ -65,7 +64,9 @@
 
                 <div class="col-span-12 xl:col-span-5">
                     <!-- order summary -->
-                        <order-summary />
+                        <order-summary 
+                            :addressData="addressData"
+                        />
                         <!-- <button @click="handleBuy" class="mt-5 btn btn--primary btn--md width-100% display@lg">Comprar</button> -->
                     </div>
             </div>
@@ -74,7 +75,7 @@
     </section>
 </template>
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import BillAddress from '../components/checkout/BillAddress.vue';
 import OrderSummary from '../components/checkout/OrderSummary.vue';
 export default {
@@ -91,9 +92,6 @@ export default {
         }
     },
     computed: {
-        ...mapState({
-                steps: state => state.steps.steps
-        }),
         ...mapGetters(["isAuthenticated", "loggedInUser"])
     },
     mounted () {
@@ -105,13 +103,17 @@ export default {
         },
         async handleGetAdress() {
             if(this.isAuthenticated) {
+                this.email = this.loggedInUser.email
                 await this.$axios.get("/api/addresses?filters[userID][$eq]=" + String(this.loggedInUser.id)).then((response) => {
                 if(response) {
-                if(response.data.data && response.data.data[0].attributes) {
-                    this.email = this.loggedInUser.email
-                    this.addressID = response.data.data[0].id
-                    this.addressData = response.data.data[0].attributes
-                }
+                    this.noDataAddress = true
+                    if(response.data.data && response.data.data[0].attributes) {
+                        this.noDataAddress = false
+                        this.addressID = response.data.data[0].id
+                        this.addressData = response.data.data[0].attributes
+                    } else {
+                        this.noDataAddress = true
+                    }
                 }
                 }).catch((error) => {
                     console.log(error)
@@ -129,13 +131,9 @@ export default {
         },
         handleUpdateSendData(data) {
             this.addressData = data
-        },
-        handleUpdateBillAddress(data) {
-            this.addressData.billingData = data
-        },
-        handleBuy(e) {
-            e.preventDefault();
-            this.addressData.email = this.email
+            if(this.email) {
+                this.addressData.email = this.email
+            }
             if(this.billingAddressIsSame) {
                 this.addressData.billingData = {}
                 this.addressData.billingData.username = this.addressData.username
@@ -143,11 +141,16 @@ export default {
                 this.addressData.billingData.provincia = this.addressData.provincia
                 this.addressData.billingData.postal = this.addressData.postal
                 this.addressData.billingData.direccion = this.addressData.direccion
-                
-                console.log(this.addressData)
-            } else {
-                console.log(this.addressData)
+                this.addressData.billingData.pais = this.addressData.pais
             }
+        },
+        handleUpdateBillAddress(data) {
+            this.addressData.billingData = data
+        },
+        handleBuy(e) {
+            e.preventDefault();
+            this.addressData.email = this.email
+            
         }
     }
 }

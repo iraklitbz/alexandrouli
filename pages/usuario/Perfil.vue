@@ -1,128 +1,137 @@
 
 <template>
-  <div class="max-w-md w-full mx-auto mt-8">
-    <h1 class="text-3xl font-extrabold mb-4">Tu perfil</h1>
-    <form>
-      <div class="mb-6">
-        <label
-          for="email"
-          class="
-            block
-            mb-2
-            text-sm
-            font-medium
-            text-gray-900
-            dark:text-gray-300
-          "
-          >Email</label
-        >
-        <input
-          type="email"
-          class="
-            mb-6
-            bg-gray-100
-            border border-gray-300
-            text-gray-900 text-sm
-            rounded-lg
-            focus:ring-blue-500 focus:border-blue-500
-            block
-            w-full
-            p-2.5
-            cursor-not-allowed
-            dark:bg-gray-700
-            dark:border-gray-600
-            dark:placeholder-gray-500
-            dark:text-gray-500
-            dark:focus:ring-blue-500
-            dark:focus:border-blue-500
-          "
-          :value="loggedInUser.email"
-          disabled
-        />
-      </div>
-      <div class="mb-6">
-        <label
-          for="username"
-          class="
-            block
-            mb-2
-            text-sm
-            font-medium
-            text-gray-900
-            dark:text-gray-300
-          "
-          >Nombre</label
-        >
-        <input
-          type="text"
-          class="
-            mb-6
-            bg-gray-100
-            border border-gray-300
-            text-gray-900 text-sm
-            rounded-lg
-            focus:ring-blue-500 focus:border-blue-500
-            block
-            w-full
-            p-2.5
-            cursor-not-allowed
-            dark:bg-gray-700
-            dark:border-gray-600
-            dark:placeholder-gray-500
-            dark:text-gray-500
-            dark:focus:ring-blue-500
-            dark:focus:border-blue-500
-          "
-          :value="loggedInUser.username"
-          disabled
-        />
-      </div>
-    </form>
-      <div class="address-module">
-        <div class="bg-floor rounded-md p-6 border-l-[3px] border-solid border-primary shadow-[0_0_0_1px_hsla(var(--color-contrast-higher)/0.05),0_0_0_1px_hsla(var(--color-contrast-higher)/0.02),0_1px_3px_-1px_hsla(var(--color-contrast-higher)/0.2)]">
-          <div class="flex items-center justify-between mb-3">
-            <h5 class="font-semibold text-contrast-higher">Dirección de entrega</h5>
-            <button v-if="Object.keys(addressData).length !== 0" @click="handleAdressEdit" class="btn  text-sm bg-warning bg-opacity-75 hover:bg-opacity-100">Editar</button>
-          </div>
-          <div
-            v-if="isAddingAdress || isEditingAdress"
+  <div class="w-[calc(100%_-_2.5rem)] lg:w-[calc(100%_-_4rem)] mx-auto max-w-7xl grid lg:gap-12 grid-cols-1 lg:grid-cols-3 mt-8">
+    <div class="col-span-4">
+      <h1 class="text-3xl font-extrabold mb-4">Tu perfil</h1>
+    </div>
+    <div>
+      <form>
+        <div class="mb-6">
+          <label
+            for="email"
+            class="
+              block
+              mb-2
+              text-sm
+              font-medium
+              text-gray-900
+              dark:text-gray-300
+            "
+            >Email</label
           >
-            <form>
-              <ValidationObserver ref="form">
-                <Address 
-                  @update-address="handleAdressData"
-                  :ID="loggedInUser.id"
-                />
-              </ValidationObserver>
-            </form>
-          </div>
-          <div
-              v-if="Object.keys(addressData).length === 0 && !isAddingAdress"
-              @click="handleAdressAdd" 
-              class="cursor-pointer mt-4 py-2 bg-contrast-low bg-opacity-20 hover:bg-opacity-35 flex items-center justify-center rounded-sm"
+          <input
+            type="email"
+            class="
+              mb-6
+              bg-gray-100
+              border border-gray-300
+              text-gray-900 text-sm
+              rounded-lg
+              focus:ring-blue-500 focus:border-blue-500
+              block
+              w-full
+              p-2.5
+              cursor-not-allowed
+              dark:bg-gray-700
+              dark:border-gray-600
+              dark:placeholder-gray-500
+              dark:text-gray-500
+              dark:focus:ring-blue-500
+              dark:focus:border-blue-500
+            "
+            :value="loggedInUser.email"
+            disabled
+          />
+        </div>
+        <div class="mb-6">
+          <label
+            for="username"
+            class="
+              block
+              mb-2
+              text-sm
+              font-medium
+              text-gray-900
+              dark:text-gray-300
+            "
+            >Nombre</label
+          >
+          <input
+            type="text"
+            class="
+              mb-6
+              bg-gray-100
+              border border-gray-300
+              text-gray-900 text-sm
+              rounded-lg
+              focus:ring-blue-500 focus:border-blue-500
+              block
+              w-full
+              p-2.5
+              cursor-not-allowed
+              dark:bg-gray-700
+              dark:border-gray-600
+              dark:placeholder-gray-500
+              dark:text-gray-500
+              dark:focus:ring-blue-500
+              dark:focus:border-blue-500
+            "
+            :value="loggedInUser.username"
+            disabled
+          />
+        </div>
+      </form>
+        <div class="address-module">
+          <div class="bg-floor rounded-md p-6 border-l-[3px] border-solid border-primary shadow-[0_0_0_1px_hsla(var(--color-contrast-higher)/0.05),0_0_0_1px_hsla(var(--color-contrast-higher)/0.02),0_1px_3px_-1px_hsla(var(--color-contrast-higher)/0.2)]">
+            <div class="flex items-center justify-between mb-3">
+              <h5 class="font-semibold text-contrast-higher">Dirección de entrega</h5>
+              <button v-if="Object.keys(addressData).length !== 0" @click="handleAdressEdit" class="btn  text-sm bg-warning bg-opacity-75 hover:bg-opacity-100">Editar</button>
+            </div>
+            <div
+              v-if="isAddingAdress || isEditingAdress"
             >
-            <load-svg name="plus" class="w-5" />
-          </div>
-          <button v-if="isAddingAdress" @click="handleAdressSend" class="btn w-full btn--primary mt-5">Guardar</button>
-          
-          <div v-if="Object.keys(addressData).length !== 0 && !isAddingAdress" class="text-[0.9375rem] leading-snug text-contrast-medium">
-            <ul>
-              <li>{{addressData.username}}</li>
-              <li>{{addressData.direccion}}</li>
-              <li>{{addressData.ciudad}}</li>
-              <li>{{addressData.provincia}}</li>
-              <li>{{addressData.postal}}</li>
-              <li>{{addressData.pais}}</li>
-            </ul>
+              <form>
+                <ValidationObserver ref="form">
+                  <Address 
+                    @update-address="handleAdressData"
+                    :ID="loggedInUser.id"
+                  />
+                </ValidationObserver>
+              </form>
+            </div>
+            <div
+                v-if="Object.keys(addressData).length === 0 && !isAddingAdress"
+                @click="handleAdressAdd" 
+                class="cursor-pointer mt-4 py-2 bg-contrast-low bg-opacity-20 hover:bg-opacity-35 flex items-center justify-center rounded-sm"
+              >
+              <load-svg name="plus" class="w-5" />
+            </div>
+            <button v-if="isAddingAdress" @click="handleAdressSend" class="btn w-full btn--primary mt-5">Guardar</button>
+            
+            <div v-if="Object.keys(addressData).length !== 0 && !isAddingAdress" class="text-[0.9375rem] leading-snug text-contrast-medium">
+              <ul>
+                <li>{{addressData.username}}</li>
+                <li>{{addressData.direccion}}</li>
+                <li>{{addressData.ciudad}}</li>
+                <li>{{addressData.provincia}}</li>
+                <li>{{addressData.postal}}</li>
+                <li>{{addressData.pais}}</li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-      <a 
-        @click="showAlert" 
-        class="text-error text-lg block text-center cursor-pointer mt-10"
-      >
-        Borrar tu cuenta
-      </a>
+    </div>
+    <div class="col-span-4 lg:col-span-2 mt-10 lg:mt-0">
+      <order-review-table />
+    </div>
+    <div class="text-center col-span-4">
+        <a 
+          @click="showAlert" 
+          class="text-error text-lg block text-center cursor-pointer mt-10"
+        >
+          Borrar tu cuenta
+        </a>
+    </div>
   </div>
 </template>
 <script>
@@ -142,7 +151,7 @@ import { loadavg } from 'os'
             city: '',
             provincia: '',
             postcode: '',
-            country: 'Spain',
+            country: 'ES',
             addressData: {},
             isEditingAdress: false,
             addressID: null

@@ -3,7 +3,7 @@
     <legend class="form-legend font-bold">Dirección Facturación</legend>
       <div class="checkout__billing-info">
          <div class="grid grid-cols-12 gap-3 lg:gap-5">
-             <div class="col-span-12 md:col-span-6">
+             <div class="col-span-12 md:col-span-12">
                 <ValidationProvider rules="required" v-slot="{ errors }">
                     <label class="form-label mb-1.5 lg:mb-2" for="checkout-billing-name">Nombre</label>
                     <input class="form-control w-full" @change="handleBillAddress" v-model="username" type="text" placeholder="Jon Snow">
@@ -11,11 +11,6 @@
                         :errors="errors[0]"
                     />
                 </ValidationProvider>
-            </div>
-
-             <div class="col-span-12 md:col-span-6">
-                    <label class="form-label mb-1.5 lg:mb-2" for="checkout-billing-company">Empresa (opcional)</label>
-                    <input class="form-control w-full" @change="handleBillAddress" v-model="empresa" type="text" placeholder="The Night's Watch">
             </div>
 
             <div class="col-span-12">
@@ -53,7 +48,7 @@
 
                 <div class="select">
                     <select class="select__input btn btn--subtle appearance-none" name="checkout-billing-country" id="checkout-billing-country" disabled>
-                        <option value="0">España</option>
+                        <option value="0">ES</option>
                     </select>
 
                     <svg class="icon select__icon" aria-hidden="true" viewBox="0 0 16 16">
@@ -81,7 +76,6 @@ export default {
     data() {
         return {
             username: '',
-            empresa: '',
             direccion: '',
             ciudad: '',
             provincia: '',
@@ -92,11 +86,11 @@ export default {
         handleBillAddress() {
             this.$emit('update-billaddress', {
                 username: this.username,
-                empresa: this.empresa,
                 direccion: this.direccion,
                 ciudad: this.ciudad,
                 provincia: this.provincia,
                 postal: this.postal,
+                pais: 'ES'
             });
         }
     },

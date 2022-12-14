@@ -44,7 +44,7 @@
 
             <div class="select">
                 <select class="select__input btn btn--subtle appearance-none" name="checkout-billing-country" id="checkout-billing-country" disabled>
-                    <option value="0">Spain</option>
+                    <option value="0">ES</option>
                 </select>
 
                 <svg class="icon select__icon" aria-hidden="true" viewBox="0 0 16 16">
