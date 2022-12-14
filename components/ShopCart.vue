@@ -3,7 +3,7 @@
         class="drawer dr-cart"
         :class="toggleCart ? 'drawer--is-visible' : ''"
         >
-        <div class="drawer__content bg-floor-dark inner-glow shadow-lg flex flex-col" role="alertdialog" aria-labelledby="drawer-cart-title">
+        <div class="drawer__content relative z-50 bg-floor-dark inner-glow shadow-lg flex flex-col" role="alertdialog" aria-labelledby="drawer-cart-title">
             <header class="flex items-center justify-between shrink-0 border-b border-contrast-lower px-3 lg:px-5 py-2 lg:py-3">
             <h1 id="drawer-cart-title" class="text-base lg:text-xl truncate" >Your Cart ({{ carritoNumber }})</h1>
 
@@ -33,7 +33,7 @@
                           </div>
                          <div class="text-right">
                             <p class="text-sm lg:text-base text-contrast-higher">{{product.price * product.amount}}€</p>
-                            <p class="text-sm lg:text-base text-contrast-medium mt-1 lg:mt-1.5">{{'X' + product.amount}}</p>
+                            <p class="text-sm lg:text-base text-contrast-medium mt-1 lg:mt-1.5">{{'x' + product.amount}}</p>
                          </div>
                       </div>
                       <div class="text-right">
@@ -49,17 +49,15 @@
                 <nuxt-link to="/checkout" class="btn btn--primary text-[1.2em] w-full mt-2 lg:mt-3">Checkout &rarr;</nuxt-link>
             </footer>
         </div>
+          <div
+            @click="handleCloseCart"   
+            class="fixed w-full h-screen bg-black bg-opacity-20 top-0 left-0 z-1">
+          </div>
         </div>
 </template>
 <script>
 import { mapState } from 'vuex'
 export default {
-    props: {
-        toggleCart: {
-            type: Boolean,
-            default: false
-        }
-    },
     data() {
         return {
             strapiUrl: process.env.strapiUrl
@@ -68,12 +66,12 @@ export default {
     computed: {
       ...mapState({
           products: state => state.cart.products,
+          toggleCart: state => state.cart.toggleCart,
           carritoNumber: state =>  state.cart.products.reduce((sum, value) => (sum + value.amount ), 0),
           sumaFinal: state => state.cart.products.reduce((sum, value) => (sum + value.totalPrice ), 0)
       })
     },
     mounted() {
-      console.log('mounted')
         if (localStorage.getItem('productsInCart')) {
             this.$store.commit('cart/SET_PRODUCTS_LOCAL_STORAGE', JSON.parse(localStorage.getItem('productsInCart')))
         }
@@ -82,7 +80,7 @@ export default {
         handleCloseCart() {
             let toggleCart = this.toggleCart
             toggleCart = !toggleCart
-            this.$emit("update--close-toggle", toggleCart);
+            this.$store.commit('cart/SET_DRAWER', toggleCart)
         },
         handleRemoveProduct(id) {
             this.$store.commit('cart/SET_REMOVE_PRODUCTS', id)

@@ -25,7 +25,10 @@
                             <p class="color-contrast-higher"><nuxt-link :to="'/vinos/' + product.id + '/' + product.slug">{{ product.name }}</nuxt-link></p>
                             <p class="color-contrast-medium text-sm">{{ product.cultivo }}</p>
                         </div>
-                        <p class="color-contrast-higher"><span class="sr-only">Price:</span> {{ product.price }}€</p>
+                        <div>
+                            <p class="text-lg lg:text-base text-contrast-higher">{{product.price * product.amount}}€</p>
+                            <p class="text-sm lg:text-base text-contrast-medium mt-1 lg:mt-1.5">{{'x' + product.amount}}</p>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -34,16 +37,37 @@
         <footer class="order-summary__footer bg-light padding-x-sm padding-bottom-sm">
             <div class="margin-y-sm padding-y-sm border-top border-bottom">
                 <div class="flex flex-column flex-row@md gap-xxs">
-                <input aria-label="Discount code" class="form-control flex-grow min-width-0" type="email" placeholder="Discount code">
-                <button class="btn btn--subtle">Apply</button>
+                    <input 
+                        aria-label="Código de descuento" 
+                        class="form-control flex-grow min-width-0" 
+                        v-model="discountName" 
+                        type="text" 
+                        placeholder="Código de descuento"
+                        :disabled="discountExist"
+                    >
+                    <button @click="handleDescaunt" class="btn btn--subtle">Aplicar</button>
                 </div>
+                <Alert 
+                    v-if="discountDontExist"
+                    class="mt-2" 
+                    :headline="'Error'"
+                    :type="'error'"
+                    :message="'El código de descuento no existe.'"
+                />
+                <Alert 
+                    v-if="discountExist"
+                    class="mt-2" 
+                    :headline="'Exito'"
+                    :type="'success'"
+                    :message="'Aplicado el código de descuento!'"
+                />
             </div>
 
             <ul class="text-sm flex flex-column gap-xxs">
-                <li class="flex justify-between"><i>Subtotal</i> <i>$98.00</i></li>
-                <li class="flex justify-between"><i>Tax</i> <i>$10.00</i></li>
-                <li class="flex justify-between"><i>Delivery</i> <i>Free</i></li>
-                <li class="flex justify-between font-bold"><i>Total</i> <i>{{sumaFinal}}</i></li>
+                <li class="flex justify-between"><i>IVA</i> <i>21%</i></li>
+                <li class="flex justify-between"><i>Envio</i> <i>Gratis</i></li>
+                <li v-if="discountExist && sumaFinalConDescuento !== null" class="flex justify-between font-bold text-lg"><i>Total</i> <i>{{sumaFinalConDescuento}}€</i></li>
+                <li v-else class="flex justify-between font-bold text-lg"><i>Total</i> <i>{{sumaFinal}}€</i></li>
             </ul>
             <div class="mt-10" ref="paypal"></div>
             <Alert 
@@ -71,7 +95,11 @@ export default {
                 strapiUrl: process.env.strapiUrl,
                 loaded: false,
                 productsWanna: [],
-                buyError: false
+                buyError: false,
+                discountName: '',
+                discountDontExist: false,
+                discountExist: false,
+                sumaFinalConDescuento: null
             }
     },
     watch: {
@@ -81,6 +109,16 @@ export default {
                     setTimeout(() => {
                         this.buyError = false;
                     }, 5000);
+                }
+            },
+            immediate: true
+        },
+        discountDontExist: {
+            handler: function (val) {
+                if(val) {
+                    setTimeout(() => {
+                        this.discountDontExist = false;
+                    }, 3000);
                 }
             },
             immediate: true
@@ -163,6 +201,7 @@ export default {
                             status: order.status,
                             totalPagado: order.purchase_units[0].amount.value,
                             articulos: this.productsWanna,
+                            discount: this.discountName,
                             enviado: false,
                         }
                         }).then((response) => {
@@ -182,6 +221,22 @@ export default {
                 }
                 })
                 .render(this.$refs.paypal);
+        },
+        async handleDescaunt(e) {
+            e.preventDefault();
+            await this.$axios.get("/api/discounts?filters[name][$eq]=" + this.discountName).then((response) => {
+                if(response) {
+                    if(response.data.data) {
+                        this.discountDontExist = false;
+                        this.discountExist = true;
+                        const discountPorc = response.data.data.shift().attributes.percentage
+                        this.sumaFinalConDescuento = this.sumaFinal - (this.sumaFinal * discountPorc / 100);
+                    }
+                }
+            }).catch(() => {
+                this.discountExist = false;
+                this.discountDontExist = true;
+            });
         }
     }
 }

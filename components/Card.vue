@@ -50,6 +50,7 @@ export default {
     computed: {
         ...mapState({
             products: state => state.cart.products,
+            toggleCart: state => state.cart.toggleCart
         }),
         amount() {
             return this.products.find(element => element.id === this.id) ? this.products.find(element => element.id === this.id).amount : 0;
@@ -63,6 +64,7 @@ export default {
                 amount: 1,
                 id: this.id
             });
+            this.$store.commit('cart/SET_DRAWER', true)
         }
     }
 }

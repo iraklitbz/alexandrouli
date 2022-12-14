@@ -12,12 +12,10 @@
                 <span>Menu</span>
             </button>
             <Navbar
-              :toggleCart="toggleCart"
               @update-toggle="handleToggleCart"
             />
         </div>
         <shop-cart
-          :toggleCart="toggleCart"
           @update--close-toggle="handleToggleCart"
         />
     </header>
@@ -30,17 +28,12 @@ import header from "~/plugins/header.js";
 import ShopCart from './ShopCart.vue';
 export default {
   components: { ShopCart },
-  data() {
-    return {
-      toggleCart: false,
-    }
-  },
   mounted() {
     header()
   },
   watch:{
       $route (to, from){
-          this.toggleCart = false;
+        this.$store.commit('cart/SET_DRAWER', false)
       }
   }, 
   methods: {

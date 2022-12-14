@@ -38,15 +38,10 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 export default {
-    props: {
-        toggleCart: {
-            type: Boolean,
-            default: false
-        }
-    },
     computed: {
         ...mapState({
                 products: state => state.cart.products.length,
+                toggleCart: state => state.cart.toggleCart,
                 carritoNumber: state => state.cart.products.reduce((sum, value) => (sum + value.amount ), 0)
         }),
         ...mapGetters(['loggedInUser'])
@@ -58,7 +53,7 @@ export default {
         handleToggleCart() {
             let toggleCart = this.toggleCart
             toggleCart = !toggleCart
-            this.$emit("update-toggle", toggleCart);
+            this.$store.commit('cart/SET_DRAWER', toggleCart)
         },
         logout() {
             this.$auth.logout()

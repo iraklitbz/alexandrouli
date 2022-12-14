@@ -6,7 +6,7 @@
         <div class="flex items-center justify-between">
             <div class="flex items-center">
             <load-svg v-if="type === 'error'" name="chk" class="w-10 mr-3" :class="`text-${type}`" />
-            <load-svg v-else name="check2" class="w-10 mr-3" :class="`text-${type}`" />
+            <load-svg v-else name="check2" class="w-10 mr-3" :class="`text-success`" />
 
             <p class="leading-6"><strong class="font-bold">{{headline}}:</strong> {{message}}</p>
             </div>

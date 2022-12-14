@@ -1,5 +1,6 @@
 export const state = () => ({
-    products: []
+    products: [],
+    toggleCart: false
 })
 
 export const mutations = {
@@ -40,4 +41,7 @@ export const mutations = {
         localStorage.removeItem('productsInCart')
         state.products = []
     },
+    SET_DRAWER (state, payload) {
+        state.toggleCart = payload
+    }
 }
