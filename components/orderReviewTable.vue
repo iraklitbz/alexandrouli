@@ -1,53 +1,45 @@
 <template>
-    <div class="tbl">
-            <table v-if="Object.keys(orderData).length" class="tbl__table text-unit-em text-sm lg:text-base border-b-2 border-contrast-lower" aria-label="Table Example">
-                <thead class="tbl__header border-b-2 border-contrast-lower">
-                <tr class="tbl__row">
-                    <th class="tbl__cell text-left" scope="col">
-                        <span class="text-xs uppercase letter-spacing-lg font-semibold">Nombre</span>
-                    </th>
-
-                    <th class="tbl__cell text-right" scope="col">
-                        <span class="text-xs uppercase letter-spacing-lg font-semibold">Dirección</span>
-                    </th>
-
-                    <th class="tbl__cell text-right" scope="col">
-                        <span class="text-xs uppercase letter-spacing-lg font-semibold">Productos</span>
-                    </th>
-                    
-                    <th class="tbl__cell text-right" scope="col">
-                        <span class="text-xs uppercase letter-spacing-lg font-semibold">Enviado</span>
-                    </th>
-                    <th class="tbl__cell text-right" scope="col">
-                        <span class="text-xs uppercase letter-spacing-lg font-semibold">Pagado total</span>
-                    </th>
-                </tr>
-                </thead>
-                
-                <tbody class="tbl__body">
-                    <tr class="tbl__row">
-
-                        <td class="tbl__cell" role="cell">Irakli</td>
-
-                        <td class="tbl__cell text-right" role="cell">Cantaperdiz 38</td>
-
-                        <td class="tbl__cell text-right" role="cell">Kinzmarouli</td>
-
-                        <td class="tbl__cell text-right" role="cell">
-                            <span class="inline-block text-sm leading-none lg:text-base lg:leading-none bg-success/20 text-success-darker rounded-full py-1 lg:py-1.5 px-2 lg:px-3 whitespace-nowrap">Enviado</span>
-                        </td>
-
-                        <td class="tbl__cell text-right" role="cell">$320,000</td>
-                    </tr>
-                </tbody>
-            </table>
+    <section class="relative z-1">
+        <div class="w-[calc(100%_-_2.5rem)] lg:w-[calc(100%_-_4rem)] mx-auto max-w-lg md:max-w-3xl">
+            <ul v-if="orderData.length" class="grid grid-cols-12 gap-3 lg:gap-5">
+                <li v-for="(item, index) in orderData" :key="index" class="col-span-12 perspective-xl">
+                    <div class="bg-floor-light rounded-lg shadow-lg scroll-fx js-scroll-fx" data-scroll-fx-1="rotateX, 45deg, 0deg, 0%, 50%" data-scroll-fx-2="rotateY, 15deg, 0deg, 0%, 50%">
+                        <div class="p-10">
+                            <div class="mb-5" role="cell">
+                                <span class="block text-black text-xl">Dirección:</span>
+                                <span class="text-contrast-medium text-xl">{{item.attributes.direccion}}</span>
+                            </div>
+                            <div class="mb-5">
+                                <span class="block text-black text-xl mb-2">Productos comprados:</span>
+                                <ul class="list-disc list-inside text-contrast-medium">
+                                    <li v-for="(product, index) in item.attributes.articulos" :key="index">
+                                        {{product.name}} x {{product.amount}}
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="flex justify-between items-center mt-10">
+                                <div>
+                                    <span class="text-black text-xl mr-2">Estado:</span>
+                                    <span v-if="item.attributes.enviado" class="inline-block text-lg leading-none lg:text-xl lg:leading-none bg-success/20 text-success-darker rounded-full py-1 lg:py-1.5 px-2 lg:px-3 whitespace-nowrap">Enviado</span>
+                                    <span v-else class="inline-block text-sm leading-none lg:text-base lg:leading-none  bg-warning/20 text-warning-darker rounded-full py-1 lg:py-1.5 px-2 lg:px-3 whitespace-nowrap">Preparando</span>
+                                </div>
+                                <div>
+                                    <span class="text-black text-xl mr-2">Total pagado:</span>
+                                    <span>{{item.attributes.totalPagado}}€</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
             <div 
                 v-else
-                class="bg-contrast-lower bg-opacity-20 text-contrast-high text-center py-4 rounded-sm"
+                class="bg-floor-light rounded-lg shadow-lg p-10 text-center"
             >
-                <p>No hay compras</p>
+                No hay compra
             </div>
         </div>
+    </section>
 </template>
 <script>
 import { mapGetters } from 'vuex'
@@ -62,10 +54,10 @@ export default {
     },
     async mounted() {
           try {
-            await this.$axios.get("/api/orders?filters[email][$eq]=" + this.loggedInUser.email).then((response) => {
+            await this.$axios.get("/api/orders?filters[email][$eq]=" + this.loggedInUser.email + '&populate=*').then((response) => {
              if(response) {
-               if(response.data.data && response.data.data[0].attributes) {
-                    this.orderData = response.data.data[0].attributes
+               if(response.data.data && response.data.data) {
+                    this.orderData = response.data.data
                }
               }
             })

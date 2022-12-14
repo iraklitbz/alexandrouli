@@ -12,9 +12,12 @@
         <div class="grid grid-cols-12 gap-5 lg:gap-8">
           <div class="col-span-12 lg:col-span-6 xl:col-span-7">
             <div class="flex flex-col gap-3 lg:gap-5">
-              <figure class="h-big pt-14">
+              <figure v-if="feature" class="h-big pt-14">
                 <img class="object-contain h-full adv-gallery__img w-full" :src="feature" :alt="name + 'image'">
               </figure>
+              <div class="flex items-center justify-center bg-contrast-low bg-opacity-10 h-96" v-else>
+                <load-svg name="cross" class="w-20 h-20 text-contrast-low" />
+              </div>
 
               <ul 
                 v-if="images"

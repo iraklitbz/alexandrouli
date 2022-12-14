@@ -119,18 +119,18 @@
               </ul>
             </div>
           </div>
+          <div class="text-center col-span-4">
+              <a 
+                @click="showAlert" 
+                class="text-error text-lg block text-center cursor-pointer mt-10"
+              >
+                Borrar tu cuenta
+              </a>
+          </div>
         </div>
     </div>
     <div class="col-span-4 lg:col-span-2 mt-10 lg:mt-0">
       <order-review-table />
-    </div>
-    <div class="text-center col-span-4">
-        <a 
-          @click="showAlert" 
-          class="text-error text-lg block text-center cursor-pointer mt-10"
-        >
-          Borrar tu cuenta
-        </a>
     </div>
   </div>
 </template>

@@ -11,11 +11,14 @@
                     :key="index"
                     class="order-summary__item"
                 >
-                    <nuxt-link :to="'/vinos/' + product.id + '/' + product.slug" class="h-36 w-36 lg:h-20 lg:w-20 order-summary__img mr-5">
+                    <nuxt-link v-if="product.feature.data && product.feature.data.attributes" :to="'/vinos/' + product.id + '/' + product.slug" class="h-36 w-36 lg:h-20 lg:w-20 order-summary__img mr-5">
                         <img
                             class="object-contain h-full"
                             :src="product.feature.data.attributes.formats.thumbnail.url" :alt="product.name + ' image'"
                         >
+                    </nuxt-link>
+                    <nuxt-link v-else :to="'/vinos/' + product.id + '/' + product.slug" class="h-36 w-36 lg:h-20 lg:w-20 flex items-center justify-center mr-5">
+                        <load-svg name="cross" class="w-10 h-10 text-contrast-low" />
                     </nuxt-link>
                     <div class="flex flex-wrap justify-between items-center w-full">
                         <div>

@@ -19,8 +19,11 @@
                     class="dr-cart__product bg-white rounded-md mb-2"
                     :key="index"
                   >
-                    <nuxt-link :to="'/vinos/' + product.id + '/' + product.slug" class="rounded-lg shadow-md h-20 flex justify-center dr-cart__img">
+                    <nuxt-link v-if="product.feature.data && product.feature.data.attributes" :to="'/vinos/' + product.id + '/' + product.slug" class="rounded-lg shadow-md h-20 flex justify-center dr-cart__img">
                       <img class="object-contain h-full" :src="product.feature.data.attributes.formats.thumbnail.url" :alt="product.name + ' image'">
+                    </nuxt-link>
+                    <nuxt-link  v-else :to="'/vinos/' + product.id + '/' + product.slug" class="rounded-lg shadow-md h-20 flex justify-center items-center dr-cart__img">
+                          <load-svg name="cross" class="w-10 h-10 text-contrast-low" />
                     </nuxt-link>
                     <div class="">
                         <div class="flex justify-between items-center">
