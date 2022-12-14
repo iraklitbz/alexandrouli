@@ -38,6 +38,11 @@ export default {
   mounted() {
     header()
   },
+  watch:{
+      $route (to, from){
+          this.toggleCart = false;
+      }
+  }, 
   methods: {
     handleToggleCart(value) {
         this.toggleCart = value;

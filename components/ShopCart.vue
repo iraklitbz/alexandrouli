@@ -1,5 +1,5 @@
 <template>
-    <div
+    <div 
         class="drawer dr-cart"
         :class="toggleCart ? 'drawer--is-visible' : ''"
         >
@@ -73,6 +73,7 @@ export default {
       })
     },
     mounted() {
+      console.log('mounted')
         if (localStorage.getItem('productsInCart')) {
             this.$store.commit('cart/SET_PRODUCTS_LOCAL_STORAGE', JSON.parse(localStorage.getItem('productsInCart')))
         }
@@ -85,9 +86,6 @@ export default {
         },
         handleRemoveProduct(id) {
             this.$store.commit('cart/SET_REMOVE_PRODUCTS', id)
-        },
-        handleUpdateCart(value) {
-            console.log(value)
         }
     }
 }
