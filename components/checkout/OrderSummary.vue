@@ -165,6 +165,7 @@ export default {
                     return (({ name, amount, bodega, categoria, productID, price, imgURL }) => ({ name, amount, bodega, categoria, productID, price, imgURL}))(element);
                 });
             this.loaded = true;
+            //Aqui se crea el boton de paypal
             window.paypal
                 .Buttons({
                     fundingSource: paypal.FUNDING.PAYPAL,
@@ -222,6 +223,7 @@ export default {
                         }
                         }).then((response) => {
                             if(response) {
+                                this.handleUpdateStock();
                                 this.buyError = false;
                                 this.$store.commit('cart/SET_REMOVE_ALL_PRODUCTS')
                                 this.$router.push("/compra-finalizado");
@@ -242,6 +244,7 @@ export default {
                 .render(this.$refs.paypal);
             }
         },
+        //COMPROBAR SI EXISTE DESCUENTO
         async handleDescaunt(e) {
             e.preventDefault();
             await this.$axios.get("/api/discounts?filters[name][$eq]=" + this.discountName).then((response) => {
@@ -258,9 +261,28 @@ export default {
                 this.discountDontExist = true;
             });
         },
+        //VALIDAR FORMULARIO
         handeFormValidator () {
            this.handleFormValid()
-        }
+        },
+        //ACUTALIZAR STOCK
+        handleUpdateStock() {
+            try {
+                this.productsWanna.forEach(element => {
+                    this.$axios.get("/api/products/" + element.productID).then((response) => {
+                        if(response) {
+                            this.$axios.put("/api/products/" + element.productID, {
+                                data: {
+                                    available: response.data.data.attributes.available - element.amount
+                                }
+                            })
+                        }
+                    })
+                })
+            } catch (error) {
+                console.log(error)
+            }
+        },
     }
 }
 </script>
