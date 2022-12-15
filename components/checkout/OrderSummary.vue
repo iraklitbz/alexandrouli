@@ -64,8 +64,8 @@
             </div>
 
             <ul class="text-sm flex flex-column gap-xxs">
-                <li class="flex justify-between"><i>IVA</i> <i>21%</i></li>
-                <li class="flex justify-between"><i>Envio</i> <i>Gratis</i></li>
+                <li class="flex justify-between"><i>IVA</i> <i>{{porIVA}}</i></li>
+                <li class="flex justify-between"><i>Envio</i> <i>{{precioEnvio}}</i></li>
                 <li v-if="discountExist && sumaFinalConDescuento !== null" class="flex justify-between font-bold text-lg"><i>Total</i> <i>{{sumaFinalConDescuento}}€</i></li>
                 <li v-else class="flex justify-between font-bold text-lg"><i>Total</i> <i>{{sumaFinal}}€</i></li>
             </ul>
@@ -75,7 +75,7 @@
                 class="mt-2" 
                 :headline="'Error'"
                 :type="'error'"
-                :message="'Ha habido un error en el envío de la orden, por favor, inténtelo de nuevo más tarde.'"
+                :message="errorMessage"
             />
         </footer>
     </aside>
@@ -92,6 +92,7 @@ export default {
     },
     data () {
             return {
+                formValidator: false,
                 strapiUrl: process.env.strapiUrl,
                 loaded: false,
                 productsWanna: [],
@@ -99,7 +100,10 @@ export default {
                 discountName: '',
                 discountDontExist: false,
                 discountExist: false,
-                sumaFinalConDescuento: null
+                sumaFinalConDescuento: null,
+                precioEnvio: 0,
+                porIVA: '21%',
+                errorMessage: 'Ha habido un error en el envío de la orden, por favor, inténtelo de nuevo más tarde'
             }
     },
     watch: {
@@ -147,7 +151,11 @@ export default {
                 this.productsWanna = this.products.map(element => {
                     element.bodega = element.bodegas.data.attributes.title;
                     element.categoria = element.category.data.attributes.title;
-                    return (({ name, amount, bodega, categoria }) => ({ name, amount, bodega, categoria}))(element);
+                    element.productID = element.id;
+                    if(element.feature.data) {
+                        element.imgURL = element.feature.data.attributes.formats.small.url;
+                    }
+                    return (({ name, amount, bodega, categoria, productID, price, imgURL }) => ({ name, amount, bodega, categoria, productID, price, imgURL}))(element);
                 });
             }
             this.loaded = true;
@@ -155,42 +163,46 @@ export default {
                 .Buttons({
                 fundingSource: paypal.FUNDING.PAYPAL,
                 createOrder: (data, actions) => {
-                    return actions.order.create({
-                        aplication_context: {
-                            brand_name: 'myBrand',
-                            locale: 'es-ES',
-                            shipping_preference: 'SET_PROVIDED_ADDRESS',
-                        },
-                        payer: {
-                            address: {
-                                address_line_1: this.addressData.billingData.username,
-                                address_line_2: this.addressData.billingData.direccion,
-                                admin_area_1: this.addressData.billingData.ciudad,
-                                admin_area_2: this.addressData.billingData.provincia,
-                                postal_code: this.addressData.billingData.postal,
-                                country_code: this.addressData.billingData.pais
+                    if(this.productsWanna.length) {
+                        return actions.order.create({
+                            aplication_context: {
+                                brand_name: 'myBrand',
+                                locale: 'es-ES',
+                                shipping_preference: 'SET_PROVIDED_ADDRESS',
+                            },
+                            payer: {
+                                address: {
+                                    address_line_1: this.addressData.billingData.username,
+                                    address_line_2: this.addressData.billingData.direccion,
+                                    admin_area_1: this.addressData.billingData.ciudad,
+                                    admin_area_2: this.addressData.billingData.provincia,
+                                    postal_code: this.addressData.billingData.postal,
+                                    country_code: this.addressData.billingData.pais
+                                }
+                            },
+                            purchase_units: [{
+                            amount: {
+                                value: this.sumaFinal
+                            },
+                            shipping: {
+                                address: {
+                                    address_line_1: this.addressData.direccion,
+                                    admin_area_1: this.addressData.ciudad,
+                                    admin_area_2: this.addressData.provincia,
+                                    postal_code: this.addressData.postal,
+                                    country_code: this.addressData.pais,
+                                }
                             }
-                        },
-                        purchase_units: [{
-                        amount: {
-                            value: this.sumaFinal
-                        },
-                        shipping: {
-                            address: {
-                                address_line_1: this.addressData.direccion,
-                                admin_area_1: this.addressData.ciudad,
-                                admin_area_2: this.addressData.provincia,
-                                postal_code: this.addressData.postal,
-                                country_code: this.addressData.pais,
-                            }
-                        }
-                        }]
-                    });
+                            }]
+                        });
+                    } else {
+                        this.errorMessage = 'No hay productos en el carrito';
+                    }
                 },
                 onApprove: async (data, actions) => {
                     const order = await actions.order.capture();
                     this.paidFor = true;
-                    await this.$axios.post("/api/orders", {
+                    await this.$axios.post("/api/orders?populate=*", {
                         data: {
                             orderID: order.id,
                             name: this.addressData.username,
@@ -203,6 +215,7 @@ export default {
                             articulos: this.productsWanna,
                             discount: this.discountName,
                             enviado: false,
+                            precioEnvio: this.precioEnvio,
                         }
                         }).then((response) => {
                             if(response) {

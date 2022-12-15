@@ -3,7 +3,7 @@
         <div class="w-[calc(100%_-_2.5rem)] lg:w-[calc(100%_-_4rem)] mx-auto max-w-lg md:max-w-3xl text-center">
 
             <div class="text-component">
-            <h1 class="text-4xl lg:text-6xl">Corre de verificacion de emai</h1>
+            <h1 class="text-4xl lg:text-6xl">Correo de verificacion de email</h1>
                 <p class="text-contrast-medium">Hemos registrado su email correctamente</p>
 
                 <p class="flex flex-wrap flex-col sm:flex-row gap-1.5 lg:gap-2 justify-center">
