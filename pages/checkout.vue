@@ -18,7 +18,8 @@
                     </client-only>
 
                     <!-- delivery address -->
-                    <delivery 
+                    <delivery
+                        ref="delivery" 
                         v-if="noDataAddress || !noDataAddress && isEditiong"
                         :addressData="addressData"
                         @update-send-data="handleUpdateSendData"
@@ -66,6 +67,7 @@
                     <!-- order summary -->
                         <order-summary 
                             :addressData="addressData"
+                            :handleFormValid="handleFormValid"
                         />
                         <!-- <button @click="handleBuy" class="mt-5 btn btn--primary btn--md width-100% display@lg">Comprar</button> -->
                     </div>
@@ -88,7 +90,8 @@ export default {
             email: '',
             isEditiong: false,
             billingAddressIsSame: true,
-            noDataAddress: false
+            noDataAddress: false,
+            formIsValid: false
         }
     },
     computed: {
@@ -151,6 +154,9 @@ export default {
             e.preventDefault();
             this.addressData.email = this.email
             
+        },
+        handleFormValid(){
+            this.$refs.delivery.validateForm()
         }
     }
 }

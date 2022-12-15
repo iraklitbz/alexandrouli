@@ -1,83 +1,87 @@
 <template>
     <aside class="order-summary bg-light inner-glow shadow-sm radius-md ">
-        <header class="order-summary__header bg-light flex justify-between padding-sm">
-        <p class="text-sm">Your cart ({{carritoNumber}}) <span class="sr-only">items</span></p>
-        </header>
-
-        <div class="padding-x-sm">
-            <ul class="flex flex-column gap-sm">
-                <li 
-                    v-for="(product, index) in products"
-                    :key="index"
-                    class="order-summary__item"
-                >
-                    <nuxt-link v-if="product.feature.data && product.feature.data.attributes" :to="'/vinos/' + product.id + '/' + product.slug" class="h-36 w-36 lg:h-20 lg:w-20 order-summary__img mr-5">
-                        <img
-                            class="object-contain h-full"
-                            :src="product.feature.data.attributes.formats.thumbnail.url" :alt="product.name + ' image'"
-                        >
-                    </nuxt-link>
-                    <nuxt-link v-else :to="'/vinos/' + product.id + '/' + product.slug" class="h-36 w-36 lg:h-20 lg:w-20 flex items-center justify-center mr-5">
-                        <load-svg name="cross" class="w-10 h-10 text-contrast-low" />
-                    </nuxt-link>
-                    <div class="flex flex-wrap justify-between items-center w-full">
-                        <div>
-                            <p class="color-contrast-higher"><nuxt-link :to="'/vinos/' + product.id + '/' + product.slug">{{ product.name }}</nuxt-link></p>
-                            <p class="color-contrast-medium text-sm">{{ product.cultivo }}</p>
-                        </div>
-                        <div>
-                            <p class="text-lg lg:text-base text-contrast-higher">{{product.price * product.amount}}€</p>
-                            <p class="text-sm lg:text-base text-contrast-medium mt-1 lg:mt-1.5">{{'x' + product.amount}}</p>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-        <footer class="order-summary__footer bg-light padding-x-sm padding-bottom-sm">
-            <div class="margin-y-sm padding-y-sm border-top border-bottom">
-                <div class="flex flex-column flex-row@md gap-xxs">
-                    <input 
-                        aria-label="Código de descuento" 
-                        class="form-control flex-grow min-width-0" 
-                        v-model="discountName" 
-                        type="text" 
-                        placeholder="Código de descuento"
-                        :disabled="discountExist"
+        <div v-if="products.length">
+            <header class="order-summary__header bg-light flex justify-between padding-sm">
+                <p class="text-sm">Your cart ({{carritoNumber}}) <span class="sr-only">items</span></p>
+            </header>
+            <div class="padding-x-sm">
+                <ul class="flex flex-column gap-sm">
+                    <li 
+                        v-for="(product, index) in products"
+                        :key="index"
+                        class="order-summary__item"
                     >
-                    <button @click="handleDescaunt" class="btn btn--subtle">Aplicar</button>
+                        <nuxt-link v-if="product.feature.data && product.feature.data.attributes" :to="'/vinos/' + product.id + '/' + product.slug" class="h-36 w-36 lg:h-20 lg:w-20 order-summary__img mr-5">
+                            <img
+                                class="object-contain h-full"
+                                :src="product.feature.data.attributes.formats.thumbnail.url" :alt="product.name + ' image'"
+                            >
+                        </nuxt-link>
+                        <nuxt-link v-else :to="'/vinos/' + product.id + '/' + product.slug" class="h-36 w-36 lg:h-20 lg:w-20 flex items-center justify-center mr-5">
+                            <load-svg name="cross" class="w-10 h-10 text-contrast-low" />
+                        </nuxt-link>
+                        <div class="flex flex-wrap justify-between items-center w-full">
+                            <div>
+                                <p class="color-contrast-higher"><nuxt-link :to="'/vinos/' + product.id + '/' + product.slug">{{ product.name }}</nuxt-link></p>
+                                <p class="color-contrast-medium text-sm">{{ product.cultivo }}</p>
+                            </div>
+                            <div>
+                                <p class="text-lg lg:text-base text-contrast-higher">{{product.price * product.amount}}€</p>
+                                <p class="text-sm lg:text-base text-contrast-medium mt-1 lg:mt-1.5">{{'x' + product.amount}}</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <footer class="order-summary__footer bg-light padding-x-sm padding-bottom-sm">
+                <div class="margin-y-sm padding-y-sm border-top border-bottom">
+                    <div class="flex flex-column flex-row@md gap-xxs">
+                        <input 
+                            aria-label="Código de descuento" 
+                            class="form-control flex-grow min-width-0" 
+                            v-model="discountName" 
+                            type="text" 
+                            placeholder="Código de descuento"
+                            :disabled="discountExist"
+                        >
+                        <button @click="handleDescaunt" class="btn btn--subtle">Aplicar</button>
+                    </div>
+                    <Alert 
+                        v-if="discountDontExist"
+                        class="mt-2" 
+                        :headline="'Error'"
+                        :type="'error'"
+                        :message="'El código de descuento no existe.'"
+                    />
+                    <Alert 
+                        v-if="discountExist"
+                        class="mt-2" 
+                        :headline="'Exito'"
+                        :type="'success'"
+                        :message="'Aplicado el código de descuento!'"
+                    />
                 </div>
+
+                <ul class="text-sm flex flex-column gap-xxs">
+                    <li class="flex justify-between"><i>IVA</i> <i>{{porIVA}}</i></li>
+                    <li class="flex justify-between"><i>Envio</i> <i>{{precioEnvio}}</i></li>
+                    <li v-if="discountExist && sumaFinalConDescuento !== null" class="flex justify-between font-bold text-lg"><i>Total</i> <i>{{sumaFinalConDescuento}}€</i></li>
+                    <li v-else class="flex justify-between font-bold text-lg"><i>Total</i> <i>{{sumaFinal}}€</i></li>
+                </ul>
+                <div class="mt-10" ref="paypal"></div>
                 <Alert 
-                    v-if="discountDontExist"
+                    v-if="buyError"
                     class="mt-2" 
                     :headline="'Error'"
                     :type="'error'"
-                    :message="'El código de descuento no existe.'"
+                    :message="errorMessage"
                 />
-                <Alert 
-                    v-if="discountExist"
-                    class="mt-2" 
-                    :headline="'Exito'"
-                    :type="'success'"
-                    :message="'Aplicado el código de descuento!'"
-                />
-            </div>
-
-            <ul class="text-sm flex flex-column gap-xxs">
-                <li class="flex justify-between"><i>IVA</i> <i>{{porIVA}}</i></li>
-                <li class="flex justify-between"><i>Envio</i> <i>{{precioEnvio}}</i></li>
-                <li v-if="discountExist && sumaFinalConDescuento !== null" class="flex justify-between font-bold text-lg"><i>Total</i> <i>{{sumaFinalConDescuento}}€</i></li>
-                <li v-else class="flex justify-between font-bold text-lg"><i>Total</i> <i>{{sumaFinal}}€</i></li>
-            </ul>
-            <div class="mt-10" ref="paypal"></div>
-            <Alert 
-                v-if="buyError"
-                class="mt-2" 
-                :headline="'Error'"
-                :type="'error'"
-                :message="errorMessage"
-            />
-        </footer>
+            </footer>
+        </div>
+        <div v-else>
+            <p class="text-center">No hay productos en el carrito</p>
+        </div>
     </aside>
 </template>
 
@@ -88,11 +92,14 @@ export default {
         addressData: {
             type: Object,
             default: () => {}
+        },
+        handleFormValid: {
+            type: Function,
+            default: () => {}
         }
     },
     data () {
             return {
-                formValidator: false,
                 strapiUrl: process.env.strapiUrl,
                 loaded: false,
                 productsWanna: [],
@@ -157,48 +164,44 @@ export default {
                     }
                     return (({ name, amount, bodega, categoria, productID, price, imgURL }) => ({ name, amount, bodega, categoria, productID, price, imgURL}))(element);
                 });
-            }
             this.loaded = true;
             window.paypal
                 .Buttons({
-                fundingSource: paypal.FUNDING.PAYPAL,
-                createOrder: (data, actions) => {
-                    if(this.productsWanna.length) {
-                        return actions.order.create({
-                            aplication_context: {
-                                brand_name: 'myBrand',
-                                locale: 'es-ES',
-                                shipping_preference: 'SET_PROVIDED_ADDRESS',
-                            },
-                            payer: {
-                                address: {
-                                    address_line_1: this.addressData.billingData.username,
-                                    address_line_2: this.addressData.billingData.direccion,
-                                    admin_area_1: this.addressData.billingData.ciudad,
-                                    admin_area_2: this.addressData.billingData.provincia,
-                                    postal_code: this.addressData.billingData.postal,
-                                    country_code: this.addressData.billingData.pais
+                    fundingSource: paypal.FUNDING.PAYPAL,
+                    createOrder: (data, actions) => {
+                        this.handeFormValidator();
+                            return actions.order.create({
+                                aplication_context: {
+                                    brand_name: 'myBrand',
+                                    locale: 'es-ES',
+                                    shipping_preference: 'SET_PROVIDED_ADDRESS',
+                                },
+                                payer: {
+                                    address: {
+                                        address_line_1: this.addressData.billingData.username,
+                                        address_line_2: this.addressData.billingData.direccion,
+                                        admin_area_1: this.addressData.billingData.ciudad,
+                                        admin_area_2: this.addressData.billingData.provincia,
+                                        postal_code: this.addressData.billingData.postal,
+                                        country_code: this.addressData.billingData.pais
+                                    }
+                                },
+                                purchase_units: [{
+                                amount: {
+                                    value: this.sumaFinal
+                                },
+                                shipping: {
+                                    address: {
+                                        address_line_1: this.addressData.direccion,
+                                        admin_area_1: this.addressData.ciudad,
+                                        admin_area_2: this.addressData.provincia,
+                                        postal_code: this.addressData.postal,
+                                        country_code: this.addressData.pais,
+                                    }
                                 }
-                            },
-                            purchase_units: [{
-                            amount: {
-                                value: this.sumaFinal
-                            },
-                            shipping: {
-                                address: {
-                                    address_line_1: this.addressData.direccion,
-                                    admin_area_1: this.addressData.ciudad,
-                                    admin_area_2: this.addressData.provincia,
-                                    postal_code: this.addressData.postal,
-                                    country_code: this.addressData.pais,
-                                }
-                            }
-                            }]
-                        });
-                    } else {
-                        this.errorMessage = 'No hay productos en el carrito';
-                    }
-                },
+                                }]
+                            });
+                    },
                 onApprove: async (data, actions) => {
                     const order = await actions.order.capture();
                     this.paidFor = true;
@@ -230,10 +233,14 @@ export default {
                 },
                 onError: err => {
                     this.buyError = true;
-                    console.log(err);
+                    if(err.message = 'Cannot read properties of undefined') {
+                        this.errorMessage = 'Por favor completa todos los campos';
+                    } 
+                    console.log(err.message)
                 }
                 })
                 .render(this.$refs.paypal);
+            }
         },
         async handleDescaunt(e) {
             e.preventDefault();
@@ -250,6 +257,9 @@ export default {
                 this.discountExist = false;
                 this.discountDontExist = true;
             });
+        },
+        handeFormValidator () {
+           this.handleFormValid()
         }
     }
 }
