@@ -47,7 +47,12 @@
                 <p>{{description}}</p>
               </div>
 
-              <div class="flex flex-wrap gap-5 lg:gap-8 js-product-v3__cta">
+              <error-message
+                  v-if="amount === product.available || amount > product.available"
+                  :errors="'Producto agotado'"
+                />
+
+              <div v-else class="flex flex-wrap gap-5 lg:gap-8 js-product-v3__cta">
                 <div>
                   <label class="sr-only" for="product-qty-input">Quantity:</label>
 
@@ -91,6 +96,7 @@ import productJS from "~/plugins/productJS.js";
 import Breadcrumbs from '../../../components/Breadcrumbs.vue';
 import MoreProducts from '../../../components/MoreProducts.vue';
 import axios from 'axios';
+import { mapState } from 'vuex'
 export default {
   components: { Breadcrumbs, MoreProducts },
   name: 'DetailProductPage',
@@ -108,9 +114,9 @@ export default {
       strapiUrl: process.env.strapiUrl
     };
   },
-  mounted() {
+  async mounted() {
     productJS()
-    axios
+    await axios
       .get(process.env.strapiUrl + '/api/products/' + this.$route.params.id + '?populate=*')
       .then(response => (
           this.product = response.data.data.attributes,
@@ -121,16 +127,27 @@ export default {
           this.description = response.data.data.attributes.description,
           this.feature = response.data.data.attributes.feature.data.attributes.url,
           this.images = response.data.data.attributes.images.data
+          
         ))
       .catch(error => (this.error = error))
   },
+  computed: {
+        ...mapState({
+            products: state => state.cart.products
+        }),
+        amount() {
+            return this.products.find(element => element.id === Number(this.$route.params.id)) ? this.products.find(element => element.id === Number(this.$route.params.id)).amount : 0;
+        }
+    },
   methods: {
     handleImageChange(url) {
       this.feature = url
     },
     handleIncrase() {
-      this.amountSelect++
-      this.price = this.originalPrice + this.price
+      if((this.product.available - this.amount) > this.amountSelect) {
+        this.amountSelect++
+        this.price = this.originalPrice + this.price
+      }
     },
     handleDecrase() {
       if (this.amountSelect > 1) {
@@ -145,6 +162,8 @@ export default {
             amount: this.amountSelect,
             id: this.id
           })
+          this.$store.commit('cart/SET_DRAWER', true)
+          this.amountSelect = 1
     }
   }
 }
