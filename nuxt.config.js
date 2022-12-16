@@ -44,15 +44,15 @@ export default {
 
   ],
   axios: {
-    baseURL: process.env.STRAPI_URL || 'http://localhost:1337/api'
+    baseURL: process.env.MY_HEROKU_URL || 'http://localhost:1337/api'
   },
   env: {
-    strapiUrl: process.env.STRAPI_URL,
+    strapiUrl: process.env.MY_HEROKU_URL,
     paypalClientID: process.env.PAYPAL_CLIENT_ID
   },
   strapi: {
     entities: ['products'],
-    url: process.env.STRAPI_URL
+    url: process.env.MY_HEROKU_URL
   },
   auth: {
     strategies: {
