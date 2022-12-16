@@ -240,10 +240,17 @@
   }
 
   .btn--primary:hover {
+    background: hsl(var( --color-primary-light));
     box-shadow: inset 0px 1px 0px hsla(var(--color-white) / 0.15), 0px 1px 2px hsla(var(--color-primary-darker) / 0.25), 0px 1px 4px hsla(var(--color-primary-darker) / 0.1), 0px 3px 6px -2px hsla(var(--color-primary-darker) / 0.25);
   }
 
-  .btn--primary:focus-visible {
+  .btn--primary:hover {
+    background: hsl(var( --color-primary-light));
+    box-shadow: inset 0px 1px 0px hsla(var(--color-white) / 0.15), 0px 1px 2px hsla(var(--color-primary-darker) / 0.25), 0px 1px 4px hsla(var(--color-primary-darker) / 0.1), 0px 3px 6px -2px hsla(var(--color-primary-darker) / 0.25);
+  }
+
+  .btn--primary:focus {
+    background: hsl(var( --color-primary-dark));
     box-shadow: inset 0px 1px 0px hsla(var(--color-white) / 0.15), 0px 1px 2px hsla(var(--color-primary-darker) / 0.25), 0px 1px 4px hsla(var(--color-primary-darker) / 0.1), 0px 3px 6px -2px hsla(var(--color-primary-darker) / 0.25), 0 0 0 2px hsl(var(--color-floor)), 0px 0px 0px 4px hsl(var(--color-primary));
   }
 

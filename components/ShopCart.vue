@@ -5,15 +5,15 @@
         >
         <div class="drawer__content relative z-50 bg-floor-dark inner-glow shadow-lg flex flex-col" role="alertdialog" aria-labelledby="drawer-cart-title">
             <header class="flex items-center justify-between shrink-0 border-b border-contrast-lower px-3 lg:px-5 py-2 lg:py-3">
-            <h1 id="drawer-cart-title" class="text-base lg:text-xl truncate" >Your Cart ({{ carritoNumber }})</h1>
+            <h1 id="drawer-cart-title" class="text-base lg:text-xl truncate" >Cesta de compra ({{ carritoNumber }})</h1>
 
             <button @click="handleCloseCart" class="drawer__close-btn js-drawer__close">
-                <svg class="icon w-[16px] h-[16px]" viewBox="0 0 16 16"><title>Close drawer panel</title><g stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><line x1="13.5" y1="2.5" x2="2.5" y2="13.5"></line><line x1="2.5" y1="2.5" x2="13.5" y2="13.5"></line></g></svg>
+                <svg class="icon w-[16px] h-[16px]" viewBox="0 0 16 16"><title>Cerrar el modal</title><g stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><line x1="13.5" y1="2.5" x2="2.5" y2="13.5"></line><line x1="2.5" y1="2.5" x2="13.5" y2="13.5"></line></g></svg>
             </button>
             </header>
 
             <div class="drawer__body px-3 lg:px-5 pb-3 lg:pb-5">
-              <ol class="mt-5">
+              <ol v-if="products.length" class="mt-5">
                   <li
                     v-for="(product, index) in products"
                     class="dr-cart__product bg-white rounded-md mb-2"
@@ -42,11 +42,18 @@
                     </div>
                   </li>
               </ol>
+              <div 
+                v-else
+                class="mt-10"
+              >
+                <p class="text-center text-lg">Tu cesta está vacía</p>
+                <nuxt-link to="/vinos/1" class="btn btn--primary text-xl w-full mt-2 lg:mt-3">Empezar tu compra</nuxt-link>
+              </div>
             </div>
 
-            <footer class="px-3 lg:px-5 py-2 lg:py-3 border-t border-contrast-lower shrink-0">
-                <p class="text-sm lg:text-base flex justify-between"><span>Subtotal:</span> <span>{{sumaFinal}}€</span></p>
-                <nuxt-link to="/checkout" class="btn btn--primary text-[1.2em] w-full mt-2 lg:mt-3">Checkout &rarr;</nuxt-link>
+            <footer v-if="products.length" class="px-3 lg:px-5 py-2 lg:py-3 border-t border-contrast-lower shrink-0">
+                <p class="text-sm lg:text-xl flex justify-between"><span>Total:</span> <span>{{sumaFinal}}€</span></p>
+                <nuxt-link to="/checkout" class="btn btn--primary text-[1.2em] w-full mt-2 lg:mt-3">Realizar el pedido &rarr;</nuxt-link>
             </footer>
         </div>
           <div

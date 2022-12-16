@@ -87,6 +87,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import cloneDeep from 'lodash.clonedeep'
 export default {
     props: {
         addressData: {
@@ -155,14 +156,19 @@ export default {
         setLoaded() {
             if(this.products.length > 0) {
                 //ESTE ES EL PRODUCTO QUE SE VA A ENVIAR A ORDERS
+                console.log(this.products)
                 this.productsWanna = this.products.map(element => {
-                    element.bodega = element.bodegas.data.attributes.title;
-                    element.categoria = element.category.data.attributes.title;
-                    element.productID = element.id;
-                    if(element.feature.data) {
-                        element.imgURL = element.feature.data.attributes.formats.small.url;
-                    }
-                    return (({ name, amount, bodega, categoria, productID, price, imgURL }) => ({ name, amount, bodega, categoria, productID, price, imgURL}))(element);
+                    return (
+                        {
+                            bodega: element.bodegas.data.attributes.title,
+                            categoria: element.category.data.attributes.title,
+                            productID: element.id,
+                            imgURL: element.feature.data.attributes.formats.thumbnail.url,
+                            name: element.name,
+                            price: element.price,
+                            amount: element.amount
+                        }
+                    );
                 });
             this.loaded = true;
             //Aqui se crea el boton de paypal

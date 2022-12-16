@@ -1,7 +1,7 @@
 
 <template>
-    <div class="max-w-md w-full mx-auto">
-      <h1 class="text-3xl font-extrabold mb-4">Login</h1>
+    <div class="max-w-md w-full mx-auto py-20 lg:py-24">
+      <h1 class="text-3xl font-extrabold mb-4">Crea tu cuenta</h1>
       <ValidationObserver ref="form">
         <form class="relative" @submit.prevent="validateForm">
           <div>
@@ -69,7 +69,7 @@
               class="btn btn--primary w-full mt-4"
               :disabled="!passwordMatch"
             >
-              Register
+              Registrate
           </button>
           <div
             v-if="loading" 

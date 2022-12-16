@@ -1,6 +1,6 @@
 
 <template>
-  <div class="max-w-md w-full mx-auto mt-8">
+  <div class="max-w-md w-full mx-auto mt-8 py-20 lg:py-24">
     <h1 class="text-3xl font-extrabold mb-4">Nueva contraseña</h1>
     <ValidationObserver ref="form">
     <form class="relative" @submit.prevent="validateForm">

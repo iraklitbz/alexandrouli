@@ -1,5 +1,5 @@
 <template>
-    <section class="checkout mx-auto max-w-7xl">
+    <section class="checkout mx-auto max-w-7xl py-20 lg:py-24">
         <div class="text-component margin-bottom-lg">
             <h1>Checkout</h1>
             <client-only>
@@ -69,8 +69,7 @@
                             :addressData="addressData"
                             :handleFormValid="handleFormValid"
                         />
-                        <!-- <button @click="handleBuy" class="mt-5 btn btn--primary btn--md width-100% display@lg">Comprar</button> -->
-                    </div>
+                </div>
             </div>
             
         </form>
@@ -110,7 +109,7 @@ export default {
                 await this.$axios.get("/api/addresses?filters[userID][$eq]=" + String(this.loggedInUser.id)).then((response) => {
                 if(response) {
                     this.noDataAddress = true
-                    if(response.data.data && response.data.data[0].attributes) {
+                    if(response.data.data.shift() && response.data.data[0].attributes) {
                         this.noDataAddress = false
                         this.addressID = response.data.data[0].id
                         this.addressData = response.data.data[0].attributes

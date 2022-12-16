@@ -1,7 +1,9 @@
 <template>
-    <CardGrid 
-        :posts="posts"
-    />
+    <div class="py-20 lg:py-24">
+        <CardGrid 
+            :posts="posts"
+        />
+    </div>      
 </template>
 <script>
 import axios from 'axios';

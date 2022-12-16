@@ -7,30 +7,30 @@ Vue.component('ValidationObserver', ValidationObserver);
 
 extend('required', {
     ...required,
-    message: 'This field is required'
+    message: 'Este campo es requerido'
 })
 
 extend('email', {
     ...email,
-    message: 'This field needs to be a email'
+    message: 'Este campo necesita ser un email válido'
 })
 
 extend('postcode', {
     ...numeric,
-    message: 'This field needs to be a valid postcode'
+    message: 'Este campo necesita ser un código postal válido'
 })
 
 extend('phone', {
     ...numeric,
-    message: 'This field needs to be a valid phone number'
+    message: 'Este campo necesita ser un número de teléfono válido'
 })
 
 extend('delivery', {
     ...oneOf,
-    message: 'Chose one of the options'
+    message: 'Debes seleccionar una opción de envío'
 })
 
 extend('confirmed', {
     ...confirmed,
-    message: 'The passwords do not match'
+    message: 'Las contraseñas no coinciden'
 })

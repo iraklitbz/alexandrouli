@@ -19,10 +19,10 @@
                     >  
                         <span class="prod-card-v2__badge" role="text">{{item.attributes.cultivo}}</span>
 
-                        <nuxt-link v-if="item.feature && item.feature.data.attributes" :to="'/vinos/' + item.id + '/' + item.attributes.slug" class="prod-card-v2__img-link rounded-lg shadow-md" aria-label="Description of the link">
+                        <nuxt-link v-if="item.attributes.feature && item.attributes.feature.data.attributes" :to="'/vinos/' + item.id + '/' + item.attributes.slug" class="prod-card-v2__img-link rounded-lg shadow-md" aria-label="Description of the link">
                             <figure class="h-80 lg:h-44">
                                 <img class="object-contain h-full" :src="item.attributes.feature.data.attributes.formats.small.url" alt="Product preview image">
-                                <img class="object-contain h-full" :src="require(`~/assets/images/product2.jpg`)" alt="Product preview image" aria-hidden="true">
+                                <img v-if="item.attributes.bodega.data" class="object-contain h-full" :src="item.attributes.bodega.data.attributes.formats.small.url" alt="Product preview image" aria-hidden="true">
                             </figure>
                         </nuxt-link>
                         <nuxt-link v-else :to="'/vinos/' + item.id + '/' + item.attributes.slug" class="prod-card-v2__img-link rounded-lg shadow-md" aria-label="Description of the link">
@@ -63,8 +63,8 @@ export default {
             strapiUrl: process.env.strapiUrl
         }
     },
-    mounted () {
-        axios
+    async mounted () {
+        await axios
         .get(process.env.strapiUrl + '/api/products?populate=*')
         .then(response => (this.products = response.data.data.filter(item => item.attributes.outstanding === this.outstanding)))
         .catch(error => (this.error = error))

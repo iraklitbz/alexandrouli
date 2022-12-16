@@ -24,7 +24,15 @@
                 :errors="'Producto agotado'"
             />
             
-            <button v-else @click="handleCarrito(product)" class="btn btn--primary mt-2">Añadir al carrito</button>
+            <button v-else @click="handleCarrito(product)" class="btn btn--primary mt-2 relative px-10 overflow-hidden">
+                <span 
+                    class="blob flex justify-center text-sm absolute left-3 transition-all duration-200 ease-in-out"
+                    :class="[amount > 0 ? 'top-3' : '-top-6', pulseActive ? 'active' : '']"
+                >
+                    {{amount}}
+                </span>
+                <span class="text-lg">Añadir a la cesta</span>
+            </button>
         </div>
 
     </div>
@@ -44,7 +52,8 @@ export default {
     },
     data() {
         return {
-            strapiUrl: process.env.strapiUrl
+            strapiUrl: process.env.strapiUrl,
+            pulseActive: false
         };
     },
     computed: {
@@ -58,13 +67,16 @@ export default {
     },
     methods: {
         handleCarrito(product) {
+            this.pulseActive = true;
+            setTimeout(() => {
+                this.pulseActive = false;
+            }, 1000);
             product.id = this.id;
             this.$store.commit("cart/SET_PRODUCTS", {
                 product: product,
                 amount: 1,
                 id: this.id
             });
-            this.$store.commit('cart/SET_DRAWER', true)
         }
     }
 }
@@ -72,4 +84,8 @@ export default {
 
 <style lang="scss">
   @import "~/assets/scss/card.scss";
+  @import "~/assets/scss/_pulseffect.scss";
+  .chip__icon-wrapper {
+    @apply bg-warning text-black;
+}
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <section class="thank-you py-20 lg:py-32">
+        <section class="thank-you py-20 lg:py-24">
             <div class="w-[calc(100%_-_2.5rem)] lg:w-[calc(100%_-_4rem)] mx-auto max-w-lg md:max-w-3xl text-center">
                 <svg class="inline-block thank-you__icon mb-3 lg:mb-5" viewBox="0 0 80 80" aria-hidden="true"><g class="thank-you__icon-group"><circle class="fill-success" cx="40" cy="40" r="40"/><polyline points="21 41 33 53 59 27" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="2"/></g></svg>
 

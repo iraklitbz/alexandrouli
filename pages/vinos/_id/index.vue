@@ -1,5 +1,5 @@
 <template>
-    <div class="mx-auto max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl">
+    <div class="mx-auto max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl py-20 lg:py-24">
         <div class="mb-5 lg:mb-8">
             <h1 class="text-center">Our Products</h1>
         </div>

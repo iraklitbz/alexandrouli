@@ -1,5 +1,5 @@
 <template>
-    <section class="fof">
+    <section class="fof py-20 lg:py-24">
         <div class="container max-width-sm">
             <div class="text-component text-center margin-bottom-lg">
                 <h1>Upss, página no encotrada</h1>

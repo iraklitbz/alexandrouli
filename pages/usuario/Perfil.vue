@@ -1,6 +1,6 @@
 
 <template>
-  <div class="w-[calc(100%_-_2.5rem)] lg:w-[calc(100%_-_4rem)] mx-auto max-w-7xl grid lg:gap-12 grid-cols-1 lg:grid-cols-3 mt-8">
+  <div class="w-[calc(100%_-_2.5rem)] lg:w-[calc(100%_-_4rem)] mx-auto max-w-7xl grid lg:gap-12 grid-cols-1 lg:grid-cols-3 mt-8 py-20 lg:py-24">
     <div class="col-span-4">
       <h1 class="text-3xl font-extrabold mb-4">Tu perfil</h1>
     </div>

@@ -1,5 +1,5 @@
 <template>
-    <section class="relative z-1 py-8 lg:py-12">
+    <section class="relative z-1 py-20 lg:py-24">
         <div class="w-[calc(100%_-_2.5rem)] lg:w-[calc(100%_-_4rem)] mx-auto max-w-7xl">
             <div class="grid grid-cols-2 gap-8 lg:gap-12">
             <div class="col-span-2 lg:col-span-1">
