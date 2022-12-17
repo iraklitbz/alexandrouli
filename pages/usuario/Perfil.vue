@@ -39,7 +39,7 @@
               dark:focus:ring-blue-500
               dark:focus:border-blue-500
             "
-            :value="loggedInUser.email"
+            :value="currentUser.email"
             disabled
           />
         </div>
@@ -76,7 +76,7 @@
               dark:focus:ring-blue-500
               dark:focus:border-blue-500
             "
-            :value="loggedInUser.username"
+            :value="currentUser.displayName"
             disabled
           />
         </div>
@@ -94,7 +94,7 @@
                 <ValidationObserver ref="form">
                   <Address 
                     @update-address="handleAdressData"
-                    :ID="loggedInUser.id"
+                    :ID="currentUser.id"
                   />
                 </ValidationObserver>
               </form>
@@ -135,12 +135,13 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
 import { loadavg } from 'os'
     export default {
     middleware: "auth",
     computed: {
-        ...mapGetters(["loggedInUser"]),
+      currentUser() {
+            return this.$store.state.user
+        }
     },
     data() {
         return {
@@ -164,7 +165,7 @@ import { loadavg } from 'os'
         handleAdressData (data) {
           this.username = data.username,
           this.address = data.address,
-          this.email = this.loggedInUser.email,
+          this.email = this.currentUser.email,
           this.city = data.city,
           this.provincia = data.provincia,
           this.postcode = data.postcode
@@ -174,7 +175,7 @@ import { loadavg } from 'os'
               try {
                 await this.$axios.post("/api/addresses", {
                   data: {
-                    userID: this.loggedInUser.id,
+                    userID: this.currentUser.id,
                     username: this.username,
                     email: this.email,
                     direccion: this.address,
@@ -236,7 +237,7 @@ import { loadavg } from 'os'
         },
         async handleGetAdress() {
           try {
-            await this.$axios.get("/api/addresses?filters[userID][$eq]=" + String(this.loggedInUser.id)).then((response) => {
+            await this.$axios.get("/api/addresses?filters[userID][$eq]=" + String(this.currentUser.id)).then((response) => {
              if(response) {
                if(response.data.data && response.data.data[0].attributes) {
                 this.addressID = response.data.data[0].id
@@ -268,7 +269,7 @@ import { loadavg } from 'os'
             }).then(async (result) => {
                 try {
                     if (result.isConfirmed) {
-                        await this.$axios.delete("/api/users/" + this.loggedInUser.id).then(() => {
+                        await this.$axios.delete("/api/users/" + this.currentUser.id).then(() => {
                             this.$swal("Borrada!", "Tu cuenta ha sido borrada.", "success");
                             this.$auth.logout();
                             this.$router.push("/");

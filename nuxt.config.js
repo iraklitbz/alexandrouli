@@ -1,6 +1,7 @@
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
+  ssr: false,
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -54,34 +55,6 @@ export default {
     entities: ['products'],
     url: process.env.MY_HEROKU_URL
   },
-  auth: {
-    strategies: {
-      local: {
-        token: {
-          property: 'jwt',
-        },
-        user: {
-          property: false,
-        },
-        endpoints: {
-          login: {
-            url: 'api/auth/local',
-            method: 'post',
-            propertyName: 'jwt'
-          },
-          user: {
-            url: 'api/users/me',
-            method: 'get',
-            propertyName: false
-          },
-          logout: false
-        }
-      },
-      google: {
-        clientId: '952963772678-nil6qs9leqmnu90024vbumb3che23lcg.apps.googleusercontent.com'
-      }
-    }
-  },
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/vee-validate.js',
@@ -104,14 +77,36 @@ export default {
     '@nuxt/postcss8',
     'cookie-universal-nuxt'
   ],
-
+  router: {
+    middleware: ['auth']
+  },
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '~/modules/svg-module',
     '@nuxtjs/axios',
-    '@nuxtjs/auth-next',
-    'vue-sweetalert2/nuxt'
+    '@nuxtjs/firebase',
+    'vue-sweetalert2/nuxt',
   ],
+  firebase: {
+      config: {
+        apiKey: process.env.FIREBASE_API_KEY,
+        authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+        messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+        appId: process.env.FIREBASE_APP_ID
+      },
+      services: {
+        auth: {
+          persistence: 'local', // default
+          initialize: {
+            onAuthStateChangedAction: 'onAuthStateChangedAction',
+            subscribeManually: false
+          },
+          ssr: false,
+        }
+      }
+  },
   /*
    ** Style Resources
    ** Variables, mixins and functions to made accessible globally

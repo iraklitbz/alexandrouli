@@ -31,11 +31,13 @@
     name: 'HomePage',
     // middleware: 'auth',
     computed: {
-      ...mapGetters(['loggedInUser']),
+      currentUser() {
+            return this.$store.state.user
+        },
     },
     mounted() {
       // TODO console.log(this.$cookies)
-      console.log(this.loggedInUser)
+      console.log(this.currentUser)
     }
   }
 </script>

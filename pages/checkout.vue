@@ -94,7 +94,9 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(["isAuthenticated", "loggedInUser"])
+        currentUser() {
+            return this.$store.state.user
+        }
     },
     mounted () {
         this.handleGetAdress()
@@ -105,8 +107,8 @@ export default {
         },
         async handleGetAdress() {
             if(this.isAuthenticated) {
-                this.email = this.loggedInUser.email
-                await this.$axios.get("/api/addresses?filters[userID][$eq]=" + String(this.loggedInUser.id)).then((response) => {
+                this.email = this.currentUser.email
+                await this.$axios.get("/api/addresses?filters[userID][$eq]=" + String(this.currentUser.id)).then((response) => {
                 if(response) {
                     this.noDataAddress = true
                     if(response.data.data.shift() && response.data.data[0].attributes) {

@@ -10,7 +10,7 @@
 
                     <p class="flex flex-wrap flex-col sm:flex-row gap-1.5 lg:gap-2 justify-center">
                         <nuxt-link class="btn btn--primary" to="/vinos/1">Continuar comprando</nuxt-link>
-                        <nuxt-link v-if="loggedInUser" class="btn btn--subtle" to="/usuario/perfil">Ver el pedido</nuxt-link>
+                        <nuxt-link v-if="currentUser" class="btn btn--subtle" to="/usuario/perfil">Ver el pedido</nuxt-link>
                         <nuxt-link v-else class="btn btn--subtle" to="/usuario/login">Ver el pedido</nuxt-link>
                     </p>
                 </div>
@@ -26,7 +26,9 @@ import { mapGetters } from 'vuex'
 export default {
     name: 'ConfirmadoPage',
     computed: {
-        ...mapGetters(["isAuthenticated", "loggedInUser"])
+        currentUser() {
+            return this.$store.state.user
+        }
     }
 }
 </script>

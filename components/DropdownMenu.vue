@@ -83,7 +83,7 @@ export default {
   },
   methods: {
     logout() {
-      this.$auth.logout()
+        this.$fire.auth.signOut()
     }
   }
 }

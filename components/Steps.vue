@@ -1,6 +1,6 @@
 <template>
     <div class="steps lg:text-base" aria-label="Multi-step indicator">
-        <ol v-if="!loggedInUser" class="steps__list">
+        <ol v-if="!currentUser" class="steps__list">
           <li
             v-for="(item, index) in steps" :key="index"
             class="step"
@@ -43,7 +43,7 @@
       </div>
 </template>
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 export default {
     data() {
         return {
@@ -54,7 +54,9 @@ export default {
          ...mapState({
                 steps: state => state.steps.steps
         }),
-        ...mapGetters(['loggedInUser'])
+        currentUser() {
+            return this.$store.state.user
+        }
     },
     mounted() {
         let removeFirst = this.steps

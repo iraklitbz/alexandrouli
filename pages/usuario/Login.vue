@@ -84,14 +84,8 @@
       },
       methods: {
         async userLoginWithGoogle() {
-          this.$auth
-            .loginWith('google')
-            .then(() => {
-              this.$router.push('/')
-            })
-            .catch((err) => {
-              this.err = err.message
-            })
+          const provider = new this.$firebase.auth.GoogleAuthProvider()
+          const redr = await this.$firebase.auth().signInWithRedirect(provider)
         },
         validateEmail() {
             this.$refs.form.validate().then((valid) => {
@@ -103,25 +97,33 @@
         async userLogin() {
           this.loading = true
           this.notVerifedEmail = false
-          try {
-            await this.$auth.loginWith('local', {
-              data: { identifier: this.email, password: this.password },
-            }).then((response) => {
-                  if(response) {
-                    this.$router.push('/')
-                    this.loading = false
-                  }
-                })
-          } catch (e) {
-            this.loading = false
-            if(e.response.data.error.message === 'Your account email is not confirmed') {
-                this.err = 'El correo de tu cuenta no está verificado'
-                this.notVerifedEmail = true
-            }
-            else if(e.response.data.error.message === 'Invalid identifier or password') {
-                this.err = 'El email o la contraseña son incorrectos'
-            }
-          }
+          let that = this
+          this.$fire.auth.signInWithEmailAndPassword(this.email, this.password)
+          .catch(function (error){
+            that.snackbarText = error.message
+            that.snackbar = true
+          }).then((user) => {
+            //we are signed in
+            this.$router.push('/')
+          })
+
+          // try {
+          //   await this.$auth.loginWith('local').then((response) => {
+          //         if(response) {
+          //           this.$router.push('/')
+          //           this.loading = false
+          //         }
+          //       })
+          // } catch (e) {
+          //   this.loading = false
+          //   if(e.response.data.error.message === 'Your account email is not confirmed') {
+          //       this.err = 'El correo de tu cuenta no está verificado'
+          //       this.notVerifedEmail = true
+          //   }
+          //   else if(e.response.data.error.message === 'Invalid identifier or password') {
+          //       this.err = 'El email o la contraseña son incorrectos'
+          //   }
+          // }
         },
         async resendVerificationEmail(){
           this.loading = true

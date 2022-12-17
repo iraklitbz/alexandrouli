@@ -92,12 +92,14 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(["loggedInUser"])
+        currentUser() {
+            return this.$store.state.user
+        }
     },
     mounted() {
         select();
-        if(Object.keys(this.addressData).length && this.loggedInUser !== null){
-            this.username = this.loggedInUser.username
+        if(Object.keys(this.addressData).length && this.currentUser !== null){
+            this.username = this.currentUser.displayName
             this.direccion = this.addressData.direccion
             this.ciudad = this.addressData.ciudad
             this.provincia = this.addressData.provincia

@@ -50,11 +50,13 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['loggedInUser'])
+        currentUser() {
+            return this.$store.state.user
+        }
     },
     async mounted() {
           try {
-            await this.$axios.get("/api/orders?filters[email][$eq]=" + this.loggedInUser.email + '&populate=*').then((response) => {
+            await this.$axios.get("/api/orders?filters[email][$eq]=" + this.currentUser.email + '&populate=*').then((response) => {
              if(response) {
                if(response.data.data && response.data.data) {
                     this.orderData = response.data.data

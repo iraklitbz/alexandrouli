@@ -9,14 +9,14 @@
                 <li class="header__item ml-5 lg:ml-8"><nuxt-link to="/contacto" class="header__link">Contacto </nuxt-link></li>
                 <li class="header__item header__item--divider ml-5 lg:ml-8" aria-hidden="true"></li>
                 <client-only>
-                    <li v-if="!loggedInUser" class="header__item inline-flex items-center ml-5 lg:ml-8">
+                    <li v-if="!currentUser" class="header__item inline-flex items-center ml-5 lg:ml-8">
                         <nuxt-link to="/usuario/login" class="header__link inline-flex items-center"> 
                             <load-svg name="user" class="w-8 opacity-80 hover:opacity-100 text-primary" /> 
                         </nuxt-link>
                     </li>
                     <li v-else class="header__item inline-flex items-center ml-5 lg:ml-8">
                         <DropdownMenu 
-                            :user="loggedInUser" 
+                            :user="currentUser" 
                         />
                     </li>
                 </client-only>
@@ -44,19 +44,15 @@ export default {
                 toggleCart: state => state.cart.toggleCart,
                 carritoNumber: state => state.cart.products.reduce((sum, value) => (sum + value.amount ), 0)
         }),
-        ...mapGetters(['loggedInUser'])
+        currentUser() {
+            return this.$store.state.user
+        }
     },
     methods: {
-        async userLogout() {
-          await this.$auth.logout()
-        },
         handleToggleCart() {
             let toggleCart = this.toggleCart
             toggleCart = !toggleCart
             this.$store.commit('cart/SET_DRAWER', toggleCart)
-        },
-        logout() {
-            this.$auth.logout()
         }
     }
 }
