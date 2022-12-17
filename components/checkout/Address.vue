@@ -82,6 +82,11 @@ export default {
             addressData: {}
         }
     },
+    computed: {
+      currentUser() {
+            return this.$store.state.user
+        }
+    },
     mounted() {
         this.handleGetAdress()
     },
@@ -96,21 +101,20 @@ export default {
             })
         },
         async handleGetAdress() {
-          try {
-            await this.$axios.get("/api/addresses?filters[userID][$eq]=" + String(this.ID)).then((response) => {
-             if(response) {
-               if(response.data.data && response.data.data[0].attributes) {
-                this.username = response.data.data[0].attributes.username,
-                this.address = response.data.data[0].attributes.direccion,
-                this.city = response.data.data[0].attributes.ciudad,
-                this.provincia = response.data.data[0].attributes.provincia,
-                this.postcode = response.data.data[0].attributes.postal
-               }
-              }
-            })
-          } catch (error) {
-            console.log(error)
-          }
+            try {
+                await this.$fire.firestore.collection('direcciones').where("userID", "==", this.currentUser.uid).get().then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        console.log(doc)
+                        this.username = doc.data().username,
+                        this.address = doc.data().direccion,
+                        this.city = doc.data().ciudad,
+                        this.provincia = doc.data().provincia,
+                        this.postcode = doc.data().postal
+                    });
+                })
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
 }

@@ -87,6 +87,7 @@ export default {
     '@nuxtjs/firebase',
     'vue-sweetalert2/nuxt',
   ],
+  
   firebase: {
       config: {
         apiKey: process.env.FIREBASE_API_KEY,
@@ -104,7 +105,8 @@ export default {
             subscribeManually: false
           },
           ssr: false,
-        }
+        },
+        firestore: true
       }
   },
   /*

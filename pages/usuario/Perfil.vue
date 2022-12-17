@@ -159,7 +159,7 @@ import { loadavg } from 'os'
         };
     },
     mounted() {
-      console.log(this.$fire.auth.currentUser.emailVerified)
+      console.log(this.currentUser)
         this.handleGetAdress()
     },
     methods: {
@@ -173,10 +173,9 @@ import { loadavg } from 'os'
         },
         async handleAdressSend () {
           if(!this.isEditingAdress) {
-              try {
-                await this.$axios.post("/api/addresses", {
-                  data: {
-                    userID: this.currentUser.id,
+            try {
+              await this.$fire.firestore.collection('direcciones').add({
+                    userID: this.currentUser.uid,
                     username: this.username,
                     email: this.email,
                     direccion: this.address,
@@ -192,63 +191,54 @@ import { loadavg } from 'os'
                       postal: this.postcode,
                       pais: this.country
                     }
-                  }
-                }).then((response) => {
-                  if(response) {
+              }).then((response) => {
+                if(response) {
                     this.$swal("Guardada!", "Tu dirección ha sido guardada.", "success");
                     this.isAddingAdress = false
                     this.handleGetAdress()
                   }
-                });
-            }
-            catch (error) {
-              console.log(error);
+              })
+            } catch (error) {
+              console.log(error)
             }
           } else {
             try {
-              await this.$axios.put("/api/addresses/" + String(this.addressID), {
-                data: {
-                  username: this.username,
-                  direccion: this.address,
-                  email: this.email,
-                  ciudad: this.city,
-                  provincia: this.provincia,
-                  postal: this.postcode,
-                  billingData: {
+              await this.$fire.firestore.collection('direcciones').doc(this.addressID).update({
                     username: this.username,
                     direccion: this.address,
+                    email: this.email,
                     ciudad: this.city,
                     provincia: this.provincia,
-                    postal: this.postcode
-                  }
-                }
-              }).then((response) => {
-                if(response) {
+                    postal: this.postcode,
+                    billingData: {
+                      username: this.username,
+                      direccion: this.address,
+                      ciudad: this.city,
+                      provincia: this.provincia,
+                      postal: this.postcode
+                    }
+              }).then(() => {
                   this.$swal("Actualizado!", "Tu dirección ha sido actualizado con exito.", "success");
                   this.isAddingAdress = false
                   this.isEditingAdress = false
                   this.handleGetAdress()
-                }
-              });
-            }
-            catch (error) {
-              console.log(error);
+              })
+            } catch (error) {
+              console.log(error)
             }
           }
         },
         async handleGetAdress() {
-          try {
-            await this.$axios.get("/api/addresses?filters[userID][$eq]=" + String(this.currentUser.id)).then((response) => {
-             if(response) {
-               if(response.data.data && response.data.data[0].attributes) {
-                this.addressID = response.data.data[0].id
-                this.addressData = response.data.data[0].attributes
-               }
-              }
-            })
-          } catch (error) {
-            console.log(error)
-          }
+            try {
+                await this.$fire.firestore.collection('direcciones').where("userID", "==", this.currentUser.uid).get().then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        this.addressID = doc.id
+                        this.addressData = doc.data()
+                    });
+                })
+            } catch (error) {
+                console.log(error)
+            }
         },
         handleAdressAdd () {
           this.isAddingAdress = true
@@ -269,16 +259,19 @@ import { loadavg } from 'os'
                 cancelButtonText: "Cancelar"
             }).then(async (result) => {
                 try {
-                    if (result.isConfirmed) {
-                        await this.$axios.delete("/api/users/" + this.currentUser.id).then(() => {
-                            this.$swal("Borrada!", "Tu cuenta ha sido borrada.", "success");
-                            this.$auth.logout();
-                            this.$router.push("/");
-                        });
-                    }
-                }
-                catch (error) {
-                    console.log(error);
+                  await this.$fire.auth.signInWithEmailAndPassword(this.email, this.password).then((user) => {
+                  //we are signed in
+                  if(user) {
+                    this.$swal("Borrada!", "Tu cuenta ha sido borrada.", "success");
+                    this.$fire.auth.signOut()
+                    this.$router.push("/");
+                  } 
+                })
+                } catch (e) {
+                  this.loading = false
+                  if(e.code = 'auth/wrong-password') {
+                      this.err = 'El email o la contraseña son incorrectos'
+                  }
                 }
             });
         }
