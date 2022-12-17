@@ -76,7 +76,7 @@
               dark:focus:ring-blue-500
               dark:focus:border-blue-500
             "
-            :value="currentUser.displayName"
+            :value="this.$fire.auth.currentUser.displayName"
             disabled
           />
         </div>
@@ -159,6 +159,7 @@ import { loadavg } from 'os'
         };
     },
     mounted() {
+      console.log(this.$fire.auth.currentUser.emailVerified)
         this.handleGetAdress()
     },
     methods: {

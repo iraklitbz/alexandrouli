@@ -3,8 +3,8 @@
         <div class="w-[calc(100%_-_2.5rem)] lg:w-[calc(100%_-_4rem)] mx-auto max-w-lg md:max-w-3xl text-center">
 
             <div class="text-component">
-            <h1 class="text-4xl lg:text-6xl">Correo de verificacion de email</h1>
-                <p class="text-contrast-medium">Hemos registrado su email correctamente</p>
+            <h1 class="text-4xl lg:text-6xl">Le hemos enviado un correo de verificacion de su correo</h1>
+                <p class="text-contrast-medium">Hemos registrado su email correctamente, verifique su</p>
 
                 <p class="flex flex-wrap flex-col sm:flex-row gap-1.5 lg:gap-2 justify-center">
                     <nuxt-link class="btn btn--primary" to="/vinos/1">Tienda</nuxt-link>

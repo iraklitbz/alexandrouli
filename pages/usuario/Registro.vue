@@ -31,6 +31,19 @@
               />
             </ValidationProvider>
           </div>
+            <span class="flex items-center text-sm mt-2">
+              <load-svg
+                v-if="!passwordHasMoreThen6characters" 
+                name='circle' 
+                class="mr-1 w-3 text-contrast-medium"
+              ></load-svg>
+              <load-svg 
+                v-else
+                name='check' 
+                class="mr-1 w-5 text-success"
+              ></load-svg>
+            Contraseña de 6 caracteres
+          </span>
           <div class="mt-4">
             <label class="form-label mb-1.5 lg:mb-2" for="passwordtwo">Repite contraseña</label>
             <ValidationProvider rules="required" v-slot="{ errors }">
@@ -38,39 +51,32 @@
               <error-message
                   :errors="errors[0]"
               />
-              <span
-              v-if="!sendFormError"
-                class="chip text-sm justify-center w-full lg:text-base mt-4"
-                :class="{ 'chip--success': passwordMatch === true,'chip--error': passwordMatch === false }"
-              >
-                <em v-if="passwordMatch === true" class="not-italic chip__icon-wrapper flex justify-center">
-                    <load-svg name="check" class="w-4" />
-                </em>
-                <em v-else class="not-italic chip__icon-wrapper flex justify-center">
-                    <load-svg name="exclamacion" class="w-4" />
-                </em>
-                <i class="not-italic chip__label">{{ passwordMatchMsg }}</i>
-            </span>
-            <div v-else>
-              <span
-                class="chip text-sm justify-center w-full lg:text-base mt-4 chip--error"
-                >
-                  <em class="not-italic chip__icon-wrapper flex justify-center">
-                      <load-svg name="exclamacion" class="w-4" />
-                  </em>
-                  <i class="not-italic chip__label">{{ passwordMatchMsg }}</i>
-              </span>
-          
-            </div>
             </ValidationProvider>
           </div>
+          <span class="flex items-center text-sm mt-2">
+              <load-svg
+                v-if="!passwordMatch" 
+                name='circle' 
+                class="mr-1 w-3 text-contrast-medium"
+              ></load-svg>
+              <load-svg 
+                v-else
+                name='check' 
+                class="mr-1 w-5 text-success"
+              ></load-svg>
+            {{ passwordMatchMsg }}
+          </span>
           <button
               type="submit"
               class="btn btn--primary w-full mt-4"
-              :disabled="!passwordMatch"
+              :disabled="buttonRegister"
             >
               Registrate
           </button>
+          <error-message
+              v-if="err"
+              :errors="err"
+            />
           <div
             v-if="loading" 
             class="absolute left-0 top-0 w-full h-full flex items-center justify-center"
@@ -93,30 +99,42 @@
           email: '',
           password: '',
           passwordtwo: '',
+          disabledRegister: true,
           passwordMatch: null,
           charcaterCounter: 0,
           sendFormError: false,
-          passwordMatchMsg: `Al menos 6 caracteres`,
+          passwordHasMoreThen6characters: false,
+          passwordMatchMsg: `Repite tu contraseña`,
           loading: false
+        }
+      },
+      computed: {
+        buttonRegister() {
+          if (this.email !== '' && this.username !== '' && this.password !== '' && this.passwordtwo !== '' && this.password === this.passwordtwo) {
+            return this.disabledRegister = false
+          } else {
+            return this.disabledRegister = true
+          }
         }
       },
       methods: {
         handleCheckMoreThen6characters() {
           if (this.password.length < 6) {
-            this.passwordMatchMsg = 'Al menos 6 caracteres'
-            this.passwordMatch = false
+              this.passwordHasMoreThen6characters = false
           } else {
-            this.passwordMatchMsg = ''
-            this.handlePasswordMatch()
+            this.passwordHasMoreThen6characters = true
           }
         },
         handlePasswordMatch() {
-          if (this.password === this.passwordtwo) {
-            this.passwordMatchMsg = 'Passwords matchs!'
+          if (this.password === this.passwordtwo && this.passwordtwo !== '') {
+            this.passwordMatchMsg = 'Contraseñas coinciden'
             this.passwordMatch = true
           } else {
-            this.passwordMatchMsg = 'Passwords do not match'
+            this.passwordMatchMsg = 'Contraseñas no coinciden'
             this.passwordMatch = false
+            if(this.passwordtwo === '') {
+              this.passwordMatchMsg = 'Repite tu contraseña'
+            }
           }
         },
         validateForm() {
@@ -128,33 +146,28 @@
         },
         async userRegister() {
             this.loading = true
-              try {
-                this.$axios.setToken(false)
-                await this.$axios.post('api/auth/local/register', {
-                  username: this.username,
-                  email: this.email,
-                  password: this.password,
-                }).then((response) => {
-                  if(response) {
-                    this.loading = false
-                    this.$router.push('/confirmar-email')
+      
+              await this.$fire.auth.createUserWithEmailAndPassword(this.email, this.password)
+              .then((res) => {
+                //we are signed in
+                  const user = this.$fire.auth.currentUser;
+                  return user.updateProfile({
+                      displayName: this.username
+                  }).then(() => {
+                      const user = this.$fire.auth.currentUser;
+                      user.sendEmailVerification();
+                  }).then(() => {
+                      this.loading = false
+                      this.$router.push('/confirmar-email');
+                  })
+              }).catch((e) => {
+                  this.loading = false
+                  console.log(e)
+                  if(e.code = 'auth/email-already-in-use') {
+                    this.err = 'Este email ya esta en uso'
                   }
-                })
-              } catch (e) {
-                if (e.response) {
-                    if(e.response.data.error) {
-                      this.sendFormError = true
-                    }
-                    if(e.response.data.error.message === 'Email or Username are already taken') {
-                      this.passwordMatchMsg = 'El correo electrónico ya esta en uso'
-                    } else if(e.response.data.error.message === 'username must be at least 3 characters') {
-                      this.passwordMatchMsg = 'El nombre de usuario debe tener al menos 3 caracteres'
-                    } else {
-                      this.passwordMatchMsg = e.response.data.error.message
-                    }
-                    this.loading = false
-                }
-              }
+              })   
+            
         }
 
       }
