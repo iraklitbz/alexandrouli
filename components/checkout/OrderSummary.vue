@@ -191,24 +191,25 @@ export default {
                                     }
                                 },
                                 purchase_units: [{
-                                amount: {
-                                    value: this.sumaFinal
-                                },
-                                shipping: {
-                                    address: {
-                                        address_line_1: this.addressData.direccion,
-                                        admin_area_1: this.addressData.ciudad,
-                                        admin_area_2: this.addressData.provincia,
-                                        postal_code: this.addressData.postal,
-                                        country_code: this.addressData.pais,
+                                    amount: {
+                                        value: this.sumaFinal
+                                    },
+                                    shipping: {
+                                        address: {
+                                            address_line_1: this.addressData.direccion,
+                                            admin_area_1: this.addressData.ciudad,
+                                            admin_area_2: this.addressData.provincia,
+                                            postal_code: this.addressData.postal,
+                                            country_code: this.addressData.pais,
+                                        }
                                     }
-                                }
                                 }]
                             });
                     },
                 onApprove: async (data, actions) => {
                     const order = await actions.order.capture();
                     this.paidFor = true;
+                    console.log(order.purchase_units[0].amount.value);
                     await this.$axios.post("/api/orders?populate=*", {
                         data: {
                             orderID: order.id,
@@ -222,7 +223,7 @@ export default {
                             articulos: this.productsWanna,
                             discount: this.discountName,
                             enviado: false,
-                            precioEnvio: this.precioEnvio,
+                            precioEnvio: this.precioEnvio
                         }
                         }).then((response) => {
                             if(response) {

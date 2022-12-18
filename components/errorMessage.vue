@@ -17,3 +17,6 @@ export default {
     }
 }
 </script>
+<style>
+  @import "~/assets/scss/_chip.scss";
+</style>

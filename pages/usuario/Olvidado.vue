@@ -65,17 +65,14 @@
         async userPassword() {
           this.loading = true
           try {
-            await this.$axios.post('/api/auth/forgot-password', {
-              email: this.email,
-            }).then((response) => {
-                  if(response) {
-                    this.success = true
-                    this.loading = false
-                  }
-                })
-          } catch (e) {
+            await this.$fire.auth.sendPasswordResetEmail(this.email).then(() => {
+                this.success = true
+                this.loading = false
+          })
+            
+          } catch (error) {
+            console.log(error) 
             this.loading = false
-            if (e.response) this.err = e.response.data.error.message
           }
         },
       },

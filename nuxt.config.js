@@ -45,7 +45,7 @@ export default {
 
   ],
   axios: {
-    baseURL: process.env.MY_HEROKU_URL || 'http://localhost:1337/api'
+    baseURL: process.env.MY_HEROKU_URL
   },
   env: {
     strapiUrl: process.env.MY_HEROKU_URL,
