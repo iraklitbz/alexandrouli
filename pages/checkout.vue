@@ -18,12 +18,6 @@
                     </client-only>
 
                     <!-- delivery address -->
-                    <delivery
-                        ref="delivery" 
-                        v-if="noDataAddress || !noDataAddress && isEditiong"
-                        :addressData="addressData"
-                        @update-send-data="handleUpdateSendData"
-                    />
                     <div v-if="!noDataAddress && !isEditiong" class="address-module mb-5">
                         <div class="bg-floor rounded-md p-6 border-l-[3px] border-solid border-primary shadow-[0_0_0_1px_hsla(var(--color-contrast-higher)/0.05),0_0_0_1px_hsla(var(--color-contrast-higher)/0.02),0_1px_3px_-1px_hsla(var(--color-contrast-higher)/0.2)]">
                             <div class="flex items-center justify-between mb-3">                                   
@@ -42,6 +36,13 @@
                             </div>
                         </div>
                     </div>
+                    <delivery
+                        v-if="!noDataAddress && isEditiong || noDataAddress"
+                        ref="delivery" 
+                        :addressData="addressData"
+                        @update-send-data="handleUpdateSendData"
+                    />
+                   
                     <!-- delivery options -->
                     <div class="checkout__billing-checkbox mb-10">
                         <div>
@@ -62,7 +63,7 @@
                         class="mt-10"
                     />
                 </div>
-
+              
                 <div class="col-span-12 xl:col-span-5">
                     <!-- order summary -->
                         <order-summary 
@@ -70,6 +71,7 @@
                             :handleFormValid="handleFormValid"
                         />
                 </div>
+
             </div>
             
         </form>
@@ -88,7 +90,7 @@ export default {
             email: '',
             isEditiong: false,
             billingAddressIsSame: true,
-            noDataAddress: true,
+            noDataAddress: null,
             formIsValid: false
         }
     },
@@ -109,9 +111,9 @@ export default {
                 this.email = this.currentUser.email
                 try {
                     await this.$fire.firestore.collection('direcciones').where("userID", "==", this.currentUser.uid).get().then((querySnapshot) => {
+                        console.log(querySnapshot)
                         querySnapshot.forEach((doc) => {
                             this.noDataAddress = false
-                            this.addressID = doc.id
                             this.addressData = doc.data()
                         });
                     })
@@ -154,7 +156,9 @@ export default {
             
         },
         handleFormValid(){
-            this.$refs.delivery.validateForm()
+            if(!this.noDataAddress && this.isEditiong || this.noDataAddress){
+                this.$refs.delivery.validateForm()
+            }
         }
     }
 }

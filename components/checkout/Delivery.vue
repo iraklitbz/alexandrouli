@@ -97,6 +97,7 @@ export default {
         }
     },
     mounted() {
+        console.log('///////',this.addressData)
         select();
         if(Object.keys(this.addressData).length && this.currentUser !== null){
             this.username = this.$fire.auth.currentUser.displayName
