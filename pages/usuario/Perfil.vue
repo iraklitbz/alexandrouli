@@ -120,12 +120,42 @@
             </div>
           </div>
           <div class="text-center col-span-4">
-              <a 
+              <a
+              v-if="!sureWantToDeleteQuestion" 
                 @click="showAlert" 
                 class="text-error text-lg block text-center cursor-pointer mt-10"
               >
                 Borrar tu cuenta
               </a>
+              <div
+                 v-if="sureWantToDeleteQuestion"
+                class="mt-5 text-left">
+                  <Alert 
+                    class="mb-2 text-left" 
+                    :headline="'¿Estás seguro?'"
+                    :type="'error'"
+                    :message="'No podras recuperar tu cuenta'"
+                />
+                <label class="form-label mb-1.5 lg:mb-2 text-left" for="password">Entra la contraseña para borrar tu cuenta</label>
+                <input class="form-control w-full" v-model="password" type="password">
+                <error-message
+                  v-if="err"
+                  :errors="err"
+                />
+                <button
+                  @click="handleCloseDeleteZone"
+                  class="btn btn--primary w-full mt-4"
+                >
+                  Cerrar
+                </button>
+                <button
+                  @click="handleDeleteAccount"
+                  class="btn btn--subtle w-full mt-4"
+                >
+                  Borrar tu cuenta
+                </button>
+                
+              </div>
           </div>
         </div>
     </div>
@@ -135,7 +165,6 @@
   </div>
 </template>
 <script>
-import { loadavg } from 'os'
     export default {
     middleware: "auth",
     computed: {
@@ -145,8 +174,10 @@ import { loadavg } from 'os'
     },
     data() {
         return {
+            err: null,
             isAddingAdress: false,
             username: '',
+            password: '',
             address: '',
             email: '',
             city: '',
@@ -155,11 +186,11 @@ import { loadavg } from 'os'
             country: 'ES',
             addressData: {},
             isEditingAdress: false,
-            addressID: null
+            addressID: null,
+            sureWantToDeleteQuestion: false
         };
     },
     mounted() {
-      console.log(this.currentUser)
         this.handleGetAdress()
     },
     methods: {
@@ -248,34 +279,27 @@ import { loadavg } from 'os'
           this.isAddingAdress = true
         },
         showAlert() {
-            this.$swal({
-                title: "¿Estas seguro?",
-                text: "No podras recuperar tu cuenta",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#999",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Si, borrarla",
-                cancelButtonText: "Cancelar"
-            }).then(async (result) => {
-                try {
-                  await this.$fire.auth.signInWithEmailAndPassword(this.email, this.password).then((user) => {
-                  //we are signed in
-                  if(user) {
-                    this.$swal("Borrada!", "Tu cuenta ha sido borrada.", "success");
-                    this.$fire.auth.signOut()
-                    this.$router.push("/");
-                  } 
-                })
-                } catch (e) {
-                  this.loading = false
-                  if(e.code = 'auth/wrong-password') {
-                      this.err = 'El email o la contraseña son incorrectos'
-                  }
-                }
-            });
+            this.sureWantToDeleteQuestion = true
+        },
+        handleCloseDeleteZone() {
+          this.sureWantToDeleteQuestion = false
+        },
+        async handleDeleteAccount() {
+          try {
+            await this.$fire.auth.signInWithEmailAndPassword(this.currentUser.email, this.password).then(() => {
+              this.$fire.auth.currentUser.delete().then(() => {
+                this.$swal("Borrado!", "Tu cuenta ha sido borrada con exito.", "success");
+                this.$fire.auth.signOut()
+                this.$router.push('/')
+              })
+          })
+          } catch (e) {
+            this.loading = false
+            if(e.code = 'auth/wrong-password') {
+                this.err = 'La contraseña es incorrecta'
+            }
+          }
         }
-    },
-    components: { loadavg }
+    }
 }
 </script>
