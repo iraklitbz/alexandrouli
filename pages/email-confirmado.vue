@@ -8,7 +8,7 @@
                 <p class="text-contrast-medium">Hemos registrado su email correctamente</p>
 
                 <p class="flex flex-wrap flex-col sm:flex-row gap-1.5 lg:gap-2 justify-center">
-                    <nuxt-link class="btn btn--primary" to="/usuario/login">Tienda</nuxt-link>
+                    <nuxt-link class="btn btn--primary" to="/usuario/perfil">Ver perfil</nuxt-link>
                 </p>
             </div>
         </div>

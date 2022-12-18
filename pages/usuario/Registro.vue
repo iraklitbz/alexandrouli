@@ -158,7 +158,7 @@
                       user.sendEmailVerification();
                   }).then(() => {
                       this.loading = false
-                      this.$router.push('/confirmar-email');
+                      this.$router.push('/usuario/perfil');
                   })
               }).catch((e) => {
                   this.loading = false

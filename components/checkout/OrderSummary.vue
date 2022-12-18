@@ -87,7 +87,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import cloneDeep from 'lodash.clonedeep'
 export default {
     props: {
         addressData: {
@@ -101,7 +100,6 @@ export default {
     },
     data () {
             return {
-                strapiUrl: process.env.strapiUrl,
                 loaded: false,
                 productsWanna: [],
                 buyError: false,
@@ -156,7 +154,6 @@ export default {
         setLoaded() {
             if(this.products.length > 0) {
                 //ESTE ES EL PRODUCTO QUE SE VA A ENVIAR A ORDERS
-                console.log(this.products)
                 this.productsWanna = this.products.map(element => {
                     return (
                         {

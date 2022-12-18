@@ -99,7 +99,7 @@ export default {
     mounted() {
         select();
         if(Object.keys(this.addressData).length && this.currentUser !== null){
-            this.username = this.currentUser.displayName
+            this.username = this.$fire.auth.currentUser.displayName
             this.direccion = this.addressData.direccion
             this.ciudad = this.addressData.ciudad
             this.provincia = this.addressData.provincia

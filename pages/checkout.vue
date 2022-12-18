@@ -3,7 +3,7 @@
         <div class="text-component margin-bottom-lg">
             <h1>Checkout</h1>
             <client-only>
-                <p v-if="!isAuthenticated" class="text-base">Already have an account? <nuxt-link to="/usuario/login">Login</nuxt-link></p>
+                <p v-if="!currentUser" class="text-base">Already have an account? <nuxt-link to="/usuario/login">Login</nuxt-link></p>
             </client-only>
         </div>
         <form>
@@ -12,7 +12,7 @@
                     <!-- contact info -->
                     <client-only>
                         <contact-info
-                            v-if="!isAuthenticated"
+                            v-if="!currentUser"
                             @update-email="handleUpdateEmail"
                         />
                     </client-only>
@@ -76,7 +76,6 @@
     </section>
 </template>
 <script>
-import { mapGetters } from 'vuex'
 import BillAddress from '../components/checkout/BillAddress.vue';
 import OrderSummary from '../components/checkout/OrderSummary.vue';
 export default {
@@ -89,7 +88,7 @@ export default {
             email: '',
             isEditiong: false,
             billingAddressIsSame: true,
-            noDataAddress: false,
+            noDataAddress: true,
             formIsValid: false
         }
     },
@@ -106,22 +105,20 @@ export default {
             this.billingAddressIsSame = !this.billingAddressIsSame
         },
         async handleGetAdress() {
-            if(this.isAuthenticated) {
+            if(this.currentUser && this.$fire.auth.currentUser.emailVerified) {
                 this.email = this.currentUser.email
-                await this.$axios.get("/api/addresses?filters[userID][$eq]=" + String(this.currentUser.id)).then((response) => {
-                if(response) {
+                try {
+                    await this.$fire.firestore.collection('direcciones').where("userID", "==", this.currentUser.uid).get().then((querySnapshot) => {
+                        querySnapshot.forEach((doc) => {
+                            this.noDataAddress = false
+                            this.addressID = doc.id
+                            this.addressData = doc.data()
+                        });
+                    })
+                } catch (error) {
                     this.noDataAddress = true
-                    if(response.data.data.shift() && response.data.data[0].attributes) {
-                        this.noDataAddress = false
-                        this.addressID = response.data.data[0].id
-                        this.addressData = response.data.data[0].attributes
-                    } else {
-                        this.noDataAddress = true
-                    }
-                }
-                }).catch((error) => {
                     console.log(error)
-                })
+                }
             } else {
                 this.noDataAddress = true
             }
