@@ -74,7 +74,7 @@ export default {
             product.id = this.id;
             this.$store.commit("cart/SET_PRODUCTS", {
                 product: product,
-                amount: 1,
+                amount: this.amount + 1,
                 id: this.id
             });
         }

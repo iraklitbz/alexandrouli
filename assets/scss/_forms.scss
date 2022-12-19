@@ -407,3 +407,8 @@
 .checkbox--bg:focus + label {
   @apply bg-primary/10;
 }
+
+.number-input__btn--disabled {
+  @apply opacity-25;
+  @apply cursor-not-allowed;
+}

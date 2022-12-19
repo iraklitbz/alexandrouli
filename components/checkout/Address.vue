@@ -104,7 +104,6 @@ export default {
             try {
                 await this.$fire.firestore.collection('direcciones').where("userID", "==", this.currentUser.uid).get().then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
-                        console.log(doc)
                         this.username = doc.data().username,
                         this.address = doc.data().direccion,
                         this.city = doc.data().ciudad,

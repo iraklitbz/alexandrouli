@@ -26,7 +26,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
   export default {
     name: 'HomePage',
     // middleware: 'auth',
@@ -34,10 +33,6 @@
       currentUser() {
             return this.$store.state.user
         },
-    },
-    mounted() {
-      // TODO console.log(this.$cookies)
-      console.log(this.currentUser)
     }
   }
 </script>

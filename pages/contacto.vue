@@ -1,11 +1,11 @@
 <template>
       <section class="thank-you py-20 lg:py-24">
-        <div class="w-[calc(100%_-_2.5rem)] lg:w-[calc(100%_-_4rem)] mx-auto max-w-7xl">
+        <div class="w-[calc(100%_-_2.5rem)] lg:w-[calc(100%_-_4rem)] mx-auto max-w-xl">
           <div class="text-component text-center">
             <h1>Contact Us</h1>
             <p class="mt-5">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ducimus eos impedit nesciunt voluptates magni vero itaque.</p>
           </div>
-          <div class="mt-10 mx-auto max-w-lg">
+          <div class="mt-10 mx-auto max-w-xl">
               <form name="contact" method="POST">
                   <input class="hidden" type="hidden" name="bot-field" />
                   <div class="margin-bottom-sm">
@@ -83,7 +83,7 @@
           this.loading = false
           this.handleMailIsSended()
         } catch (e) {
-          console.log('ikaaaaaaa',e);
+          console.log(e);
         }   
       },
       handleMailIsSended() {

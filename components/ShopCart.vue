@@ -16,31 +16,13 @@
               <ol v-if="products.length" class="mt-5">
                   <li
                     v-for="(product, index) in products"
-                    class="dr-cart__product bg-white rounded-md mb-2"
                     :key="index"
                   >
-                    <nuxt-link v-if="product.feature.data && product.feature.data.attributes" :to="'/vinos/' + product.id + '/' + product.slug" class="rounded-lg shadow-md h-20 flex justify-center dr-cart__img">
-                      <img class="object-contain h-full" :src="product.feature.data.attributes.formats.thumbnail.url" :alt="product.name + ' image'">
-                    </nuxt-link>
-                    <nuxt-link  v-else :to="'/vinos/' + product.id + '/' + product.slug" class="rounded-lg shadow-md h-20 flex justify-center items-center dr-cart__img">
-                          <load-svg name="cross" class="w-10 h-10 text-contrast-low" />
-                    </nuxt-link>
-                    <div class="">
-                        <div class="flex justify-between items-center">
-                          <div>
-                            <h2 class="text-sm lg:text-base"><nuxt-link :to="'/vinos/' + product.id + '/' + product.slug" class="text-inherit">{{ product.name }}</nuxt-link></h2>
-                            <p class="text-sm lg:text-base text-contrast-medium mt-1 lg:mt-1.5">{{product.cultivo}}</p>
-                          </div>
-                         <div class="text-right">
-                            <p class="text-sm lg:text-base text-contrast-higher">{{product.price * product.amount}}€</p>
-                            <p class="text-sm lg:text-base text-contrast-medium mt-1 lg:mt-1.5">{{'x' + product.amount}}</p>
-                         </div>
-                      </div>
-                      <div class="text-right">
-                        <button @click="handleRemoveProduct(product.id)" class="text-error ml-auto text-sm dr-cart__remove-btn mt-1 lg:mt-1.5">Remove</button>
-                      </div>
-                    </div>
+                    <ProductSmallCard 
+                      :product="product" 
+                    />
                   </li>
+                  <a @click="handleRemoveAll" class="cursor-pointer text-error text-sm no-underline lg:text-base text-center block mt-3">Vaciar cesta</a>
               </ol>
               <div 
                 v-else
@@ -65,11 +47,6 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-    data() {
-        return {
-            strapiUrl: process.env.strapiUrl
-        }
-    },
     computed: {
       ...mapState({
           products: state => state.cart.products,
@@ -84,13 +61,13 @@ export default {
         }
     },
     methods: {
+        handleRemoveAll() {
+          this.$store.commit('cart/SET_REMOVE_ALL_PRODUCTS')
+        },
         handleCloseCart() {
             let toggleCart = this.toggleCart
             toggleCart = !toggleCart
             this.$store.commit('cart/SET_DRAWER', toggleCart)
-        },
-        handleRemoveProduct(id) {
-            this.$store.commit('cart/SET_REMOVE_PRODUCTS', id)
         }
     }
 }
@@ -98,57 +75,4 @@ export default {
 
 <style lang="scss">
   @import "~/assets/scss/_drawer.scss";
-  .dr-cart__product {
-  display: grid;
-  grid-template-columns: 80px 1fr auto;
-  @apply gap-2 lg:gap-3;
-  align-items: center;
-  @apply py-2 px-2;
-}
-.dr-cart__product:not(:last-child) {
-  @apply border-b border-contrast-lower;
-}
-
-.dr-cart__img {
-  overflow: hidden;
-  @apply rounded;
-  transition: 0.2s;
-}
-.dr-cart__img img {
-  display: block;
-}
-.dr-cart__img:hover {
-  opacity: 0.85;
-}
-
-.dr-cart__select {
-  --select-icon-size: 0.85em;
-  --select-icon-right-margin: 0.375rem;
-  font-size: 0.875em;
-  width: 3.6em;
-}
-@media (min-width: 64rem) {
-  .dr-cart__select {
-    --select-icon-right-margin: 0.5625rem;
-  }
-}
-.dr-cart__select .select__input {
-  @apply py-0.5 lg:py-1 px-1 lg:px-1.5;
-}
-
-.dr-cart__remove-btn {
-  background-color: transparent;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  line-height: inherit;
-  appearance: none;
-  cursor: pointer;
-}
-.dr-cart__remove-btn:hover {
-  text-decoration: underline;
-}
-.dr-cart__remove-btn:focus {
-  @apply outline-2 outline outline-primary/20 outline-offset-2;
-}
 </style>

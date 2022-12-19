@@ -5,7 +5,7 @@
         <div class="mb-3 lg:mb-5">
           <breadcrumbs 
             :name="name"
-            :page="{ title: 'Vinos', link: '/vinos' }"
+            :page="{ title: 'Vinos', link: '/vinos/1' }"
           />
         </div>
 
@@ -41,6 +41,9 @@
               <div class="mb-2 lg:mb-3">
                 <h1>{{ name }}</h1>
               </div>
+              <div class="mb-2">
+                <h3>{{originalPrice}}€</h3>
+              </div>
 
 
               <div class="text-component mb-8 lg:mb-12">
@@ -61,14 +64,19 @@
 
                     <button 
                         class="flex items-center justify-center number-input__btn number-input__btn--plus" aria-label="Increase Number"
+                        :class="product.available <= amountSelect ? 'number-input__btn--disabled' : ''"
                         @click="handleIncrase"
+                        :disabled="product.available <= amountSelect"
                       >
                         <load-svg name="plus" class="text-black w-4" />
                     </button>
 
                     <button 
-                        class="flex items-center justify-center number-input__btn number-input__btn--minus" aria-label="Decrease Number"
+                        class="flex items-center justify-center number-input__btn number-input__btn--minus"
+                        :class="amountSelect <= 1 ? 'number-input__btn--disabled' : ''"
+                        aria-label="Decrease Number"
                         @click="handleDecrase"
+                        :disabled="amountSelect <= 1"
                         >
                         <load-svg name="minus" class="text-black w-4" />
                     </button>
@@ -78,7 +86,7 @@
                 <button 
                     class="btn btn--primary grow"
                     @click="handleAddToCart()"
-                  >Add to Cart - {{price}}€</button>
+                  >Add to Cart</button>
               </div>
             </div>
           </div>
@@ -111,7 +119,8 @@ export default {
       price: null,
       amountSelect: 1,
       productInCart: {},
-      strapiUrl: process.env.strapiUrl
+      strapiUrl: process.env.strapiUrl,
+      id: null
     };
   },
   async mounted() {
@@ -157,6 +166,7 @@ export default {
     },
     handleAddToCart() {
           this.product.id = this.id
+          this.amountSelect = this.amountSelect + this.amount
           this.$store.commit('cart/SET_PRODUCTS', {
             product: this.product,
             amount: this.amountSelect,

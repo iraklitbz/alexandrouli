@@ -7,7 +7,7 @@ export const mutations = {
     SET_PRODUCTS (state, payload) {
             const thisProduct = state.products.filter(element => element.id === payload.id).shift()
             if(thisProduct && thisProduct.amount) {
-                thisProduct.amount = payload.amount + thisProduct.amount
+                thisProduct.amount = payload.amount
             } else {
                 payload.product.amount = payload.amount
             }
@@ -20,12 +20,15 @@ export const mutations = {
                 arrayWithoutDuplicate.push(productDuplicate)
                 localStorage.setItem('productsInCart', JSON.stringify(arrayWithoutDuplicate))
                 state.products = arrayWithoutDuplicate
+                state.products.sort((a, b) => (a.name > b.name) ? 1 : -1)
             } else {
                 state.products.push(payload.product)
+                state.products.sort((a, b) => (a.name > b.name) ? 1 : -1)
             }
     },
     SET_PRODUCTS_LOCAL_STORAGE (state, payload) {
         state.products = payload
+        state.products.sort((a, b) => (a.name > b.name) ? 1 : -1)
     },
     SET_REMOVE_PRODUCTS (state, payload) {
         const productForRemove = state.products.filter(element => element.id === payload).shift()
@@ -36,6 +39,7 @@ export const mutations = {
         const removeProductFromSArray = state.products.filter(element => element.id !== payload)
         localStorage.setItem('productsInCart', JSON.stringify(removeProductFromSArray))
         state.products = removeProductFromSArray
+        state.products.sort((a, b) => (a.name > b.name) ? 1 : -1)
     },
     SET_REMOVE_ALL_PRODUCTS (state) {
         localStorage.removeItem('productsInCart')
@@ -43,5 +47,5 @@ export const mutations = {
     },
     SET_DRAWER (state, payload) {
         state.toggleCart = payload
-    }
+    }  
 }

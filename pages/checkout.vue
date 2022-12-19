@@ -111,7 +111,6 @@ export default {
                 this.email = this.currentUser.email
                 try {
                     await this.$fire.firestore.collection('direcciones').where("userID", "==", this.currentUser.uid).get().then((querySnapshot) => {
-                        console.log(querySnapshot)
                         querySnapshot.forEach((doc) => {
                             this.noDataAddress = false
                             this.addressData = doc.data()

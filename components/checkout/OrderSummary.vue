@@ -209,7 +209,6 @@ export default {
                 onApprove: async (data, actions) => {
                     const order = await actions.order.capture();
                     this.paidFor = true;
-                    console.log(order.purchase_units[0].amount.value);
                     await this.$axios.post("/api/orders?populate=*", {
                         data: {
                             orderID: order.id,
