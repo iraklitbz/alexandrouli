@@ -37,6 +37,7 @@
           }
       },
         mounted () {
+            
             this.currentPage = this.$route.params.id
             if(this.$route.query && this.$route.query.filter) {
                 const splitFilterParams = this.$route.query.filter.split('&')
@@ -62,7 +63,11 @@
                     ))
                 .catch(error => (this.error = error))
                 if(this.pagination && Number(this.$route.params.id ) > this.pagination.pageCount) {
-                    this.$router.push('/404')
+                        if(this.$route.query.filter) {
+                            this.$router.push({ path: '/vinos/1', query: {filter: this.$route.query.filter} });
+                        } else {
+                            this.$router.push('/vinos/1')
+                        }
                 }
             }
         }
