@@ -10,7 +10,7 @@
                     :class="{'pagination__item--disabled': currentPage === '1'}" 
                     aria-label="Go to previous page">
                     <svg class="icon w-[16px] h-[16px] mr-1 lg:mr-1.5 -scale-x-100" viewBox="0 0 16 16"><polyline points="6 2 12 8 6 14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
-                    <span>Prev</span>
+                    <span>Anterior</span>
                 </a>
             </li>
             <li 
@@ -32,7 +32,7 @@
                     aria-label="Go to next page"
                     :class="{'pagination__item--disabled': currentPage === String(pagination.pageCount)}" 
                 >
-                    <span>Next</span>
+                    <span>Siguiente</span>
                     <svg class="icon w-[16px] h-[16px] ml-1 lg:ml-1.5" viewBox="0 0 16 16"><polyline points="6 2 12 8 6 14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
                 </a>
             </li>

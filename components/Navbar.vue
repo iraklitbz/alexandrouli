@@ -2,10 +2,11 @@
     <nav class="header__nav js-header__nav" id="header-nav" role="navigation" aria-label="Main">
         <div class="header__nav-inner">
             <ul class="header__list">
-                <li class="header__item"><nuxt-link to="/" class="header__link">Home</nuxt-link></li>
+                <li class="header__item"><nuxt-link to="/" class="header__link">Inicio</nuxt-link></li>
                 <li class="header__item ml-5 lg:ml-8"><nuxt-link to="/vinos/1" class="header__link">Vinos</nuxt-link></li>
+                <li class="header__item ml-5 lg:ml-8"><nuxt-link to="/bodegas" class="header__link">Bodegas</nuxt-link></li>
                 <li class="header__item ml-5 lg:ml-8"><nuxt-link to="/sobre-georgia" class="header__link">Georgia</nuxt-link></li>
-                <li class="header__item ml-5 lg:ml-8"><nuxt-link to="/sobre-nosotros" class="header__link">About </nuxt-link></li>
+                <li class="header__item ml-5 lg:ml-8"><nuxt-link to="/sobre-nosotros" class="header__link">Sobre nosotros </nuxt-link></li>
                 <li class="header__item ml-5 lg:ml-8"><nuxt-link to="/contacto" class="header__link">Contacto </nuxt-link></li>
                 <li class="header__item header__item--divider ml-5 lg:ml-8" aria-hidden="true"></li>
                 <client-only>

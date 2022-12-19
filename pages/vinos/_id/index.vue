@@ -1,14 +1,15 @@
 <template>
-    <div class="mx-auto max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl py-20 lg:py-24">
+    <div class="w-[calc(100%_-_2.5rem)] lg:w-[calc(100%_-_4rem)] mx-auto max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl py-20 lg:py-24">
         <div class="mb-5 lg:mb-8">
-            <h1 class="text-center">Our Products</h1>
+            <h1 class="text-center">Todos los vinos</h1>
         </div>
-        <Filters 
+        <Filters
+            class="mb-12" 
             :filter-data="'categories'"
             :filter-name="'category'"
             @update-filter="handleGetData"
         />
-        <ShopGrid 
+        <ShopGrid
             :products="products"
             :pagination="pagination"
         />

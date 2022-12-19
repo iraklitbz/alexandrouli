@@ -39,7 +39,9 @@
                     <load-svg name="minus" class="text-black w-2" />
                 </button>
             </div>
-            <button @click="handleRemoveProduct(product.id)" class="text-error ml-auto text-sm dr-cart__remove-btn mt-1 lg:mt-1.5">Quitar</button>
+            <button @click="handleRemoveProduct(product.id)" class="text-error ml-auto text-sm dr-cart__remove-btn mt-1 lg:mt-1.5">
+                <load-svg name="trash" class="w-5 text-error transition-all ease-in-out opacity-50 hover:opacity-100" />
+            </button>
             </div>
         </div>
     </div>

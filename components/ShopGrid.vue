@@ -1,6 +1,6 @@
 <template>
-    <section class="py-12">
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 mt-14">
+    <section>
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
             <Card
                 v-for="product in products"
                 :key="product.id"

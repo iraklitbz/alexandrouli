@@ -1,7 +1,9 @@
 <template>
     <div>
-        <h2 class="text-contrast-higher text-lg mb-4">Contact options</h2>
         <ul v-if="dataArray.length" class="flex flex-wrap gap-3 js-choice-tags">
+            <li>
+              
+            </li>
             <li>
                 <label @click="handleFilter('Todos')" class="inline-flex items-center py-3 px-4 rounded-full shadow-[0_0_0_1px_hsl(var(--color-contrast-lower))] cursor-pointer select-none text-[0.9375rem] transition-all duration-200 hover:shadow-[0_0_0_1px_hsl(var(--color-contrast-medium))] active:shadow-[0_0_0_2px_hsl(var(--color-primary)),_0_0_0_4px_hsla(var(--color-primary)_/_0.2)] focus-within:shadow-[0_0_0_2px_hsl(var(--color-primary)),_0_0_0_4px_hsla(var(--color-primary)_/_0.2)] [&.choice-tag--checked]:shadow-[0_0_0_2px_hsl(var(--color-primary))] focus-within:[&:not(.choice-tag--checked)]:shadow-[0_0_0_1px_hsl(var(--color-contrast-higher)),_0_0_0_3px_hsla(var(--color-contrast-higher)_/_0.2)] [&.choice-tag--checked]:bg-primary/[0.08] choice-tag--checkbox js-choice-tag" for="checkbox-tag-phone-call">
                     <input 
