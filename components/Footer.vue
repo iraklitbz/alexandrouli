@@ -3,16 +3,10 @@
         <div class="w-[calc(100%_-_2.5rem)] lg:w-[calc(100%_-_4rem)] mx-auto max-w-7xl">
             <nav class="footer-v4__nav">
             <ul class="footer-v4__nav-list">
-                <li class="footer-v4__nav-item"><a href="#0">Pricing</a></li>
-                <li class="footer-v4__nav-item"><a href="#0">Teams</a></li>
-                <li class="footer-v4__nav-item"><a href="#0">Updates</a></li>
-                <li class="footer-v4__nav-item"><a href="#0">Features</a></li>
-                <li class="footer-v4__nav-item"><a href="#0">Integrations</a></li>
-                <li class="footer-v4__nav-item"><a href="#0">Support</a></li>
-                <li class="footer-v4__nav-item"><a href="#0">Documentation</a></li>
-                <li class="footer-v4__nav-item"><a href="#0">Company</a></li>
-                <li class="footer-v4__nav-item"><a href="#0">Customers</a></li>
-                <li class="footer-v4__nav-item"><a href="#0">Our story</a></li>
+                <li class="footer-v4__nav-item"><a href="#0">Condiciones generales de uso y venta</a></li>
+                <li class="footer-v4__nav-item"><a href="#0">Política de privacidad</a></li>
+                <li class="footer-v4__nav-item"><a href="#0">Política de cookies</a></li>
+                <li class="footer-v4__nav-item"><nuxt-link to="/contacto">Contacto</nuxt-link></li>
             </ul>
             </nav>
 

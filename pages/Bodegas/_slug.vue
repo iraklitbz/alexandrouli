@@ -44,8 +44,9 @@ export default {
             ))
         .catch(error => (this.error = error))
         await axios
-        .get(process.env.strapiUrl + `/api/products?filters[bodegas]filters[title][$eq]=${this.$route.params.slug}&populate=*` )
+        .get(process.env.strapiUrl + `/api/products?filters[bodegas]filters[slug][$eq]=${this.$route.params.slug}&populate=*` )
         .then(response => (
+            console.log(response.data.data),
             this.products = response.data.data
         ))
         .catch(error => (this.error = error))
