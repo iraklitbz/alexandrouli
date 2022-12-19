@@ -28,7 +28,8 @@
           <ValidationProvider rules="required" v-slot="{ errors }">
             <input @keyup="handleCheckMoreThen6characters" class="form-control w-full" name="password" v-model="password" ref="password" type="password">
             <error-message
-                :errors="errors[0]"
+              class="mt-4"
+              :errors="errors[0]"
             />
           </ValidationProvider>
         </div>
@@ -50,7 +51,8 @@
           <ValidationProvider rules="required" v-slot="{ errors }">
             <input @keyup="handlePasswordMatch" class="form-control w-full" name="password_confirmation" v-model="passwordtwo" type="password" data-vv-as="password">
             <error-message
-                :errors="errors[0]"
+              class="mt-4"
+              :errors="errors[0]"
             />
           </ValidationProvider>
         </div>
@@ -85,7 +87,8 @@
       </form>
   </ValidationObserver>
   <error-message
-      v-if="err"
+    class="mt-4"
+    v-if="err"
       :errors="err"
     />
   </div>

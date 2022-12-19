@@ -5,7 +5,8 @@
                 <label class="form-label mb-1.5 lg:mb-2" for="checkout-billing-address">Nombre</label>
                 <input class="form-control w-full" @change="handleAdressData" v-model="username" type="text" placeholder="Jon Snow">
                 <error-message
-                        :errors="errors[0]"
+                    class="mt-4"
+                    :errors="errors[0]"
                 />
             </ValidationProvider>
         </div>
@@ -14,7 +15,8 @@
                 <label class="form-label mb-1.5 lg:mb-2" for="checkout-billing-address">Calle</label>
                 <input class="form-control w-full" @change="handleAdressData" v-model="address" type="text" placeholder="calle Winterfell 38, 3b">
                 <error-message
-                        :errors="errors[0]"
+                    class="mt-4"
+                    :errors="errors[0]"
                 />
             </ValidationProvider>
         </div>
@@ -24,6 +26,7 @@
                 <label class="form-label mb-1.5 lg:mb-2" for="checkout-billing-city">Ciudad</label>
                 <input class="form-control w-full" @change="handleAdressData" v-model="city" type="text" placeholder="Winterfell">
                 <error-message
+                    class="mt-4"
                     :errors="errors[0]"
                 />
             </ValidationProvider>
@@ -34,6 +37,7 @@
                 <label class="form-label mb-1.5 lg:mb-2" for="checkout-billing-state">Provincia</label>
                 <input class="form-control w-full" @change="handleAdressData" v-model="provincia" type="text" placeholder="North land">
                 <error-message
+                    class="mt-4"
                     :errors="errors[0]"
                 />
             </ValidationProvider>
@@ -58,6 +62,7 @@
                 <label class="form-label mb-1.5 lg:mb-2" for="checkout-billing-postcode">Código postal</label>
                 <input class="form-control w-full" @change="handleAdressData" v-model="postcode" type="text" placeholder="19240">
                 <error-message
+                    class="mt-4"    
                     :errors="errors[0]"
                 />
             </ValidationProvider>

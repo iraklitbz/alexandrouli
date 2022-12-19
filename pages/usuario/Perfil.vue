@@ -141,6 +141,7 @@
                   <input class="form-control w-full" v-model="password" type="password">
                   <error-message
                     v-if="err"
+                    class="mt-4"
                     :errors="err"
                   />
                   <button

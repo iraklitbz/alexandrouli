@@ -8,6 +8,7 @@
                   <ValidationProvider rules="required|email" v-slot="{ errors }">
                     <input class="form-control w-full" v-model="email" type="text" placeholder="email@email.com">
                     <error-message
+                      class="mt-4"
                         :errors="errors[0]"
                     />
                   </ValidationProvider>
@@ -17,6 +18,7 @@
                   <ValidationProvider rules="required" v-slot="{ errors }">
                     <input class="form-control w-full" v-model="password" type="password">
                     <error-message
+                      class="mt-4"
                         :errors="errors[0]"
                     />
                   </ValidationProvider>
@@ -28,6 +30,7 @@
                 >¿Olvidaste tu contraseña?</nuxt-link>
             </div>
             <error-message
+              class="mt-4"
               v-if="err"
               :errors="err"
             />

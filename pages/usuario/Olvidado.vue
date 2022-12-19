@@ -23,6 +23,7 @@
               <ValidationProvider rules="required|email" v-slot="{ errors }">
                 <input class="form-control w-full" v-model="email" type="email" placeholder="email@email.com">
                 <error-message
+                    class="mt-4"
                     :errors="errors[0]"
                 />
               </ValidationProvider>

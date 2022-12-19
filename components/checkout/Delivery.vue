@@ -9,6 +9,7 @@
                         <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-name">Nombre</label>
                         <input class="form-control w-full" @change="handleSendAddressData" v-model="username" type="text" placeholder="Jon Snow">
                         <error-message
+                            class="mt-4"
                             :errors="errors[0]"
                         />
                     </ValidationProvider>
@@ -19,6 +20,7 @@
                     <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-address">Dirección</label>
                     <input class="form-control w-full" @change="handleSendAddressData" v-model="direccion" type="text" placeholder="calle Winterfell 38, 3b">
                     <error-message
+                        class="mt-4"
                         :errors="errors[0]"
                     />
                 </ValidationProvider>
@@ -29,6 +31,7 @@
                     <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-city">Ciudad</label>
                     <input class="form-control w-full" @change="handleSendAddressData" v-model="ciudad" type="text" placeholder="Winterfell">
                     <error-message
+                        class="mt-4"
                         :errors="errors[0]"
                     />
                 </ValidationProvider>
@@ -39,6 +42,7 @@
                     <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-state">Provincia</label>
                     <input class="form-control w-full" @change="handleSendAddressData" v-model="provincia" type="text" placeholder="North land">
                     <error-message
+                        class="mt-4"
                         :errors="errors[0]"
                     />
                 </ValidationProvider>
@@ -63,6 +67,7 @@
                     <label class="form-label mb-1.5 lg:mb-2" for="checkout-delivery-postcode">Código postal</label>
                     <input class="form-control w-full" @change="handleSendAddressData" v-model="postal" type="text" placeholder="19240">
                     <error-message
+                        class="mt-4"
                         :errors="errors[0]"
                     />
                 </ValidationProvider>

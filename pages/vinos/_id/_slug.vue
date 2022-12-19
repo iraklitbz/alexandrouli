@@ -38,8 +38,10 @@
 
           <div class="col-span-12 lg:col-span-6 xl:col-span-5">
             <div class="product-v3__panel">
-              <div class="mb-2 lg:mb-3">
+              <div class="mb-2 lg:mb-3 lg:flex items-center">
                 <h1>{{ name }}</h1>
+                <h6 class="lg:ml-5">{{ bodega }}</h6>
+ 
               </div>
               <div class="mb-2">
                 <h3>{{originalPrice}}€</h3>
@@ -49,16 +51,18 @@
               <div class="text-component mb-8 lg:mb-12">
                 <p>{{description}}</p>
               </div>
-
+              <div v-if="amount > 0" class="text-right mb-2 text-sm">
+                  <p>
+                    {{amount}} productos en la bolsa <span class=" text-contrast-low">({{ product.available - amount }} más disponibles)</span>
+                  </p>
+              </div>
               <error-message
                   v-if="amount === product.available || amount > product.available"
+                  class="w-full justify-center"
                   :errors="'Producto agotado'"
                 />
-
               <div v-else class="flex flex-wrap gap-5 lg:gap-8 js-product-v3__cta">
                 <div>
-                  <label class="sr-only" for="product-qty-input">Quantity:</label>
-
                   <div class="number-input number-input--v2">
                       <input class="form-control" type="number" name="product-qty-input"  min="0" max="100" :value="amountSelect">
 
@@ -112,6 +116,7 @@ export default {
     return {
       product: {},
       name: '',
+      bodega: '',
       description: '',
       feature: '',
       images: [],
@@ -128,9 +133,11 @@ export default {
     await axios
       .get(process.env.strapiUrl + '/api/products/' + this.$route.params.id + '?populate=*')
       .then(response => (
+          console.log(response.data.data.attributes),
           this.product = response.data.data.attributes,
           this.id = response.data.data.id,
           this.name = response.data.data.attributes.name,
+          this.bodega = response.data.data.attributes.bodegas.data.attributes.title,
           this.price = response.data.data.attributes.price,
           this.originalPrice = response.data.data.attributes.price,
           this.description = response.data.data.attributes.description,
@@ -146,6 +153,9 @@ export default {
         }),
         amount() {
             return this.products.find(element => element.id === Number(this.$route.params.id)) ? this.products.find(element => element.id === Number(this.$route.params.id)).amount : 0;
+        },
+        productosEnBolsa() {
+            return this.products.find(element => element.id === Number(this.$route.params.id)) ? this.products.find(element => element.id === Number(this.$route.params.id)) : 0;
         }
     },
   methods: {

@@ -20,6 +20,7 @@
                 <span class="prod-card-v2__price">{{product.price}}€</span>
             </div>
             <error-message
+                class="mt-4"
                 v-if="amount === product.available || amount > product.available"
                 :errors="'Producto agotado'"
             />

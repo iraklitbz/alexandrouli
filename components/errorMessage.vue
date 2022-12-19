@@ -1,5 +1,5 @@
 <template>
-    <span v-if="errors" class="chip chip--error text-sm lg:text-base mt-4">
+    <span v-if="errors" class="chip chip--error text-sm lg:text-base">
         <em class="not-italic chip__icon-wrapper flex justify-center">
             <load-svg name="exclamacion" class="w-4" />
         </em>
