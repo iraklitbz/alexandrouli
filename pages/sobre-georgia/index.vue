@@ -2,7 +2,7 @@
     <div class="py-20 lg:py-24">
         <CardGrid
             v-if="posts" 
-            :posts="posts.data"
+            :posts="posts?.data"
         />
         
     </div>      

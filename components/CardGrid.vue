@@ -31,14 +31,6 @@ export default {
             type: Array,
             required: true
         }
-    },
-    data(){
-        return {
-            strapiUrl: process.env.strapiUrl
-        }
-    },
-    mounted(){
-        console.log(this.posts)
     }
 }
 </script>

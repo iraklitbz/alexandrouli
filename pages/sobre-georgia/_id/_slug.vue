@@ -3,7 +3,7 @@
             <div class="w-[calc(100%_-_2.5rem)] lg:w-[calc(100%_-_4rem)] mx-auto max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl">
               <div class="mb-3 lg:mb-5">
                 <breadcrumbs 
-                  :name="post.data.attributes.title"
+                  :name="post?.data.attributes.title"
                   :page="{ title: 'Sobre Georgia', link: '/sobre-georgia' }"
                 />
               </div>
@@ -11,7 +11,7 @@
                     <div class="w-[calc(100%_-_2.5rem)] lg:w-[calc(100%_-_4rem)] mx-auto max-w-lg md:max-w-3xl lg:max-w-5xl mb-8 lg:mb-12">
                         <div class="mb-5 lg:mb-12">
                         <h1 class="text-4xl lg:text-6xl lg:leading-tight xl:text-7xl xl:leading-tight">
-                            <a class="story-v4__title" href="#0">{{post.data.attributes.title}}</a>
+                            <a class="story-v4__title" href="#0">{{post?.data.attributes.title}}</a>
                         </h1>
                         </div>
 
@@ -27,16 +27,16 @@
                             </div>
 
                             <div class="text-component text-space-y-md leading-normal col-span-12 lg:col-span-9 xl:col-span-8">
-                                <p>{{post.data.attributes.description}}</p>
+                                <p>{{post?.data.attributes.description}}</p>
                             </div>
                         </div>
                     </div>
 
                     <figure class="w-full">
-                        <img class="w-full" :src="post.data.attributes.feature.data.attributes.url">
+                        <img class="w-full" :src="post?.data.attributes.feature.data.attributes.url">
                     </figure>
                     <div class="main-content-body mt-10 md:max-w-3xl mx-auto">
-                        <div v-html="post.data.attributes.content"></div>
+                        <div v-html="post?.data.attributes.content"></div>
                     </div>
                 </article>
             </div>
