@@ -86,8 +86,15 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/firebase',
     'vue-sweetalert2/nuxt',
+    '@nuxtjs/apollo'
   ],
-  
+  apollo: {
+    clientConfigs: {
+      default: {
+        httpEndpoint: 'https://cms.ikaltovino.com/graphql',
+      }
+    }
+  },
   firebase: {
       config: {
         apiKey: process.env.FIREBASE_API_KEY,

@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "export NODE_OPTIONS=\"--openssl-legacy-provider --no-experimental-fetch\" && nuxt",
-    "build": "export NODE_OPTIONS=\"--openssl-legacy-provider --no-experimental-fetch\" && nuxt build",
+    "dev": "nuxt",
+    "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "export NODE_OPTIONS=\"--openssl-legacy-provider --no-experimental-fetch\" && nuxt generate --fail-on-error"
+    "generate": "nuxt generate"
   },
   "dependencies": {
     "@nuxt/postcss8": "^1.1.3",
@@ -15,6 +15,7 @@
     "@nuxtjs/firebase": "^8.2.2",
     "@nuxtjs/style-resources": "^1.0.0",
     "@vue-stripe/vue-stripe": "^4.4.4",
+    "@vue/apollo-composable": "^4.0.0-beta.1",
     "autoprefixer": "^10.4.12",
     "axios": "^0.27.2",
     "codyhouse-framework": "^3.0.8",
@@ -35,7 +36,12 @@
     "vue-server-renderer": "^2.6.14",
     "vue-sweetalert2": "^5.0.5",
     "vue-template-compiler": "^2.6.14",
-    "webpack": "^4.46.0"
+    "webpack": "^4.46.0",
+    "@nuxtjs/apollo": "^4.0.1-rc.5",
+    "graphql-tag": "^2.11.0"
+  },
+  "peerDependencies": {
+    "apollo-cache-inmemory": "^1.6.6"
   },
   "devDependencies": {
     "@nuxtjs/strapi": "^1.6.3",

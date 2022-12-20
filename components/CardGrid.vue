@@ -36,6 +36,9 @@ export default {
         return {
             strapiUrl: process.env.strapiUrl
         }
+    },
+    mounted(){
+        console.log(this.posts)
     }
 }
 </script>
