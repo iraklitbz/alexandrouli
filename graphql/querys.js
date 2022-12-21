@@ -90,8 +90,10 @@ export const bodega = gql`
 
 //Este es para llamar a las products
 export const allProducts = gql`
-    query allProducts{
-        products{
+    query allProducts($limit: Int!, $start: Int!){
+        products (
+            pagination: {limit: $limit, start: $start}
+        ){
             data{
                 id
                 attributes{

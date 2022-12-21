@@ -114,7 +114,7 @@ export default {
   name: 'DetailProductPage',
   apollo: {
       product: {
-            prefetch: true,
+            prefetch: false,
             query: productByID,
             variables() {
                 return {
@@ -144,18 +144,19 @@ export default {
     }
   },
   mounted() {
-    console.log('----------',this.isLoading)
     productJS()
-    if(!this.$apollo.queries.product._loading) {
-        this.productCopy = this.product.data.attributes,
-        this.id = this.product.data.id,
-        this.name = this.product.data.attributes.name,
-        this.bodega = this.product.data.attributes.bodegas.data.attributes.title,
-        this.price = this.product.data.attributes.price,
-        this.originalPrice = this.product.data.attributes.price,
-        this.description = this.product.data.attributes.description,
-        this.feature = this.product.data.attributes.feature.data.attributes.url,
-        this.images = this.product.data.attributes.images.data
+    if(this.product && this.product.data){
+          this.productCopy = this.product.data.attributes,
+          this.id = this.product.data.id,
+          this.name = this.product.data.attributes.name,
+          this.bodega = this.product.data.attributes.bodegas.data.attributes.title,
+          this.price = this.product.data.attributes.price,
+          this.originalPrice = this.product.data.attributes.price,
+          this.description = this.product.data.attributes.description,
+          this.feature = this.product.data.attributes.feature.data.attributes.url,
+          this.images = this.product.data.attributes.images.data
+    } else {
+      this.handleGrapqhql()
     }
   },
   computed: {
@@ -170,6 +171,20 @@ export default {
         }
     },
   methods: {
+    async handleGrapqhql() {
+        await this.$apollo.queries.product.refetch()
+        if(!this.$apollo.queries.product._loading) {
+          this.productCopy = this.product.data.attributes,
+          this.id = this.product.data.id,
+          this.name = this.product.data.attributes.name,
+          this.bodega = this.product.data.attributes.bodegas.data.attributes.title,
+          this.price = this.product.data.attributes.price,
+          this.originalPrice = this.product.data.attributes.price,
+          this.description = this.product.data.attributes.description,
+          this.feature = this.product.data.attributes.feature.data.attributes.url,
+          this.images = this.product.data.attributes.images.data
+        }
+    },
     handleImageChange(url) {
       this.feature = url
     },

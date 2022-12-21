@@ -10,8 +10,9 @@
             @update-filter="handleGetData"
         /> -->
         <ShopGrid
-            :products="products?.data"
+            :products="productsInState.data"
         />
+        <button @click="handleLoadNext">More</button>
         <!-- <Pagination
             v-if="pagination ? pagination.pageCount > 1 : false"   
             :pagination="pagination"
@@ -26,23 +27,60 @@
   import { allProducts } from '~/graphql/querys'
   export default {
       name: 'VinosPage',
-      apollo: {
-      products: {
-            prefetch: true,
-            query: allProducts
-        }
-        },
       data(){
           return {
-              pagination: {},
-              currentPage: this.$route.params.id ? this.$route.params.id : '1',
-              strapiUrl: process.env.strapiUrl,
-              filter: '',
-              joinCategoryFilterData: []
+                productsInState: {},
+                pagination: {},
+                currentPage: this.$route.params.id ? this.$route.params.id : '1',
+                strapiUrl: process.env.strapiUrl,
+                filter: '',
+                joinCategoryFilterData: []
           }
       },
+      apollo: {
+        products: {
+                prefetch: true,
+                query: allProducts,
+                variables() {
+                    return {
+                        // page: this.$route.params.id ? this.$route.params.id : '1',
+                        // pageSize: 4
+                        limit: 4,
+                        start: 0
+                    }
+                },
+            }
+        },
+        methods: {
+            handleLoadNext() {
+                
+                this.$apollo.queries.products.fetchMore({
+                    variables: { 
+                        start: 4
+                    },
+                    updateQuery: (previousResult, { fetchMoreResult }) => {
+                        console.log(fetchMoreResult)
+                        if (!fetchMoreResult) return previousResult
+                        this.productsInState = [...previousResult.data, ...fetchMoreResult.data]
+                        console.log(this.productsInState)
+                  
+                    },
+                })
+            },
+            async handleGrapqhql() {
+                await this.$apollo.queries.products.refetch()
+                    if(!this.$apollo.queries.products._loading) {
+                        this.productsInState = this.products
+                    }
+                    console.log(this.productsInState)
+                }
+        },
         mounted () {
-            console.log(this.products)
+            if(this.product && this.product.data){
+                this.productsInState = this.products
+            }
+            console.log(this.productsInState)
+            this.handleGrapqhql()
             // this.currentPage = this.$route.params.id
             // if(this.$route.query && this.$route.query.filter) {
             //     const splitFilterParams = this.$route.query.filter.split('&')

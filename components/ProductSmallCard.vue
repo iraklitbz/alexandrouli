@@ -74,7 +74,6 @@ export default {
     },
     
     mounted() {
-      console.log(this.product)
         this.price = this.product.price
         this.originalPrice = this.product.price
     },
