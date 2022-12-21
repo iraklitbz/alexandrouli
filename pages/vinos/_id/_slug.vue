@@ -53,11 +53,11 @@
               </div>
               <div v-if="amount > 0" class="text-right mb-2 text-sm">
                   <p>
-                    {{amount}} productos en la bolsa <span class=" text-contrast-low">({{ product.available - amount }} más disponibles)</span>
+                    {{amount}} productos en la bolsa <span class=" text-contrast-low">({{ productCopy.available - amount }} más disponibles)</span>
                   </p>
               </div>
               <error-message
-                  v-if="amount === product.available || amount > product.available"
+                  v-if="amount === productCopy.available || amount > productCopy.available"
                   class="w-full justify-center"
                   :errors="'Producto agotado'"
                 />
@@ -68,9 +68,9 @@
 
                     <button 
                         class="flex items-center justify-center number-input__btn number-input__btn--plus" aria-label="Increase Number"
-                        :class="product.available <= amountSelect ? 'number-input__btn--disabled' : ''"
+                        :class="productCopy.available <= amountSelect ? 'number-input__btn--disabled' : ''"
                         @click="handleIncrase"
-                        :disabled="product.available <= amountSelect"
+                        :disabled="productCopy.available <= amountSelect"
                       >
                         <load-svg name="plus" class="text-black w-4" />
                     </button>
@@ -105,16 +105,27 @@
 
 <script>
 import productJS from "~/plugins/productJS.js";
-import Breadcrumbs from '../../../components/Breadcrumbs.vue';
-import MoreProducts from '../../../components/MoreProducts.vue';
-import axios from 'axios';
+import { productByID } from '~/graphql/querys'
+import Breadcrumbs from '~/components/Breadcrumbs'
+import MoreProducts from '~/components/MoreProducts'
 import { mapState } from 'vuex'
 export default {
   components: { Breadcrumbs, MoreProducts },
   name: 'DetailProductPage',
+  apollo: {
+      product: {
+            prefetch: true,
+            query: productByID,
+            variables() {
+                return {
+                    id: Number(this.$route.params.id)
+                }
+            }
+        }
+  },
   data() {
     return {
-      product: {},
+      productCopy: {},
       name: '',
       bodega: '',
       description: '',
@@ -124,38 +135,38 @@ export default {
       price: null,
       amountSelect: 1,
       productInCart: {},
-      strapiUrl: process.env.strapiUrl,
       id: null
     };
   },
-  async mounted() {
+  watch: {
+    isLoading() {
+      return this.$apollo.queries.product._loading
+    }
+  },
+  mounted() {
+    console.log('----------',this.isLoading)
     productJS()
-    await axios
-      .get(process.env.strapiUrl + '/api/products/' + this.$route.params.id + '?populate=*')
-      .then(response => (
-          console.log(response.data.data.attributes),
-          this.product = response.data.data.attributes,
-          this.id = response.data.data.id,
-          this.name = response.data.data.attributes.name,
-          this.bodega = response.data.data.attributes.bodegas.data.attributes.title,
-          this.price = response.data.data.attributes.price,
-          this.originalPrice = response.data.data.attributes.price,
-          this.description = response.data.data.attributes.description,
-          this.feature = response.data.data.attributes.feature.data.attributes.url,
-          this.images = response.data.data.attributes.images.data
-          
-        ))
-      .catch(error => (this.error = error))
+    if(!this.$apollo.queries.product._loading) {
+        this.productCopy = this.product.data.attributes,
+        this.id = this.product.data.id,
+        this.name = this.product.data.attributes.name,
+        this.bodega = this.product.data.attributes.bodegas.data.attributes.title,
+        this.price = this.product.data.attributes.price,
+        this.originalPrice = this.product.data.attributes.price,
+        this.description = this.product.data.attributes.description,
+        this.feature = this.product.data.attributes.feature.data.attributes.url,
+        this.images = this.product.data.attributes.images.data
+    }
   },
   computed: {
         ...mapState({
             products: state => state.cart.products
         }),
         amount() {
-            return this.products.find(element => element.id === Number(this.$route.params.id)) ? this.products.find(element => element.id === Number(this.$route.params.id)).amount : 0;
+            return this.products.find(element => element.id === this.$route.params.id) ? this.products.find(element => element.id === this.$route.params.id).amount : 0;
         },
         productosEnBolsa() {
-            return this.products.find(element => element.id === Number(this.$route.params.id)) ? this.products.find(element => element.id === Number(this.$route.params.id)) : 0;
+            return this.products.find(element => element.id === this.$route.params.id) ? this.products.find(element => element.id === his.$route.params.id) : 0;
         }
     },
   methods: {
@@ -163,7 +174,7 @@ export default {
       this.feature = url
     },
     handleIncrase() {
-      if((this.product.available - this.amount) > this.amountSelect) {
+      if((this.productCopy.available - this.amount) > this.amountSelect) {
         this.amountSelect++
         this.price = this.originalPrice + this.price
       }
@@ -175,10 +186,11 @@ export default {
       }
     },
     handleAddToCart() {
-          this.product.id = this.id
+          //CREAMOS UN ID UNICO PARA CADA PRODUCTO DENTRO DEL OBJETO PRODUCTOS
+          this.productCopy.id = this.id
           this.amountSelect = this.amountSelect + this.amount
           this.$store.commit('cart/SET_PRODUCTS', {
-            product: this.product,
+            product: this.productCopy,
             amount: this.amountSelect,
             id: this.id
           })

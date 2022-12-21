@@ -97,6 +97,32 @@ export const allProducts = gql`
                 attributes{
                     name
                     slug
+                    price
+                    description
+                    available
+                    cultivo
+                    images {
+                        data{
+                            attributes {
+                                formats
+                            }
+                        }
+                    }
+                    feature {
+                        data{
+                            attributes {
+                                url
+                                formats
+                            }
+                        }
+                    }
+                    bodegas {
+                        data {
+                            attributes {
+                                title
+                            }
+                        }
+                    }
                 }
             }    
         }
@@ -113,6 +139,7 @@ export const productByID = gql`
                     slug
                     price
                     description
+                    available
                     images {
                         data{
                             attributes {
@@ -124,6 +151,7 @@ export const productByID = gql`
                         data{
                             attributes {
                                 url
+                                formats
                             }
                         }
                     }

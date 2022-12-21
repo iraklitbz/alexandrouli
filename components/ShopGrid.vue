@@ -4,7 +4,7 @@
             <Card
                 v-for="product in products"
                 :key="product.id"
-                :product="product.attributes"
+                :product="product?.attributes"
                 :id="product.id"
             />
         </div>
@@ -15,7 +15,7 @@ export default {
     props: {
         products: {
             type: Array,
-            required: true
+            default: () => []
         }
     }
 }
