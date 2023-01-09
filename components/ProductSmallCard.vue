@@ -1,7 +1,14 @@
 <template>
     <div class="dr-cart__product bg-white rounded-md mb-2">
         <nuxt-link v-if="product.feature.data && product.feature.data.attributes" :to="'/vinos/' + product.id + '/' + product.slug" class="rounded-lg shadow-md h-20 flex justify-center dr-cart__img">
-            <img class="object-contain h-full" :src="product.feature.data.attributes.formats.thumbnail.url" :alt="product.name + ' image'">
+            <nuxt-img
+              provider="cloudinary"
+              loading="lazy"
+              format="webp"  
+              class="object-contain h-full" 
+              :src="product.feature.data.attributes.formats.thumbnail.hash" 
+              :alt="product.name + ' image'" 
+            />
         </nuxt-link>
         <nuxt-link  v-else :to="'/vinos/' + product.id + '/' + product.slug" class="rounded-lg shadow-md h-20 flex justify-center items-center dr-cart__img">
                 <load-svg name="cross" class="w-10 h-10 text-contrast-low" />

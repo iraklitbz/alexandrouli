@@ -28,6 +28,21 @@ export default {
       class: 'js'
     }
   },
+  image: {
+    provider: 'cloudinary',
+    cloudinary: {
+      baseURL: process.env.CL_IMG_URL
+    },
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1536,
+      '2xl': 1536
+    }
+  },
   layoutTransition: {
     name: 'fade-down',
     mode: 'out-in'
@@ -86,7 +101,8 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/firebase',
     'vue-sweetalert2/nuxt',
-    '@nuxtjs/apollo'
+    '@nuxtjs/apollo',
+    '@nuxt/image'
   ],
   apollo: {
     clientConfigs: {

@@ -4,14 +4,35 @@
     <section class="adv-gallery my-10">
       <div class="adv-gallery__grid w-[calc(100%_-_2.5rem)] lg:w-[calc(100%_-_4rem)] mx-auto max-w-7xl">
         <div>
-          <img class="adv-gallery__img" :src="require(`~/assets/images/1.jpg`)" alt="Image description">
+         <nuxt-img
+            provider="cloudinary"
+            loading="lazy"
+            format="webp" 
+            class="adv-gallery__img" 
+            src="1_4dc69cf321.jpg?updated_at=2023-01-09T13:20:17.214Z" 
+            alt="Image description" 
+          />
         </div>
         <div>
-          <img class="adv-gallery__img" :src="require(`~/assets/images/2.jpg`)" alt="Image description">
+         <nuxt-img
+            provider="cloudinary"
+            loading="lazy"
+            format="webp"  
+            class="adv-gallery__img" 
+            src="2_211c6f0254.jpg?updated_at=2023-01-09T13:20:17.890Z" 
+            alt="Image description" 
+          />
         </div>
 
         <div>
-          <img class="adv-gallery__img" :src="require(`~/assets/images/4.jpg`)" alt="Image description">
+         <nuxt-img
+            provider="cloudinary"
+            loading="lazy"
+            format="webp"  
+            class="adv-gallery__img" 
+            src="4_338441f6d7.jpg?updated_at=2023-01-09T13:20:17.759Z" 
+            alt="Image description" 
+          />
         </div>
 
         <div class="bg-contrast-higher/10 p-5 lg:p-8 xl:flex">

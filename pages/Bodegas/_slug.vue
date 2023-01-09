@@ -12,7 +12,13 @@
                     </div>
                 </div>
                 <figure class="absolute z-[1] w-full top-0 left-0 h-full lg:w-[calc(100%/12*10)]">
-                    <img class="w-full h-full object-cover" :src="bodega?.data.attributes.feature.data.attributes.formats.medium.url" :alt="'Bodega ' + bodega?.data.attributes.title + 'imagen'">
+                    <nuxt-img
+                        provider="cloudinary"
+                        loading="lazy"
+                        format="webp"  
+                        class="w-full h-full object-cover" 
+                        :src="bodega?.data.attributes.feature.data.attributes.formats.medium.hash" :alt="'Bodega ' + bodega?.data.attributes.title + 'imagen'" 
+                    />
                 </figure>
                 </div>
             </div>

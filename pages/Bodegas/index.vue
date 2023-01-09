@@ -14,11 +14,14 @@
                         v-if="bodega?.attributes.feature.data && bodega?.attributes.feature.data.attributes"
                     
                     >
-                        <img
+                        <nuxt-img
+                            provider="cloudinary"
+                            loading="lazy"
+                            format="webp" 
                             class="block w-full h-80 object-cover"
-                            :src="bodega.attributes.feature.data.attributes.formats.medium.url"
+                            :src="bodega.attributes.feature.data.attributes.formats.medium.hash"
                             :alt="bodega.attributes.title + ' image'"
-                        >
+                        />
                     </figure>
                     <div class="flex items-center justify-center bg-contrast-low bg-opacity-10 h-80" v-else>
                         <load-svg name="cross" class="w-20 h-20 text-contrast-low" />
