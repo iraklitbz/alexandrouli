@@ -13,7 +13,13 @@
           <div class="col-span-12 lg:col-span-6 xl:col-span-7">
             <div class="flex flex-col gap-3 lg:gap-5">
               <figure v-if="feature" class="h-big pt-14">
-                <img class="object-contain h-full adv-gallery__img w-full" :src="feature" :alt="name + 'image'">
+                  <nuxt-img
+                    provider="cloudinary"
+                    loading="lazy"
+                    format="webp"   
+                    class="object-contain h-full adv-gallery__img w-full" 
+                    :src="feature" :alt="name + 'image'" 
+                  />
               </figure>
               <div class="flex items-center justify-center bg-contrast-low bg-opacity-10 h-96" v-else>
                 <load-svg name="cross" class="w-20 h-20 text-contrast-low" />
@@ -26,9 +32,15 @@
                 <li 
                     v-for="(item, index) in images" :key="index"
                     class="cursor-pointer"
-                    @click="handleImageChange(item.attributes.url)"
+                    @click="handleImageChange(item.attributes.hash)"
                   >
-                  <img class="block w-full" :src="item.attributes.formats.thumbnail.url">
+                  <nuxt-img
+                    provider="cloudinary"
+                    loading="lazy"
+                    format="webp"  
+                    class="block w-full" 
+                    :src="item.attributes.formats.thumbnail.hash" 
+                  />
                 </li>
               </ul>
 
@@ -153,7 +165,7 @@ export default {
           this.price = this.product.data.attributes.price,
           this.originalPrice = this.product.data.attributes.price,
           this.description = this.product.data.attributes.description,
-          this.feature = this.product.data.attributes.feature.data.attributes.url,
+          this.feature = this.product.data.attributes.feature.data.attributes.hash,
           this.images = this.product.data.attributes.images.data
     } else {
       this.handleGrapqhql()

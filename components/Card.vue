@@ -3,11 +3,14 @@
         <span class="prod-card-v2__badge" role="text">{{product.cultivo}} <i class="sr-only">product</i></span>
         <nuxt-link :to="'/vinos/' + id + '/' + product.slug" class="prod-card-v2__img-link rounded-lg shadow-md">
             <figure v-if="product.feature.data && product.feature.data.attributes" class="h-80">
-                <img
+                <nuxt-img
+                    provider="cloudinary"
+                    loading="lazy"
+                    format="webp"
                     class="object-contain h-full"
-                    :src="product.feature.data.attributes.formats.small.url"
+                    :src="product.feature.data.attributes.formats.small.hash"
                     :alt="product.name + ' image'"
-                >
+                />
             </figure>
             <div class="flex items-center justify-center bg-contrast-low bg-opacity-10 h-80" v-else>
                 <load-svg name="cross" class="w-20 h-20 text-contrast-low" />
@@ -56,6 +59,9 @@ export default {
             strapiUrl: process.env.strapiUrl,
             pulseActive: false
         };
+    },
+    mounted() {
+        console.log(this.product);
     },
     computed: {
         ...mapState({

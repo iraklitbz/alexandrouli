@@ -20,7 +20,13 @@
 
         <div class="absolute z-1 top-0 left-0 h-full w-full overflow-hidden">
             <figure class="parallax-img__assets h-full w-full js-parallax-img__assets">
-                <img class="h-full w-full object-cover" :src="require(`~/assets/images/3.jpg`)" alt="wine glass" style="transform: translateZ(150px);">
+                <nuxt-img
+                    provider="cloudinary"
+                    loading="lazy"
+                    format="webp"  
+                    class="h-full w-full object-cover" 
+                    src="3_e32000a488.jpg?updated_at=2023-01-09T13:20:16.564Z"
+                />
             </figure>
         </div>
     </section>

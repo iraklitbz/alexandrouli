@@ -33,7 +33,13 @@
                     </div>
 
                     <figure class="w-full">
-                        <img class="w-full" :src="post?.data.attributes.feature.data.attributes.url">
+                        <nuxt-img
+                          provider="cloudinary"
+                          loading="lazy"
+                          format="webp"  
+                          class="w-full" 
+                          :src="post?.data.attributes.feature.data.attributes.hash" 
+                        />
                     </figure>
                     <div class="main-content-body mt-10 md:max-w-3xl mx-auto">
                         <div v-html="post?.data.attributes.content"></div>

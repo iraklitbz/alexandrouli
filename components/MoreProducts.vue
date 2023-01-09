@@ -21,8 +21,23 @@
 
                         <nuxt-link v-if="item.attributes.feature && item.attributes.feature.data.attributes" :to="'/vinos/' + item.id + '/' + item.attributes.slug" class="prod-card-v2__img-link rounded-lg shadow-md" aria-label="Description of the link">
                             <figure class="h-80 lg:h-44">
-                                <img class="object-contain h-full" :src="item.attributes.feature.data.attributes.formats.small.url" alt="Product preview image">
-                                <img v-if="item.attributes.bodega.data" class="object-contain h-full" :src="item.attributes.bodega.data.attributes.formats.small.url" alt="Product preview image" aria-hidden="true">
+                                <nuxt-img
+                                    provider="cloudinary"
+                                    loading="lazy"
+                                    format="webp" 
+                                    class="object-contain h-full" 
+                                    :src="item.attributes.feature.data.attributes.formats.small.hash" 
+                                    alt="Product preview image" 
+                                />
+                                <nuxt-img
+                                    v-if="item.attributes.bodega.data" 
+                                    provider="cloudinary"
+                                    loading="lazy"
+                                    format="webp"  
+                                    class="object-contain h-full" 
+                                    :src="item.attributes.bodega.data.attributes.formats.small.hash" 
+                                    alt="Product preview image" aria-hidden="true" 
+                                />
                             </figure>
                         </nuxt-link>
                         <nuxt-link v-else :to="'/vinos/' + item.id + '/' + item.attributes.slug" class="prod-card-v2__img-link rounded-lg shadow-md" aria-label="Description of the link">
