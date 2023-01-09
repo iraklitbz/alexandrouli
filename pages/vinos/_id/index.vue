@@ -9,9 +9,9 @@
             :filter-name="'category'"
             @update-filter="handleGetData"
         /> -->
-        <!-- <ShopGrid
+        <ShopGrid
             :products="productsInState.data"
-        /> -->
+        />
         <button @click="handleLoadNext">More</button>
         <!-- <Pagination
             v-if="pagination ? pagination.pageCount > 1 : false"   
