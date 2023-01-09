@@ -15,6 +15,7 @@
               <figure v-if="feature" class="h-big pt-14">
                   <nuxt-img
                     provider="cloudinary"
+                    sizes="sm:100vw md:50vw lg:750px"
                     loading="lazy"
                     format="webp"   
                     class="object-contain h-full adv-gallery__img w-full" 
@@ -37,6 +38,7 @@
                   <nuxt-img
                     provider="cloudinary"
                     loading="lazy"
+                    sizes="sm:100vw md:50vw lg:120px"
                     format="webp"  
                     class="block w-full" 
                     :src="item.attributes.formats.thumbnail.hash" 
@@ -193,7 +195,7 @@ export default {
           this.price = this.product.data.attributes.price,
           this.originalPrice = this.product.data.attributes.price,
           this.description = this.product.data.attributes.description,
-          this.feature = this.product.data.attributes.feature.data.attributes.url,
+          this.feature = this.product.data.attributes.feature.data.attributes.hash,
           this.images = this.product.data.attributes.images.data
         }
     },

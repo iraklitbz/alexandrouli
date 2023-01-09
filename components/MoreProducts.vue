@@ -24,6 +24,7 @@
                                 <nuxt-img
                                     provider="cloudinary"
                                     loading="lazy"
+                                    sizes="sm:100vw md:50vw lg:186px"
                                     format="webp" 
                                     class="object-contain h-full" 
                                     :src="item.attributes.feature.data.attributes.formats.small.hash" 
@@ -33,6 +34,7 @@
                                     v-if="item.attributes.bodega.data" 
                                     provider="cloudinary"
                                     loading="lazy"
+                                    sizes="sm:100vw md:50vw lg:186px"
                                     format="webp"  
                                     class="object-contain h-full" 
                                     :src="item.attributes.bodega.data.attributes.formats.small.hash" 

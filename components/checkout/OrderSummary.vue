@@ -15,6 +15,7 @@
                             <nuxt-img
                                 provider="cloudinary"
                                 loading="lazy"
+                                sizes="sm:100vw md:50vw lg:67px"
                                 format="webp"
                                 class="object-contain h-full"
                                 :src="product.feature.data.attributes.formats.thumbnail.hash" :alt="product.name + ' image'"

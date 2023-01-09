@@ -7,6 +7,7 @@
          <nuxt-img
             provider="cloudinary"
             loading="lazy"
+            sizes="sm:100vw md:50vw lg:310px"
             format="webp" 
             class="adv-gallery__img" 
             src="1_4dc69cf321.jpg?updated_at=2023-01-09T13:20:17.214Z" 
@@ -17,6 +18,7 @@
          <nuxt-img
             provider="cloudinary"
             loading="lazy"
+            sizes="sm:100vw md:50vw lg:310px"
             format="webp"  
             class="adv-gallery__img" 
             src="2_211c6f0254.jpg?updated_at=2023-01-09T13:20:17.890Z" 
@@ -28,6 +30,7 @@
          <nuxt-img
             provider="cloudinary"
             loading="lazy"
+            sizes="sm:100vw md:50vw lg:700px"
             format="webp"  
             class="adv-gallery__img" 
             src="4_338441f6d7.jpg?updated_at=2023-01-09T13:20:17.759Z" 

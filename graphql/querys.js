@@ -13,6 +13,7 @@ export const allPosts = gql`
                     feature {
                         data{
                             attributes {
+                                hash
                                 url
                             }
                         }
@@ -36,7 +37,7 @@ export const post = gql`
                     feature {
                         data{
                             attributes {
-                                url
+                                hash
                             }
                         }
                     }
@@ -113,7 +114,7 @@ export const allProducts = gql`
                     feature {
                         data{
                             attributes {
-                                url
+                                hash
                                 formats
                             }
                         }
@@ -152,7 +153,7 @@ export const productByID = gql`
                     feature {
                         data{
                             attributes {
-                                url
+                                hash
                                 formats
                             }
                         }

@@ -16,6 +16,7 @@
                     >
                         <nuxt-img
                             provider="cloudinary"
+                            sizes="sm:100vw md:50vw lg:415px"
                             loading="lazy"
                             format="webp" 
                             class="block w-full h-80 object-cover"

@@ -36,9 +36,10 @@
                         <nuxt-img
                           provider="cloudinary"
                           loading="lazy"
+                          sizes="sm:100vw md:50vw lg:1280px"
                           format="webp"  
                           class="w-full" 
-                          :src="post?.data.attributes.feature.data.attributes.hash" 
+                          :src="post ? post.data.attributes.feature.data.attributes.hash : 'lorem'" 
                         />
                     </figure>
                     <div class="main-content-body mt-10 md:max-w-3xl mx-auto">

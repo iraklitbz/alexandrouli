@@ -22,6 +22,7 @@
             <figure class="parallax-img__assets h-full w-full js-parallax-img__assets">
                 <nuxt-img
                     provider="cloudinary"
+                    sizes="sm:100vw md:50vw lg:2010px"
                     loading="lazy"
                     format="webp"  
                     class="h-full w-full object-cover" 
